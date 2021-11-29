@@ -1,0 +1,1 @@
+<span>Направить заявления на возврат денежных средств и на возврат товара покупателя можно на электронную почту</span> <a href="mailto:order@gipermed.com" target="_blank">order@gipermed.com</a>
