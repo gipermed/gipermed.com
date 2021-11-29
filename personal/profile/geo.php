@@ -14,16 +14,16 @@ if (!$USER->IsAuthorized())
 </div>
 
 <script>
-var r = sessionStorage.getItem('a');
+/*var r = sessionStorage.getItem('a');
 if (r == "Москва" || r == "Москва и Московская область") {
   window.location.href = '/sale/';
-}
+}*/
 </script>
 <a href="#modal-city" class="head-city-link modal-open-btn">
                         <svg width="24" height="24">
                             <use xlink:href="#icon-cursor"/>
                         </svg>
-                        <span><span class="hidden-desktop">Ваш регион доставки:</span> <b><span id="user-regionr"> </span></b></span>
+                        <span><span class="hidden-desktop">Ваш регион доставки moscow:</span> <b><span id="user-regionr"> </span></b></span>
                     </a>
 
 
