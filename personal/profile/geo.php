@@ -23,7 +23,7 @@ if (r == "Москва" || r == "Москва и Московская облас
                         <svg width="24" height="24">
                             <use xlink:href="#icon-cursor"/>
                         </svg>
-                        <span><span class="hidden-desktop">Ваш регион доставкиvjscov:</span> <b><span id="user-regionr"> </span></b></span>
+                        <span><span class="hidden-desktop">Ваш регион доставк:</span> <b><span id="user-regionr"> </span></b></span>
                     </a>
 
 
