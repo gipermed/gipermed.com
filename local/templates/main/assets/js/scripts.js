@@ -1245,11 +1245,13 @@ $(document).ready(function () {
         $('.cabinet-address-add, .cabinet-address-new').slideToggle(400);
         return false;
     });
+
     $(document).on('submit', '.cabinet-address-form', function (event) {
         var t = $(this);
         var title = t.find('.cabinet-address-input-title').val();
         var city = t.find('.cabinet-address-input-city').val();
         var street = t.find('.cabinet-address-input-data').val();
+        var home = t.find('.cabinet-address-input-data').val();
         var comment = t.find('.cabinet-address-input-comment').val();
         var isMain = t.find('.cabinet-address-input-main').prop('checked');
         var data = city;
@@ -1259,7 +1261,7 @@ $(document).ready(function () {
             url: '/ajax/input_ajax.php',
             method: 'post',
             dataType: 'html',
-            data: {tit: title, city: city, comment: comment, isMain: isMain, street: street},
+            data: {tit: title, city: city, comment: comment, isMain: isMain, street: street, home: home},
             success: function(data){
                 alert(data);
             }

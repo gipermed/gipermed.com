@@ -27,7 +27,7 @@ $data = array(
     "UF_KVARTIRA"=>$_POST['data'],
     "UF_STROENIE"=>$_POST['data'],
     "UF_KORPUS"=>$_POST['data'],
-    "UF_HOME"=>$_POST['data'],
+    "UF_HOME"=>$_POST['home'],
     "UF_STREET"=>$_POST['street'],
     "UF_ID_USER"=>$USER->GetID()
 );

@@ -32,6 +32,7 @@ if (r == "Москва" || r == "Москва и Московская облас
                         </svg>
                         <span><span class="hidden-desktop">Ваш регион доставки:</span> <b><span id="user-regionr"> </span></b></span>
                     </a>
+
 <?php
     $hlbl = 3; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
     $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
@@ -42,28 +43,36 @@ if (r == "Москва" || r == "Москва и Московская облас
     $rsData = $entity_data_class::getList(array(
     "select" => array("*"),
     "order" => array("ID" => "ASC"),
-    "filter" => array("UF_ID_USER"=>"1")  // Задаем параметры фильтра выборки
+    "filter" => array("UF_ID_USER"=>$USER->GetID())  // Задаем параметры фильтра выборки
     ));
-    while($arData = $rsData->Fetch()){
-   // var_dump($arData['UF_ADRES']);
+    ?>
+<div class="cabinet-profile-form-row1 flex-row" style="margin: 30px">
+    <?
+while($arData = $rsData->Fetch()){
+    ?>
+        <div class="cabinet-profile-form-col-maintel flex-row-item" style="width: 30%">
+                <div class="cabinet-profile-form-row flex-row">
+                    <div class="cabinet-profile-form-col-mainp1 flex-row-item" style="width: 50%">
+                        <label class="form-block">
+                            <a href="#"> <span class="form-block-title"style="font-size: 18px; font-weight: 600; color: #4365AF; text-align: left; margin-bottom: 10px"><?=$arData['UF_TYPE_ADR']; ?></span></a>
+                        </label>
+                    </div>
+                    <div class="cabinet-profile-form-col-mainp2 flex-row-item" style="width: 50%">
+                        <label class="form-block">
+                            <a href="#"> <span class="form-block-title"style="font-size: 15px; font-weight: 500; color: #545454; text-align: right; margin-bottom: 10px">Удалить адрес</span></a>
+                        </label>
+                    </div>
+                </div>
+            Адрес доставки: <span><?=$arData['UF_CITY']; ?>, <?=$arData['UF_STREET']; ?></span>
+            <br>
+            Коментарий курьеру:<span><?=$arData['UF_COMENT']; ?></span>
 
-        echo '<pre>';
-        print_r($arData);
-        echo '</pre>';
 
-        $adr = $arData['UF_ADRES'];
-
-        echo '<pre>';
-        print_r($adr);
-        echo '</pre>';
-
-
-        ?>
-        <input type='text' name='company' size = '30' value = '<?=$adr; ?>'/>
-        <?php
-    }
+        </div>
+    <?php
+}
 ?>
-
+</div>
     <div class="cabinet cabinet-addresses">
         <div class="cabinet-section-title">
             Мои
