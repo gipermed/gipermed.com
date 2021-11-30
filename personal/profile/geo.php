@@ -63,10 +63,11 @@ while($arData = $rsData->Fetch()){
                         </label>
                     </div>
                 </div>
-            Адрес доставки: <span><?=$arData['UF_CITY']; ?>, <?=$arData['UF_STREET']; ?></span>
-            <br>
-            Коментарий курьеру:<span><?=$arData['UF_COMENT']; ?></span>
+            <div style="font-size: 13px; font-weight: 500; text-align: left; margin-bottom: 5px">Адрес доставки:</div>
+            <div style="font-size: 13px; font-weight: 400; text-align: left; margin-bottom: 25px" ><?=$arData['UF_CITY']; ?>, <?=$arData['UF_STREET']; ?></div>
 
+            <div style="font-size: 13px; font-weight: 500; text-align: left; margin-bottom: 5px">Коментарий курьеру:</div>
+            <div style="font-size: 13px; font-weight: 400; text-align: left; margin-bottom: 25px" ><?=$arData['UF_COMENT']; ?></div>
 
         </div>
     <?php
