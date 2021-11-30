@@ -1249,10 +1249,22 @@ $(document).ready(function () {
         var t = $(this);
         var title = t.find('.cabinet-address-input-title').val();
         var city = t.find('.cabinet-address-input-city').val();
+        var street = t.find('.cabinet-address-input-data').val();
         var comment = t.find('.cabinet-address-input-comment').val();
         var isMain = t.find('.cabinet-address-input-main').prop('checked');
         var data = city;
         var item;
+
+        $.ajax({
+            url: '/ajax/input_ajax.php',
+            method: 'post',
+            dataType: 'html',
+            data: {tit: title, city: city, comment: comment, isMain: isMain, street: street},
+            success: function(data){
+                alert(data);
+            }
+        });
+
         t.find('.cabinet-address-input-data').each(function () {
             var value = $(this).val();
             if (!value) return;
