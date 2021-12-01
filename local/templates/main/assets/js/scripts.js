@@ -1273,9 +1273,6 @@ $(document).ready(function () {
             method: 'post',
             dataType: 'html',
             data: {action: "new", arr: arr},
-            success: function(data){
-                alert(data);
-            }
         });
 /*
         if (t.closest('.cabinet-address-new').length) {
@@ -1329,15 +1326,70 @@ $(document).ready(function () {
 
         var t = $(this).closest('.delnew');
         var id = t.find('.cabinet-address-input-id').val();
-
         $.ajax({
             url: '/ajax/input_ajax.php',
             method: 'post',
             dataType: 'html',
             data: {action: "del", arr: id },
-            success: function(data){
-                alert(data);
-            }
+        });
+        location.reload();
+        return false;
+    });
+
+    $(document).on('click', '.cabinet-address-item-editnew', function () {
+
+        var t = $(this).closest('.delnew');
+        var id = t.find('.cabinet-address-input-id').val();
+        var typeadr = t.find('.cabinet-address-input-typeadr').val();
+        var city = t.find('.cabinet-address-input-cityn').val();
+        var street = t.find('.cabinet-address-input-street').val();
+        var home = t.find('.cabinet-address-input-home').val();
+        var korpus = t.find('.cabinet-address-input-korpus').val();
+        var stroenie = t.find('.cabinet-address-input-stroenie').val();
+        var kvartira = t.find('.cabinet-address-input-kvartira').val();
+        var coment = t.find('.cabinet-address-input-coment').val();
+
+        $("#idadr").val(id);
+        $("#nameadr").val(typeadr);
+        $("#city").val(city);
+        $("#street").val(street);
+        $("#home").val(home);
+        $("#korpus").val(korpus);
+        $("#stroenie").val(stroenie);
+        $("#kvartira").val(kvartira);
+        $("#coment").val(coment);
+        return false;
+    });
+
+    $(document).on('submit', '.cabinet-address-formedit', function (event) {
+        var t = $(this);
+        var id = t.find('.cabinet-address-input-id').val();
+        var city = t.find('.cabinet-address-input-city').val();
+        var comment = t.find('.cabinet-address-input-comment').val();
+        var typeadr = t.find('.cabinet-address-input-title').val();
+        var street = t.find('.cabinet-address-input-street').val();
+        var home = t.find('.cabinet-address-input-home').val();
+        var korpus = t.find('.cabinet-address-input-korpus').val();
+        var stroenie = t.find('.cabinet-address-input-stroenie').val();
+        var kvartira = t.find('.cabinet-address-input-kvartira').val();
+
+        var arr = [];
+        arr.push(typeadr);
+        arr.push(comment);
+        arr.push("false");
+        arr.push(kvartira);
+        arr.push(stroenie);
+        arr.push(street);
+        arr.push(korpus);
+        arr.push(home);
+        arr.push(city);
+        arr.push(id);
+        //alert(id);
+        $.ajax({
+            url: '/ajax/input_ajax.php',
+            method: 'post',
+            dataType: 'html',
+            data: {action: "edit", arr: arr},
         });
         location.reload();
         return false;

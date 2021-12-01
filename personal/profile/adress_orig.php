@@ -1,90 +1,19 @@
 <? require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/header.php');
-$APPLICATION->SetTitle("");
 $APPLICATION->SetPageProperty('title', 'Лист ожидания');
-
-use Bitrix\Main\Loader;
-
-Loader::includeModule("highloadblock");
-
-use Bitrix\Highloadblock as HL;
-use Bitrix\Main\Entity;
 
 if (!$USER->IsAuthorized())
 {
 	$_SESSION["BACKURL"] = $APPLICATION->GetCurPage();
 	LocalRedirect("/auth/");
 }
-?><div class="cabinet cabinet-addresses">
-	<div class="cabinet-section-title">
-		 Мои адреса
-	</div>
-</div>
-
-<script>
-/*var r = sessionStorage.getItem('a');
-if (r == "Москва" || r == "Москва и Московская область") {
-  window.location.href = '/sale/';
-}*/
-</script>
-<a href="#modal-city" class="head-city-link modal-open-btn">
-                        <svg width="24" height="24">
-                            <use xlink:href="#icon-cursor"/>
-                        </svg>
-                        <span><span class="hidden-desktop">Ваш регион доставки:</span> <b><span id="user-regionr"> </span></b></span>
-                    </a>
-
-<?php
-    $hlbl = 3; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
-    $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
-
-    $entity = HL\HighloadBlockTable::compileEntity($hlblock);
-    $entity_data_class = $entity->getDataClass();
-
-    $rsData = $entity_data_class::getList(array(
-    "select" => array("*"),
-    "order" => array("ID" => "ASC"),
-    "filter" => array("UF_ID_USER"=>$USER->GetID())  // Задаем параметры фильтра выборки
-    ));
-    ?>
-<div class="cabinet-profile-form-row1 flex-row" style="margin: 30px">
-    <?
-while($arData = $rsData->Fetch()){
-    ?>
-        <div class="cabinet-profile-form-col-maintel flex-row-item delnew " style="width: 30%">
-                <div class="cabinet-profile-form-row flex-row">
-                    <div class="cabinet-profile-form-col-mainp1 flex-row-item" style="width: 50%">
-                        <label class="form-block">
-                            <a href="#modal-delAdr" class=" modal-open-btn cabinet-address-item-editnew"> <span style="font-size: 18px; font-weight: 600; color: #4365AF; text-align: left; margin-bottom: 10px"><?=$arData['UF_TYPE_ADR']; ?></span> &nbsp; <img src="/local/templates/main/assets/img/delAdr.jpg" alt=""><b><span id="user-region"> </span></b></a>
-                        </label>
-                    </div>
-                    <div class="cabinet-profile-form-col-mainp2 flex-row-item" style="width: 50%">
-                        <label class="form-block">
-                            <a href="#" class="cabinet-address-item-delnew"> <span class="form-block-title"style="font-size: 15px; font-weight: 500; color: #545454; text-align: right; margin-bottom: 10px">Удалить адрес</span></a>
-                        </label>
-                    </div>
-                </div>
-            <input type="hidden" class="input cabinet-address-input-id" value="<?=$arData['ID']; ?>">
-            <input type="hidden" class="input cabinet-address-input-typeadr" value="<?=$arData['UF_TYPE_ADR']; ?>">
-            <input type="hidden" class="input cabinet-address-input-cityn" value="<?=$arData['UF_CITY']; ?>">
-            <input type="hidden" class="input cabinet-address-input-street" value="<?=$arData['UF_STREET']; ?>">
-            <input type="hidden" class="input cabinet-address-input-home" value="<?=$arData['UF_HOME']; ?>">
-            <input type="hidden" class="input cabinet-address-input-korpus" value="<?=$arData['UF_KORPUS']; ?>">
-            <input type="hidden" class="input cabinet-address-input-stroenie" value="<?=$arData['UF_STROENIE']; ?>">
-            <input type="hidden" class="input cabinet-address-input-kvartira" value="<?=$arData['UF_KVARTIRA']; ?>">
-            <input type="hidden" class="input cabinet-address-input-coment" value="<?=$arData['UF_COMENT']; ?>">
-
-            <div style="font-size: 13px; font-weight: 500; text-align: left; margin-bottom: 5px">Адрес доставки:</div>
-            <div style="font-size: 13px; font-weight: 400; text-align: left; margin-bottom: 25px" >Нас. пункт: <?=$arData['UF_CITY']; ?>, ул.<?=$arData['UF_STREET']; ?>, дом: <?=$arData['UF_HOME']; ?>, корп. <?=$arData['UF_KORPUS']; ?>, стр. <?=$arData['UF_STROENIE']; ?>, кв. <?=$arData['UF_KVARTIRA']; ?></div>
-
-            <div style="font-size: 13px; font-weight: 500; text-align: left; margin-bottom: 5px">Коментарий курьеру:</div>
-            <div style="font-size: 13px; font-weight: 400; text-align: left; margin-bottom: 25px" ><?=$arData['UF_COMENT']; ?></div>
-
-        </div>
-    <?php
-}
 ?>
-</div>
-    <div class="cabinet cabinet-addresses1">
+
+   
+    <div class="cabinet cabinet-addresses">
+        <div class="cabinet-section-title">
+            Мои
+            адреса
+        </div>
         <div class="cabinet-address-add">
             <a href="#"
                class="cabinet-address-add-btn">
@@ -125,8 +54,28 @@ while($arData = $rsData->Fetch()){
                         <div class="cabinet-address-form-col flex-row-item">
                             <div class="form-block">
                                 <span class="form-block-title">Населённый пункт</span>
-                                <div id="one_string" class="form-block-select ordering-delivery-city-select">
-                                    <input name="address"  type="search" class="input cabinet-address-input-city" required>
+                                <div class="form-block-select ordering-delivery-city-select">
+                                    <i class="select-icon">
+                                        <svg width="24"
+                                             height="24">
+                                            <use xlink:href="#icon-chevron-down"/>
+                                        </svg>
+                                    </i>
+                                    <input type="text"
+                                           class="ordering-delivery-city-select-input input select cabinet-address-input-city"
+                                           data-value-default="Москва"
+                                           value="Москва">
+                                    <div class="ordering-delivery-city-select-search">
+                                        <input type="text"
+                                               class="ordering-delivery-city-select-search-input input">
+                                        <div class="ordering-delivery-city-select-search-info">
+                                            Пожалуйста,
+                                            начните
+                                            вводить
+                                            название
+                                            города
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -180,9 +129,20 @@ while($arData = $rsData->Fetch()){
                             placeholder="Напишите ваш комментарий"></textarea>
                 </label>
                 <div class="cabinet-address-form-submit-wrapp submit-wrapp">
-                    <label class="checkbox-label  cabinet-address-form-main-checkbox">
-
-
+                    <label class="checkbox-label btn cabinet-address-form-main-checkbox">
+                        <input type="checkbox"
+                               class="checkbox-input cabinet-address-input-main">
+                        <i>
+                            <svg width="16"
+                                 height="16">
+                                <use xlink:href="#icon-star"/>
+                            </svg>
+                            <svg width="16"
+                                 height="16">
+                                <use xlink:href="#icon-star-fill"/>
+                            </svg>
+                        </i>
+                        <span>Сделать главным</span>
                     </label>
                     <ul class="cabinet-address-form-btns">
                         <li>
@@ -192,7 +152,7 @@ while($arData = $rsData->Fetch()){
                         </li>
                         <li>
                             <a href="#"
-                               class="btn btn-full cabinet-address-form-del">Отменить</a>
+                               class="btn btn-full cabinet-address-form-del">Удалить</a>
                         </li>
                     </ul>
                 </div>
@@ -255,15 +215,6 @@ while($arData = $rsData->Fetch()){
         </template>
         <div class="cabinet-address-list"></div>
     </div>
-  
-
-
-
-
-
-
-
-
 
 
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

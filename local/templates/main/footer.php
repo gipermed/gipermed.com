@@ -195,6 +195,8 @@ global $APPLICATION;
 
 $modals = [
     'city',
+    'delprof',
+    'delAdr',
     'sent',
     'feedback',
     'recall',
