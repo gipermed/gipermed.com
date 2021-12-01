@@ -50,21 +50,23 @@ if (r == "Москва" || r == "Москва и Московская облас
     <?
 while($arData = $rsData->Fetch()){
     ?>
-        <div class="cabinet-profile-form-col-maintel flex-row-item" style="width: 30%">
+        <div class="cabinet-profile-form-col-maintel flex-row-item delnew " style="width: 30%">
                 <div class="cabinet-profile-form-row flex-row">
                     <div class="cabinet-profile-form-col-mainp1 flex-row-item" style="width: 50%">
                         <label class="form-block">
-                            <a href="#"> <span class="form-block-title"style="font-size: 18px; font-weight: 600; color: #4365AF; text-align: left; margin-bottom: 10px"><?=$arData['UF_TYPE_ADR']; ?></span></a>
+                            <a href="#modal-city" class=" modal-open-btn"> <span style="font-size: 18px; font-weight: 600; color: #4365AF; text-align: left; margin-bottom: 10px"><?=$arData['UF_TYPE_ADR']; ?></span> &nbsp; <img src="/local/templates/main/assets/img/delAdr.jpg" alt=""><b><span id="user-region"> </span></b></a>
                         </label>
                     </div>
                     <div class="cabinet-profile-form-col-mainp2 flex-row-item" style="width: 50%">
                         <label class="form-block">
-                            <a href="#"> <span class="form-block-title"style="font-size: 15px; font-weight: 500; color: #545454; text-align: right; margin-bottom: 10px">Удалить адрес</span></a>
+                            <a href="#" class="cabinet-address-item-delnew"> <span class="form-block-title"style="font-size: 15px; font-weight: 500; color: #545454; text-align: right; margin-bottom: 10px">Удалить адрес</span></a>
                         </label>
                     </div>
                 </div>
+            <input type="hidden" class="input cabinet-address-input-id" value="<?=$arData['ID']; ?>"
+                   required>
             <div style="font-size: 13px; font-weight: 500; text-align: left; margin-bottom: 5px">Адрес доставки:</div>
-            <div style="font-size: 13px; font-weight: 400; text-align: left; margin-bottom: 25px" ><?=$arData['UF_CITY']; ?>, <?=$arData['UF_STREET']; ?></div>
+            <div style="font-size: 13px; font-weight: 400; text-align: left; margin-bottom: 25px" >Нас. пункт: <?=$arData['UF_CITY']; ?>, ул.<?=$arData['UF_STREET']; ?>, дом: <?=$arData['UF_HOME']; ?>, корп. <?=$arData['UF_KORPUS']; ?>, стр. <?=$arData['UF_STROENIE']; ?>, кв. <?=$arData['UF_KVARTIRA']; ?></div>
 
             <div style="font-size: 13px; font-weight: 500; text-align: left; margin-bottom: 5px">Коментарий курьеру:</div>
             <div style="font-size: 13px; font-weight: 400; text-align: left; margin-bottom: 25px" ><?=$arData['UF_COMENT']; ?></div>
@@ -74,11 +76,7 @@ while($arData = $rsData->Fetch()){
 }
 ?>
 </div>
-    <div class="cabinet cabinet-addresses">
-        <div class="cabinet-section-title">
-            Мои
-            адреса
-        </div>
+    <div class="cabinet cabinet-addresses1">
         <div class="cabinet-address-add">
             <a href="#"
                class="cabinet-address-add-btn">
@@ -119,28 +117,8 @@ while($arData = $rsData->Fetch()){
                         <div class="cabinet-address-form-col flex-row-item">
                             <div class="form-block">
                                 <span class="form-block-title">Населённый пункт</span>
-                                <div class="form-block-select ordering-delivery-city-select">
-                                    <i class="select-icon">
-                                        <svg width="24"
-                                             height="24">
-                                            <use xlink:href="#icon-chevron-down"/>
-                                        </svg>
-                                    </i>
-                                    <input type="text"
-                                           class="ordering-delivery-city-select-input input select cabinet-address-input-city"
-                                           data-value-default="Москва"
-                                           value="Москва">
-                                    <div class="ordering-delivery-city-select-search">
-                                        <input type="text"
-                                               class="ordering-delivery-city-select-search-input input">
-                                        <div class="ordering-delivery-city-select-search-info">
-                                            Пожалуйста,
-                                            начните
-                                            вводить
-                                            название
-                                            города
-                                        </div>
-                                    </div>
+                                <div id="one_string" class="form-block-select ordering-delivery-city-select">
+                                    <input name="address"  type="search" class="input cabinet-address-input-city" required>
                                 </div>
                             </div>
                         </div>
@@ -194,20 +172,9 @@ while($arData = $rsData->Fetch()){
                             placeholder="Напишите ваш комментарий"></textarea>
                 </label>
                 <div class="cabinet-address-form-submit-wrapp submit-wrapp">
-                    <label class="checkbox-label btn cabinet-address-form-main-checkbox">
-                        <input type="checkbox"
-                               class="checkbox-input cabinet-address-input-main">
-                        <i>
-                            <svg width="16"
-                                 height="16">
-                                <use xlink:href="#icon-star"/>
-                            </svg>
-                            <svg width="16"
-                                 height="16">
-                                <use xlink:href="#icon-star-fill"/>
-                            </svg>
-                        </i>
-                        <span>Сделать главным</span>
+                    <label class="checkbox-label  cabinet-address-form-main-checkbox">
+
+
                     </label>
                     <ul class="cabinet-address-form-btns">
                         <li>
@@ -217,7 +184,7 @@ while($arData = $rsData->Fetch()){
                         </li>
                         <li>
                             <a href="#"
-                               class="btn btn-full cabinet-address-form-del">Удалить</a>
+                               class="btn btn-full cabinet-address-form-del">Отменить</a>
                         </li>
                     </ul>
                 </div>

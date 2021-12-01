@@ -1250,30 +1250,34 @@ $(document).ready(function () {
         var t = $(this);
         var title = t.find('.cabinet-address-input-title').val();
         var city = t.find('.cabinet-address-input-city').val();
-        var street = t.find('.cabinet-address-input-data').val();
-        var home = t.find('.cabinet-address-input-data').val();
         var comment = t.find('.cabinet-address-input-comment').val();
         var isMain = t.find('.cabinet-address-input-main').prop('checked');
         var data = city;
         var item;
+        var arr = [];
+        arr.push(title);
+        arr.push(city);
+        arr.push(comment);
+        arr.push(isMain);
 
+        t.find('.cabinet-address-input-data').each(function () {
+            var value = $(this).val();
+            if (!value) {arr.push(""); return;}
+            var inputTitle = $(this).closest('.form-block').find('.form-block-title').text().toLowerCase();
+            data += ", ".concat(inputTitle, " ").concat(value);
+            arr.push(value);
+        });
+//alert(arr);
         $.ajax({
             url: '/ajax/input_ajax.php',
             method: 'post',
             dataType: 'html',
-            data: {tit: title, city: city, comment: comment, isMain: isMain, street: street, home: home},
+            data: {action: "new", arr: arr},
             success: function(data){
                 alert(data);
             }
         });
-
-        t.find('.cabinet-address-input-data').each(function () {
-            var value = $(this).val();
-            if (!value) return;
-            var inputTitle = $(this).closest('.form-block').find('.form-block-title').text().toLowerCase();
-            data += ", ".concat(inputTitle, " ").concat(value);
-        });
-
+/*
         if (t.closest('.cabinet-address-new').length) {
             var form = t.clone();
             item = $($('#cabinet-address-item').html());
@@ -1303,9 +1307,11 @@ $(document).ready(function () {
             item.find('.cabinet-address-input-main').prop('checked', false);
             item.find('.cabinet-address-form-main-checkbox').removeClass('active');
         }
-
+        */
+        location.reload();
         return false;
     });
+
     $(document).on('click', '.cabinet-address-item-edit', function () {
         var item = $(this).closest('.cabinet-address-item');
         item.find('.cabinet-address-item-form, .cabinet-address-item-body').slideToggle(400);
@@ -1318,6 +1324,25 @@ $(document).ready(function () {
         });
         return false;
     });
+
+    $(document).on('click', '.cabinet-address-item-delnew', function () {
+
+        var t = $(this).closest('.delnew');
+        var id = t.find('.cabinet-address-input-id').val();
+
+        $.ajax({
+            url: '/ajax/input_ajax.php',
+            method: 'post',
+            dataType: 'html',
+            data: {action: "del", arr: id },
+            success: function(data){
+                alert(data);
+            }
+        });
+        location.reload();
+        return false;
+    });
+
     $(document).on('input', '.cabinet-address-item .cabinet-address-input-title', function () {
         var t = $(this);
         var item = t.closest('.cabinet-address-item');
