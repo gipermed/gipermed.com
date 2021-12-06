@@ -1,6 +1,6 @@
 <? require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/header.php');
-$APPLICATION->SetTitle("");
-$APPLICATION->SetPageProperty('title', 'Лист ожидания');
+$APPLICATION->SetTitle("Мои адреса");
+$APPLICATION->SetPageProperty('title', 'Мои адреса');
 
 use Bitrix\Main\Loader;
 

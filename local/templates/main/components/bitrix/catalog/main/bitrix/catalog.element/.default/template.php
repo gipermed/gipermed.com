@@ -6,7 +6,7 @@
     123
     <div class="product-head">
         <div class="product-head-content">
-            <h1 class="product-title section-title"><?=$arResult["NAME"]?></h1>
+            <h1 class="product-title section-title"><?=$arResult1["NAME"]?></h1>
             <div class="product-head-info">
                 <div class="product-code">Артикул:
                     <span><?=$arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"]?></span></div>
