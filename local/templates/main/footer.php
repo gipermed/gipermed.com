@@ -194,12 +194,13 @@ global $APPLICATION;
 <?php
 
 $modals = [
+
     'city',
-    'delprof',
-    'delAdr',
     'sent',
     'feedback',
     'recall',
+   // 'delprof',
+    'delAdr',
 ];
 
 if (!is_authorized()) {

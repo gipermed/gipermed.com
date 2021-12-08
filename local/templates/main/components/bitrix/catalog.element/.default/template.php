@@ -197,10 +197,10 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 //print_r($arResult['SKU_PROPS']);
 //echo '</pre>';
 ?>
-      <div class="product-head" >
+        <div class="product-head" >
             <div class="product-head-content">
                 <h1 class="product-title section-title"><?=$arResult["NAME"]?></h1>
-                <div class="product-head-info">
+                <div class="product-head-info" style="max-width: 700px;">
                     <div class="product-code">Артикул:
                         <span><?=$arResult["PROPERTIES"]["CML2_ARTICLE"]["VALUE"]?></span></div>
                     <div class="product-reviews">
@@ -230,6 +230,9 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
                             array('HIDE_ICONS' => 'Y')
                         );
                         ?>
+
+
+
                         <a href="#" class="product-reviews-count">120 отзывов</a>
                     </div>
                     <a href="#" class="add-to-favorites-btn product-favorites">
@@ -239,7 +242,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
                 </div>
             </div>
             <div class="product-programm hidden-tablet">
-                <?if($arResult['LABEL_ARRAY_VALUE'][IPRA]):?>
+                <?//if($element->getIPRA()):?>
                     <div class="product-programm-icon">
                         <img src="<?=SITE_TEMPLATE_PATH?>assets/img/product-programm-icon.svg" alt="">
                     </div>
@@ -247,7 +250,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
                         <div class="product-programm-desc">Данный товар участвует в индивидуальной программе реабилитации</div>
                         <a href="#" class="product-programm-link">Подробнее&nbsp;&#62;</a>
                     </div>
-                <?endif?>
+                <?//endif?>
             </div>
         </div>
 
@@ -290,7 +293,13 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 							{
 								?>
 								<div class="product-item-label-ring <?=$discountPositionClass?>" id="<?=$itemIds['DISCOUNT_PERCENT_ID']?>"
-									style="display: none;">
+									style="display: none; width: 128px;
+                                        height: 40px;
+                                        line-height: 40px;
+                                        top: 20px;
+
+                                        background: linear-gradient(90deg, #FF5858 0%, #F09819 100%);
+                                        border-radius: 3px;">
 								</div>
 								<?php
 							}
@@ -384,6 +393,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 					?>
 				</div>
 			</div>
+
 			<div class="col-md-6 col-sm-12">
 				<div class="row">
 					<div class="col-sm-6">
@@ -417,7 +427,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 														<div class="product-item-scu-container">
 															<div class="product-item-scu-block">
 																<div class="product-item-scu-list">
-																	<ul class="product-item-scu-item-list">
+																	<div class="product-item-scu-item-list">
 																		<?php
 																		foreach ($skuProperty['VALUES'] as &$value)
 																		{
@@ -438,10 +448,11 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 																			}
 																			else
 																			{
-                                                                                echo $$skuProperty['NAME'];
+                                                                                //echo $$skuProperty['NAME'];
                                                                                 if ($skuProperty['NAME'] == "Размер")
                                                                                 {
                                                                                 ?>
+
                                                                                     <li class="product-item-scu-item-text-container" title="<?=$value['NAME']?>"
                                                                                         data-treevalue="<?=$propertyId?>_<?=$value['ID']?>"
                                                                                         data-onevalue="<?=$value['ID']?>">
@@ -449,6 +460,8 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
                                                                                             <div class="product-item-scu-item-text "><?=$value['NAME']?></div>
                                                                                         </div>
                                                                                     </li>
+
+
                                                                                             <?php
                                                                                 }
                                                                                 else
@@ -535,7 +548,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 							}
 							?>
 						</div>
-				<!--	</div>
+					<!--</div>
 					<div class="col-sm-6">-->
 						<div class="product-item-detail-pay-block" style="border: 0px solid #e4e4e4">
 							<?php
@@ -861,6 +874,21 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
                     </div>
 				</div>
 			</div>
+                <div class="product-info product-delivery">
+                    <div class="product-info-title">Доставка:</div>
+                    <div class="product-info-desc">
+                        <p>Доставим по Москве и МО 05 марта - от 100 ₽
+                        <p>Самовывоз в магазине в Москве 04 марта - бесплатно
+                        <p>В пункте выдачи 05 марта - от 1 ₽
+                    </div>
+                </div>
+                <div class="product-info product-short-desc">
+                    <div class="product-info-title">Кратко о товаре:</div>
+                    <div class="product-info-desc">
+                        <?=$arResult['PROPERTIES']['KRATKOE_OPISANIE']['~VALUE']?>
+                    </div>
+                </div>
+            </div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12">

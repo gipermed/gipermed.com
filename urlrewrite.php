@@ -40,6 +40,14 @@ $arUrlRewrite=array (
     'PATH' => '/desktop_app/router.php',
     'SORT' => 100,
   ),
+  10 => 
+  array (
+    'CONDITION' => '#^/personal/profile/#',
+    'RULE' => '',
+    'ID' => 'bitrix:catalog',
+    'PATH' => '/personal/profile/geo.php',
+    'SORT' => 100,
+  ),
   4 => 
   array (
     'CONDITION' => '#^/articles/#',
@@ -48,7 +56,7 @@ $arUrlRewrite=array (
     'PATH' => '/articles/index.php',
     'SORT' => 100,
   ),
-  5 => 
+  9 => 
   array (
     'CONDITION' => '#^/catalog/#',
     'RULE' => '',
