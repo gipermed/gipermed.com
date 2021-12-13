@@ -21,7 +21,13 @@ $templateLibrary = array('popup', 'fx');
 $currencyList = '';
 
 use Palladiumlab\Catalog\CharacteristicsToPhoto;
+use Palladiumlab\Catalog\ManufactersToPhoto;
+use Palladiumlab\Catalog\CountriesToPhoto;
+use Palladiumlab\Catalog\Element;
+$element = new Element($arResult);
 $coll=CharacteristicsToPhoto::find();
+$manufacters=ManufactersToPhoto::find();
+$countries=CountriesToPhoto::find();
 
 if (!empty($arResult['CURRENCIES']))
 {
@@ -550,330 +556,362 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 						</div>
 					<!--</div>
 					<div class="col-sm-6">-->
-						<div class="product-item-detail-pay-block" style="border: 0px solid #e4e4e4">
-							<?php
-							foreach ($arParams['PRODUCT_PAY_BLOCK_ORDER'] as $blockName)
-							{
-								switch ($blockName)
-								{
-									case 'rating':
-										if ($arParams['USE_VOTE_RATING'] === 'Y')
-										{
-											?>
+                            <div class="product-item-detail-pay-block">
+                                <?php
+                                foreach ($arParams['PRODUCT_PAY_BLOCK_ORDER'] as $blockName)
+                                {
+                                    switch ($blockName)
+                                    {
+                                        case 'rating':
+                                            if ($arParams['USE_VOTE_RATING'] === 'Y')
+                                            {
+                                                ?>
+                                                <div class="product-item-detail-info-container">
+                                                    <?php
+                                                    $APPLICATION->IncludeComponent(
+                                                        'bitrix:iblock.vote',
+                                                        'stars',
+                                                        array(
+                                                            'CUSTOM_SITE_ID' => $arParams['CUSTOM_SITE_ID'] ?? null,
+                                                            'IBLOCK_TYPE' => $arParams['IBLOCK_TYPE'],
+                                                            'IBLOCK_ID' => $arParams['IBLOCK_ID'],
+                                                            'ELEMENT_ID' => $arResult['ID'],
+                                                            'ELEMENT_CODE' => '',
+                                                            'MAX_VOTE' => '5',
+                                                            'VOTE_NAMES' => array('1', '2', '3', '4', '5'),
+                                                            'SET_STATUS_404' => 'N',
+                                                            'DISPLAY_AS_RATING' => $arParams['VOTE_DISPLAY_AS_RATING'],
+                                                            'CACHE_TYPE' => $arParams['CACHE_TYPE'],
+                                                            'CACHE_TIME' => $arParams['CACHE_TIME']
+                                                        ),
+                                                        $component,
+                                                        array('HIDE_ICONS' => 'Y')
+                                                    );
+                                                    ?>
+                                                </div>
+                                                <?php
+                                            }
 
-											<div class="product-item-detail-info-container">
+                                            break;
 
-												<?php
-												$APPLICATION->IncludeComponent(
-													'bitrix:iblock.vote',
-													'stars',
-													array(
-														'CUSTOM_SITE_ID' => $arParams['CUSTOM_SITE_ID'] ?? null,
-														'IBLOCK_TYPE' => $arParams['IBLOCK_TYPE'],
-														'IBLOCK_ID' => $arParams['IBLOCK_ID'],
-														'ELEMENT_ID' => $arResult['ID'],
-														'ELEMENT_CODE' => '',
-														'MAX_VOTE' => '5',
-														'VOTE_NAMES' => array('1', '2', '3', '4', '5'),
-														'SET_STATUS_404' => 'N',
-														'DISPLAY_AS_RATING' => $arParams['VOTE_DISPLAY_AS_RATING'],
-														'CACHE_TYPE' => $arParams['CACHE_TYPE'],
-														'CACHE_TIME' => $arParams['CACHE_TIME']
-													),
-													$component,
-													array('HIDE_ICONS' => 'Y')
-												);
-												?>
-											</div>
-											<?php
-										}
+                                        case 'price':
+                                            ?>
+                                            <div class="product-item-detail-info-container">
+                                                <?php
+                                                if ($arParams['SHOW_OLD_PRICE'] === 'Y')
+                                                {
+                                                    ?>
+                                                    <div class="product-item-detail-price-old" id="<?=$itemIds['OLD_PRICE_ID']?>"
+                                                         style="display: <?=($showDiscount ? '' : 'none')?>;">
+                                                        <?=($showDiscount ? $price['PRINT_RATIO_BASE_PRICE'] : '')?>
+                                                    </div>
+                                                    <?php
+                                                }
+                                                ?>
+                                                <div class="product-item-detail-price-current" id="<?=$itemIds['PRICE_ID']?>">
+                                                    <?=$price['PRINT_RATIO_PRICE']?>
+                                                </div>
+                                                <?php
+                                                if ($arParams['SHOW_OLD_PRICE'] === 'Y')
+                                                {
+                                                    ?>
+                                                    <div class="item_economy_price" id="<?=$itemIds['DISCOUNT_PRICE_ID']?>"
+                                                         style="display: <?=($showDiscount ? '' : 'none')?>;">
+                                                        <?php
+                                                        if ($showDiscount)
+                                                        {
+                                                            echo Loc::getMessage('CT_BCE_CATALOG_ECONOMY_INFO2', array('#ECONOMY#' => $price['PRINT_RATIO_DISCOUNT']));
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </div>
+                                            <?php
+                                            break;
 
-										break;
-
-									case 'price':
-										?>
-										<div class="product-item-detail-info-container">
-                                            <p style="font-size: 18px; font-weight: 500; color: #000000; text-align: left; margin-bottom: 10px" >Цена</p>
-											<?php
-											if ($arParams['SHOW_OLD_PRICE'] === 'Y')
-											{
-												?>
-												<div class="product-item-detail-price-old" id="<?=$itemIds['OLD_PRICE_ID']?>"
-													style="display: <?=($showDiscount ? '' : 'none')?>;">
-													<?=($showDiscount ? $price['PRINT_RATIO_BASE_PRICE'] : '')?>
-												</div>
-												<?php
-											}
-											?>
-											<div class="product-item-detail-price-current" id="<?=$itemIds['PRICE_ID']?>">
-												<?=$price['PRINT_RATIO_PRICE']?>
-											</div>
-											<?php
-											if ($arParams['SHOW_OLD_PRICE'] === 'Y')
-											{
-												?>
-												<div class="item_economy_price" id="<?=$itemIds['DISCOUNT_PRICE_ID']?>"
-													style="display: <?=($showDiscount ? '' : 'none')?>;">
-													<?php
-													if ($showDiscount)
-													{
-														echo Loc::getMessage('CT_BCE_CATALOG_ECONOMY_INFO2', array('#ECONOMY#' => $price['PRINT_RATIO_DISCOUNT']));
-													}
-													?>
-												</div>
-												<?php
-											}
-											?>
-										</div>
-										<?php
-										break;
-
-									case 'priceRanges':
-										if ($arParams['USE_PRICE_COUNT'])
-										{
-											$showRanges = !$haveOffers && count($actualItem['ITEM_QUANTITY_RANGES']) > 1;
-											$useRatio = $arParams['USE_RATIO_IN_RANGES'] === 'Y';
-											?>
-											<div class="product-item-detail-info-container"
-												<?=$showRanges ? '' : 'style="display: none;"'?>
-												data-entity="price-ranges-block">
-												<div class="product-item-detail-info-container-title">
-													<?=$arParams['MESS_PRICE_RANGES_TITLE']?>
-													<span data-entity="price-ranges-ratio-header">
+                                        case 'priceRanges':
+                                            if ($arParams['USE_PRICE_COUNT'])
+                                            {
+                                                $showRanges = !$haveOffers && count($actualItem['ITEM_QUANTITY_RANGES']) > 1;
+                                                $useRatio = $arParams['USE_RATIO_IN_RANGES'] === 'Y';
+                                                ?>
+                                                <div class="product-item-detail-info-container"
+                                                    <?=$showRanges ? '' : 'style="display: none;"'?>
+                                                     data-entity="price-ranges-block">
+                                                    <div class="product-item-detail-info-container-title">
+                                                        <?=$arParams['MESS_PRICE_RANGES_TITLE']?>
+                                                        <span data-entity="price-ranges-ratio-header">
 														(<?=(Loc::getMessage(
-															'CT_BCE_CATALOG_RATIO_PRICE',
-															array('#RATIO#' => ($useRatio ? $measureRatio : '1').' '.$actualItem['ITEM_MEASURE']['TITLE'])
-														))?>)
+                                                                'CT_BCE_CATALOG_RATIO_PRICE',
+                                                                array('#RATIO#' => ($useRatio ? $measureRatio : '1').' '.$actualItem['ITEM_MEASURE']['TITLE'])
+                                                            ))?>)
 													</span>
-												</div>
-												<dl class="product-item-detail-properties" data-entity="price-ranges-body">
-													<?php
-													if ($showRanges)
-													{
-														foreach ($actualItem['ITEM_QUANTITY_RANGES'] as $range)
-														{
-															if ($range['HASH'] !== 'ZERO-INF')
-															{
-																$itemPrice = false;
+                                                    </div>
+                                                    <dl class="product-item-detail-properties" data-entity="price-ranges-body">
+                                                        <?php
+                                                        if ($showRanges)
+                                                        {
+                                                            foreach ($actualItem['ITEM_QUANTITY_RANGES'] as $range)
+                                                            {
+                                                                if ($range['HASH'] !== 'ZERO-INF')
+                                                                {
+                                                                    $itemPrice = false;
 
-																foreach ($arResult['ITEM_PRICES'] as $itemPrice)
-																{
-																	if ($itemPrice['QUANTITY_HASH'] === $range['HASH'])
-																	{
-																		break;
-																	}
-																}
+                                                                    foreach ($arResult['ITEM_PRICES'] as $itemPrice)
+                                                                    {
+                                                                        if ($itemPrice['QUANTITY_HASH'] === $range['HASH'])
+                                                                        {
+                                                                            break;
+                                                                        }
+                                                                    }
 
-																if ($itemPrice)
-																{
-																	?>
-																	<dt>
-																		<?php
-																		echo Loc::getMessage(
-																				'CT_BCE_CATALOG_RANGE_FROM',
-																				array('#FROM#' => $range['SORT_FROM'].' '.$actualItem['ITEM_MEASURE']['TITLE'])
-																			).' ';
+                                                                    if ($itemPrice)
+                                                                    {
+                                                                        ?>
+                                                                        <dt>
+                                                                            <?php
+                                                                            echo Loc::getMessage(
+                                                                                    'CT_BCE_CATALOG_RANGE_FROM',
+                                                                                    array('#FROM#' => $range['SORT_FROM'].' '.$actualItem['ITEM_MEASURE']['TITLE'])
+                                                                                ).' ';
 
-																		if (is_infinite($range['SORT_TO']))
-																		{
-																			echo Loc::getMessage('CT_BCE_CATALOG_RANGE_MORE');
-																		}
-																		else
-																		{
-																			echo Loc::getMessage(
-																				'CT_BCE_CATALOG_RANGE_TO',
-																				array('#TO#' => $range['SORT_TO'].' '.$actualItem['ITEM_MEASURE']['TITLE'])
-																			);
-																		}
-																		?>
-																	</dt>
-																	<dd><?=($useRatio ? $itemPrice['PRINT_RATIO_PRICE'] : $itemPrice['PRINT_PRICE'])?></dd>
-																	<?php
-																}
-															}
-														}
-													}
-													?>
-												</dl>
-											</div>
-											<?php
-											unset($showRanges, $useRatio, $itemPrice, $range);
-										}
+                                                                            if (is_infinite($range['SORT_TO']))
+                                                                            {
+                                                                                echo Loc::getMessage('CT_BCE_CATALOG_RANGE_MORE');
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                echo Loc::getMessage(
+                                                                                    'CT_BCE_CATALOG_RANGE_TO',
+                                                                                    array('#TO#' => $range['SORT_TO'].' '.$actualItem['ITEM_MEASURE']['TITLE'])
+                                                                                );
+                                                                            }
+                                                                            ?>
+                                                                        </dt>
+                                                                        <dd><?=($useRatio ? $itemPrice['PRINT_RATIO_PRICE'] : $itemPrice['PRINT_PRICE'])?></dd>
+                                                                        <?php
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </dl>
+                                                </div>
+                                                <?php
+                                                unset($showRanges, $useRatio, $itemPrice, $range);
+                                            }
 
-										break;
+                                            break;
 
-									case 'quantityLimit':
-										if ($arParams['SHOW_MAX_QUANTITY'] !== 'N')
-										{
-											if ($haveOffers)
-											{
-												?>
-												<div class="product-item-detail-info-container" id="<?=$itemIds['QUANTITY_LIMIT']?>" style="display: none;">
-													<div class="product-item-detail-info-container-title">
-														<?=$arParams['MESS_SHOW_MAX_QUANTITY']?>:
-														<span class="product-item-quantity" data-entity="quantity-limit-value"></span>
-													</div>
-												</div>
-												<?php
-											}
-											else
-											{
-												if (
-													$measureRatio
-													&& (float)$actualItem['PRODUCT']['QUANTITY'] > 0
-													&& $actualItem['CHECK_QUANTITY']
-												)
-												{
-													?>
-													<div class="product-item-detail-info-container" id="<?=$itemIds['QUANTITY_LIMIT']?>">
-														<div class="product-item-detail-info-container-title">
-															<?=$arParams['MESS_SHOW_MAX_QUANTITY']?>:
-															<span class="product-item-quantity" data-entity="quantity-limit-value">
+                                        case 'quantityLimit':
+                                            if ($arParams['SHOW_MAX_QUANTITY'] !== 'N')
+                                            {
+                                                if ($haveOffers)
+                                                {
+                                                    ?>
+                                                    <div class="product-item-detail-info-container" id="<?=$itemIds['QUANTITY_LIMIT']?>" style="display: none;">
+                                                        <div class="product-item-detail-info-container-title">
+                                                            <?=$arParams['MESS_SHOW_MAX_QUANTITY']?>:
+                                                            <span class="product-item-quantity" data-entity="quantity-limit-value"></span>
+                                                        </div>
+                                                    </div>
+                                                    <?php
+                                                }
+                                                else
+                                                {
+                                                    if (
+                                                        $measureRatio
+                                                        && (float)$actualItem['PRODUCT']['QUANTITY'] > 0
+                                                        && $actualItem['CHECK_QUANTITY']
+                                                    )
+                                                    {
+                                                        ?>
+                                                        <div class="product-item-detail-info-container" id="<?=$itemIds['QUANTITY_LIMIT']?>">
+                                                            <div class="product-item-detail-info-container-title">
+                                                                <?=$arParams['MESS_SHOW_MAX_QUANTITY']?>:
+                                                                <span class="product-item-quantity" data-entity="quantity-limit-value">
 																<?php
-																if ($arParams['SHOW_MAX_QUANTITY'] === 'M')
-																{
-																	if ((float)$actualItem['PRODUCT']['QUANTITY'] / $measureRatio >= $arParams['RELATIVE_QUANTITY_FACTOR'])
-																	{
-																		echo $arParams['MESS_RELATIVE_QUANTITY_MANY'];
-																	}
-																	else
-																	{
-																		echo $arParams['MESS_RELATIVE_QUANTITY_FEW'];
-																	}
-																}
-																else
-																{
-																	echo $actualItem['PRODUCT']['QUANTITY'].' '.$actualItem['ITEM_MEASURE']['TITLE'];
-																}
-																?>
+                                                                if ($arParams['SHOW_MAX_QUANTITY'] === 'M')
+                                                                {
+                                                                    if ((float)$actualItem['PRODUCT']['QUANTITY'] / $measureRatio >= $arParams['RELATIVE_QUANTITY_FACTOR'])
+                                                                    {
+                                                                        echo $arParams['MESS_RELATIVE_QUANTITY_MANY'];
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        echo $arParams['MESS_RELATIVE_QUANTITY_FEW'];
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    echo $actualItem['PRODUCT']['QUANTITY'].' '.$actualItem['ITEM_MEASURE']['TITLE'];
+                                                                }
+                                                                ?>
 															</span>
-														</div>
-													</div>
-													<?php
-												}
-											}
-										}
+                                                            </div>
+                                                        </div>
+                                                        <?php
+                                                    }
+                                                }
+                                            }
 
-										break;
+                                            break;
 
-									case 'quantity':
-										if ($arParams['USE_PRODUCT_QUANTITY'])
-										{
-											?>
-											<div class="product-item-detail-info-container" style="<?=(!$actualItem['CAN_BUY'] ? 'display: none;' : '')?>"
-												data-entity="quantity-block">
-                                                <p style="font-size: 18px; font-weight: 500; color: #000000; text-align: left; margin-bottom: 10px; text-align: center" >Количество</p>
-
-												<div class="product-item-detail-info-container-title"><?=Loc::getMessage('CATALOG_QUANTITY')?></div>
-												<div class="product-item-amount">
-													<div class="product-item-amount-field-container">
-														<span class="product-item-amount-field-btn-minus no-select" id="<?=$itemIds['QUANTITY_DOWN_ID']?>"></span>
-														<input class="product-item-amount-field" id="<?=$itemIds['QUANTITY_ID']?>" type="number"
-															value="<?=$price['MIN_QUANTITY']?>">
-														<span class="product-item-amount-field-btn-plus no-select" id="<?=$itemIds['QUANTITY_UP_ID']?>"></span>
-														<span class="product-item-amount-description-container">
+                                        case 'quantity':
+                                            if ($arParams['USE_PRODUCT_QUANTITY'])
+                                            {
+                                                ?>
+                                                <div class="product-item-detail-info-container" style="<?=(!$actualItem['CAN_BUY'] ? 'display: none;' : '')?>"
+                                                     data-entity="quantity-block">
+                                                    <div class="product-item-detail-info-container-title"><?=Loc::getMessage('CATALOG_QUANTITY')?></div>
+                                                    <div class="product-item-amount">
+                                                        <div class="product-item-amount-field-container">
+                                                            <span class="product-item-amount-field-btn-minus no-select" id="<?=$itemIds['QUANTITY_DOWN_ID']?>"></span>
+                                                            <input class="product-item-amount-field" id="<?=$itemIds['QUANTITY_ID']?>" type="number"
+                                                                   value="<?=$price['MIN_QUANTITY']?>">
+                                                            <span class="product-item-amount-field-btn-plus no-select" id="<?=$itemIds['QUANTITY_UP_ID']?>"></span>
+                                                            <span class="product-item-amount-description-container">
 															<span id="<?=$itemIds['QUANTITY_MEASURE']?>">
 																<?=$actualItem['ITEM_MEASURE']['TITLE']?>
 															</span>
 															<span id="<?=$itemIds['PRICE_TOTAL']?>"></span>
 														</span>
-													</div>
-												</div>
-											</div>
-											<?php
-										}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php
+                                            }
 
-										break;
+                                            break;
 
-									case 'buttons':
-										?>
-										<div data-entity="main-button-container">
-											<div id="<?=$itemIds['BASKET_ACTIONS_ID']?>" style="display: <?=($actualItem['CAN_BUY'] ? '' : 'none')?>;">
-												<?php
-												if ($showAddBtn)
-												{
-													?>
-													<div class="product-item-detail-info-container">
-														<a class=" btn btn-large btn-full product-cart-btn
-                            add-to-cart-btn" id="<?=$itemIds['ADD_BASKET_LINK']?>"
-															href="javascript:void(0);" >
-															<span><?=$arParams['MESS_BTN_ADD_TO_BASKET']?></span>
-														</a>
-													</div>
-													<?php
-												}
+                                        case 'buttons':
+                                            ?>
+                                            <div data-entity="main-button-container">
+                                                <div id="<?=$itemIds['BASKET_ACTIONS_ID']?>" style="display: <?=($actualItem['CAN_BUY'] ? '' : 'none')?>;">
+                                                    <?php
+                                                    if ($showAddBtn)
+                                                    {
+                                                        ?>
+                                                        <div class="product-item-detail-info-container">
+                                                            <a class="btn <?=$showButtonClassName?> product-item-detail-buy-button" id="<?=$itemIds['ADD_BASKET_LINK']?>"
+                                                               href="javascript:void(0);">
+                                                                <span><?=$arParams['MESS_BTN_ADD_TO_BASKET']?></span>
+                                                            </a>
+                                                        </div>
+                                                        <?php
+                                                    }
 
-												if ($showBuyBtn)
-												{
-													?>
-													<div class="product-item-detail-info-container">
-														<a class="btn <?=$buyButtonClassName?> product-item-detail-buy-button" id="<?=$itemIds['BUY_LINK']?>"
-															href="javascript:void(0);">
-															<span><?=$arParams['MESS_BTN_BUY']?></span>
-														</a>
-													</div>
-													<?php
-												}
-												?>
-											</div>
-											<?php
-											if ($showSubscribe)
-											{
-												?>
-												<div class="product-item-detail-info-container">
-													<?php
-													$APPLICATION->IncludeComponent(
-														'bitrix:catalog.product.subscribe',
-														'',
-														array(
-															'CUSTOM_SITE_ID' => $arParams['CUSTOM_SITE_ID'] ?? null,
-															'PRODUCT_ID' => $arResult['ID'],
-															'BUTTON_ID' => $itemIds['SUBSCRIBE_LINK'],
-															'BUTTON_CLASS' => 'btn btn-default product-item-detail-buy-button',
-															'DEFAULT_DISPLAY' => !$actualItem['CAN_BUY'],
-															'MESS_BTN_SUBSCRIBE' => $arParams['~MESS_BTN_SUBSCRIBE'],
-														),
-														$component,
-														array('HIDE_ICONS' => 'Y')
-													);
-													?>
-												</div>
-												<?php
-											}
-											?>
-											<div class="product-item-detail-info-container">
-												<a class="btn btn-link product-item-detail-buy-button" id="<?=$itemIds['NOT_AVAILABLE_MESS']?>"
-													href="javascript:void(0)"
-													rel="nofollow" style="display: <?=(!$actualItem['CAN_BUY'] ? '' : 'none')?>;">
-													<?=$arParams['MESS_NOT_AVAILABLE']?>
-												</a>
-											</div>
-										</div>
-										<?php
-										break;
-								}
-							}
+                                                    if ($showBuyBtn)
+                                                    {
+                                                        ?>
+                                                        <div class="product-item-detail-info-container">
+                                                            <a class="btn <?=$buyButtonClassName?> product-item-detail-buy-button" id="<?=$itemIds['BUY_LINK']?>"
+                                                               href="javascript:void(0);">
+                                                                <span><?=$arParams['MESS_BTN_BUY']?></span>
+                                                            </a>
+                                                        </div>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </div>
+                                                <?php
+                                                if ($showSubscribe)
+                                                {
+                                                    ?>
+                                                    <div class="product-item-detail-info-container">
+                                                        <?php
+                                                        $APPLICATION->IncludeComponent(
+                                                            'bitrix:catalog.product.subscribe',
+                                                            '',
+                                                            array(
+                                                                'CUSTOM_SITE_ID' => $arParams['CUSTOM_SITE_ID'] ?? null,
+                                                                'PRODUCT_ID' => $arResult['ID'],
+                                                                'BUTTON_ID' => $itemIds['SUBSCRIBE_LINK'],
+                                                                'BUTTON_CLASS' => 'btn btn-default product-item-detail-buy-button',
+                                                                'DEFAULT_DISPLAY' => !$actualItem['CAN_BUY'],
+                                                                'MESS_BTN_SUBSCRIBE' => $arParams['~MESS_BTN_SUBSCRIBE'],
+                                                            ),
+                                                            $component,
+                                                            array('HIDE_ICONS' => 'Y')
+                                                        );
+                                                        ?>
+                                                    </div>
+                                                    <?php
+                                                }
+                                                ?>
+                                                <div class="product-item-detail-info-container">
+                                                    <a class="btn btn-link product-item-detail-buy-button" id="<?=$itemIds['NOT_AVAILABLE_MESS']?>"
+                                                       href="javascript:void(0)"
+                                                       rel="nofollow" style="display: <?=(!$actualItem['CAN_BUY'] ? '' : 'none')?>;">
+                                                        <?=$arParams['MESS_NOT_AVAILABLE']?>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <?php
+                                            break;
+                                    }
+                                }
 
-							if ($arParams['DISPLAY_COMPARE'])
-							{
-								?>
-								<div class="product-item-detail-compare-container">
-									<div class="product-item-detail-compare">
-										<div class="checkbox">
-											<label id="<?=$itemIds['COMPARE_LINK']?>">
-												<input type="checkbox" data-entity="compare-checkbox">
-												<span data-entity="compare-title"><?=$arParams['MESS_BTN_COMPARE']?></span>
-											</label>
-										</div>
-									</div>
-								</div>
-								<?php
-							}
-							?>
-						</div>
+                                if ($arParams['DISPLAY_COMPARE'])
+                                {
+                                    ?>
+                                    <div class="product-item-detail-compare-container">
+                                        <div class="product-item-detail-compare">
+                                            <div class="checkbox">
+                                                <label id="<?=$itemIds['COMPARE_LINK']?>">
+                                                    <input type="checkbox" data-entity="compare-checkbox">
+                                                    <span data-entity="compare-title"><?=$arParams['MESS_BTN_COMPARE']?></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
+                            </div>
                     </div>
 				</div>
 			</div>
+
+                <?$APPLICATION->IncludeComponent(
+                    "bitrix:catalog.store.amount",
+                    "template1",
+                    array(
+                        "CACHE_TIME" => "36000",
+                        "CACHE_TYPE" => "A",
+                        "ELEMENT_CODE" => "bandazh-gryzhevoy-pakhovyy-t-29-03",
+                        "ELEMENT_ID" => "bandazh-gryzhevoy-pakhovyy-t-29-03",
+                        "FIELDS" => array(
+                            0 => "",
+                            1 => "",
+                        ),
+                        "IBLOCK_ID" => "55",
+                        "IBLOCK_TYPE" => "1c_catalog",
+                        "MAIN_TITLE" => "",
+                        "MIN_AMOUNT" => "3",
+                        "OFFER_ID" => "57548",
+                        "SHOW_EMPTY_STORE" => "Y",
+                        "SHOW_GENERAL_STORE_INFORMATION" => "N",
+                        "STORES" => array(
+                            0 => "2",
+                            1 => "6",
+                            2 => "7",
+                            3 => "8",
+                            4 => "",
+                        ),
+                        "STORE_PATH" => "/contacts/",
+                        "USER_FIELDS" => array(
+                            0 => "",
+                            1 => "",
+                        ),
+                        "USE_MIN_AMOUNT" => "Y",
+                        "COMPONENT_TEMPLATE" => "template1"
+                    ),
+                    false
+                );?>
+
                 <div class="product-info product-delivery">
                     <div class="product-info-title">Доставка:</div>
                     <div class="product-info-desc">
@@ -888,9 +926,23 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
                         <?=$arResult['PROPERTIES']['KRATKOE_OPISANIE']['~VALUE']?>
                     </div>
                 </div>
+                <div class="product-info product-brand">
+                    <div class="product-info-title">Бренд:</div>
+                    <a href="#" class="product-brand-logo">
+                        <?
+                        $dd=$manufacters->where("name",$arResult['PROPERTIES']['PROIZVODITEL']['VALUE'])->first();
+                        $fileImg=CFile::GetFileArray($dd->detail_picture);
+                        ?>
+                        <?if($fileImg['SRC']!=""):?>
+                            <img src="<?=$fileImg['SRC']?>" style="width: 114px;height: 37px" alt="">
+                        <?else:?>
+                            <?=$arResult['PROPERTIES']['PROIZVODITEL']['VALUE']?>
+                        <?endif;?>
+                    </a>
+                </div>
             </div>
 		</div>
-		<div class="row">
+	<!--	<div class="row">
 			<div class="col-xs-12">
 				<?php
 				if ($haveOffers)
@@ -1396,6 +1448,558 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 		</div>
 	</div>
 	<!--Small Card-->
+
+        <div class="section product-tabs-section">
+            <div class="container">
+                <div class="product-tabs-nav-wrapp">
+                    <ul class="product-tabs-nav tabs-nav" data-tabs="#product-tabs">
+                        <li class="active"><a href="#product-tab-1">Описание товара</a></li>
+                        <li><a href="#product-tab-2">Отзывы (120)</a></li>
+                        <li><a href="#product-tab-3">Видеообзор</a></li>
+                        <li><a href="#product-tab-4">Статьи</a></li>
+                    </ul>
+                </div>
+                <div id="product-tabs" class="tabs-wrapp">
+                    <div id="product-tab-1" class="tab-block active">
+                        <div class="product-tab-info-row flex-row">
+                            <div class="product-tab-info-col flex-row-item">
+                                <div class="product-tab-section toggle-mobile-wrapp">
+                                    <div class="product-tab-title">Описание:</div>
+                                    <div class="product-desc toggle-mobile-block content-text">
+                                        <? $element->echoDescription() ?>
+                                    </div>
+                                    <a href="#" class="toggle-mobile-link" data-text="Развернуть описание"
+                                       data-text-active="Свернуть описание">
+                                        <span>Развернуть описание</span>
+                                        <i>
+                                            <svg width="24" height="24">
+                                                <use xlink:href="#icon-chevron-down"/>
+                                            </svg>
+                                        </i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="product-tab-info-col flex-row-item">
+                                <div class="product-tab-section">
+                                    <div class="product-tab-title">Технические характеристики:</div>
+                                    <div class="product-characteristics">
+                                        <table class="product-characteristics-table">
+                                            <? $element->echoSpecification(); ?>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="product-tab-section">
+                                    <div class="product-tab-title">Документация:</div>
+                                    <ul class="product-docs">
+                                        <? foreach ($element->getDocumentation() as $doc): ?>
+                                            <li>
+                                                <a href="<?= $doc['SRC'] ?>" class="doc-link">
+                                                    <svg width="34" height="34">
+                                                        <use xlink:href="#icon-doc"/>
+                                                    </svg>
+                                                    <span class="doc-link-body">
+												<span class="doc-link-title"><?=$doc['NAME']?></span>
+												<span class="doc-link-size">Скачать: <?=$doc['FILE_SIZE']?></span>
+											</span>
+                                                </a>
+                                            </li>
+                                        <?endforeach;?>
+                                    </ul>
+                                </div>
+                                <div class="product-tab-section">
+                                    <div class="product-tab-title">Производство:</div>
+                                    <div class="product-made-in">
+                                        <?
+                                        $dd=$countries->where("name",$arResult['PROPERTIES']['STRANA']['VALUE'])->first();
+                                        $fileImg=CFile::GetFileArray($dd->detail_picture);
+                                        ?>
+                                        <i><img src="<?=$fileImg['SRC']?>" alt=""></i>
+                                        <span><?=$dd->name?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="product-tab-2" class="tab-block">
+
+                        <div class="product-tab-section">
+
+
+                            <?
+                            $componentCommentsParams = array(
+                                'ELEMENT_ID' => $arResult['ID'],
+                                'ELEMENT_CODE' => '',
+                                'IBLOCK_ID' => $arParams['IBLOCK_ID'],
+                                'SHOW_DEACTIVATED' => $arParams['SHOW_DEACTIVATED'],
+                                'URL_TO_COMMENT' => '',
+                                'WIDTH' => '',
+                                'COMMENTS_COUNT' => '5',
+                                'BLOG_USE' => "Y",
+                                'FB_USE' => $arParams['FB_USE'],
+                                'FB_APP_ID' => $arParams['FB_APP_ID'],
+                                'VK_USE' => $arParams['VK_USE'],
+                                'VK_API_ID' => $arParams['VK_API_ID'],
+                                'CACHE_TYPE' => $arParams['CACHE_TYPE'],
+                                'CACHE_TIME' => $arParams['CACHE_TIME'],
+                                'CACHE_GROUPS' => $arParams['CACHE_GROUPS'],
+                                'BLOG_TITLE' => '',
+                                'BLOG_URL' => $arParams['BLOG_URL'],
+                                'PATH_TO_SMILE' => '',
+                                'EMAIL_NOTIFY' => $arParams['BLOG_EMAIL_NOTIFY'],
+                                'AJAX_POSTUSE_COMMENTS' => 'Y',
+                                'SHOW_SPAM' => 'Y',
+                                'SHOW_RATING' => 'N',
+                                'FB_TITLE' => '',
+                                'FB_USER_ADMIN_ID' => '',
+                                'FB_COLORSCHEME' => 'light',
+                                'FB_ORDER_BY' => 'reverse_time',
+                                'VK_TITLE' => '',
+                                'TEMPLATE_THEME' => $arParams['~TEMPLATE_THEME']
+                            );
+                            if(isset($arParams["USER_CONSENT"]))
+                                $componentCommentsParams["USER_CONSENT"] = $arParams["USER_CONSENT"];
+                            if(isset($arParams["USER_CONSENT_ID"]))
+                                $componentCommentsParams["USER_CONSENT_ID"] = $arParams["USER_CONSENT_ID"];
+                            if(isset($arParams["USER_CONSENT_IS_CHECKED"]))
+                                $componentCommentsParams["USER_CONSENT_IS_CHECKED"] = $arParams["USER_CONSENT_IS_CHECKED"];
+                            if(isset($arParams["USER_CONSENT_IS_LOADED"]))
+                                $componentCommentsParams["USER_CONSENT_IS_LOADED"] = $arParams["USER_CONSENT_IS_LOADED"];
+                            $APPLICATION->IncludeComponent(
+                                'bitrix:catalog.comments',
+                                '',
+                                $componentCommentsParams,
+                                $component,
+                                array('HIDE_ICONS' => 'Y')
+                            );
+                            ?>
+
+
+                            <div class="product-tab-title product-tab-review-title">Все отзывы <span>(120)</span></div>
+
+                            <div class="product-tab-reviews">
+                                <div class="product-review">
+
+
+                                    <div class="product-review-name">Кирилл Сергеев</div>
+
+                                    <div class="product-review-info">
+                                        <div class="rating">
+                                            <div class="rating-state" style="width:70%;"></div>
+                                        </div>
+                                        <div class="product-review-date">13 марта 2021 г.</div>
+                                    </div>
+                                    <div class="product-review-text">
+                                        <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
+                                    </div>
+
+
+                                </div>
+                                <div class="product-review">
+
+
+                                    <div class="product-review-name">Кирилл Сергеев</div>
+
+                                    <div class="product-review-info">
+                                        <div class="rating">
+                                            <div class="rating-state" style="width:70%;"></div>
+                                        </div>
+                                        <div class="product-review-date">13 марта 2021 г.</div>
+                                    </div>
+                                    <div class="product-review-text">
+                                        <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
+                                    </div>
+
+
+                                    <div class="product-review-imgs">
+                                        <button class="slider-arrow slider-arrow-prev" aria-label="Назад">
+                                            <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
+                                        </button>
+                                        <button class="slider-arrow slider-arrow-next" aria-label="Вперед">
+                                            <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
+                                        </button>
+                                        <div class="product-review-imgs-slider swiper-container">
+                                            <div class="swiper-wrapper">
+
+
+                                                <div class="product-review-imgs-slide swiper-slide">
+                                                    <a href="img/product-img-full.jpg" data-fancybox="product-review-2">
+                                                        <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
+                                                    </a>
+                                                </div>
+
+                                                <div class="product-review-imgs-slide swiper-slide">
+                                                    <a href="img/product-img-full.jpg" data-fancybox="product-review-2">
+                                                        <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
+                                                    </a>
+                                                </div>
+
+                                                <div class="product-review-imgs-slide swiper-slide">
+                                                    <a href="img/product-img-full.jpg" data-fancybox="product-review-2">
+                                                        <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
+                                                    </a>
+                                                </div>
+
+                                                <div class="product-review-imgs-slide swiper-slide">
+                                                    <a href="img/product-img-full.jpg" data-fancybox="product-review-2">
+                                                        <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
+                                                    </a>
+                                                </div>
+
+                                                <div class="product-review-imgs-slide swiper-slide">
+                                                    <a href="img/product-img-full.jpg" data-fancybox="product-review-2">
+                                                        <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
+                                                    </a>
+                                                </div>
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="product-review">
+
+
+                                    <div class="product-review-name">Кирилл Сергеев</div>
+
+                                    <div class="product-review-info">
+                                        <div class="rating">
+                                            <div class="rating-state" style="width:70%;"></div>
+                                        </div>
+                                        <div class="product-review-date">13 марта 2021 г.</div>
+                                    </div>
+                                    <div class="product-review-text">
+                                        <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
+                                    </div>
+
+                                    <div class="product-review-answer">
+                                        <div class="product-review-answer-head">
+                                            <div class="product-review-name">Гипермед</div>
+                                            <div class="product-review-date">13 марта 2021 г.</div>
+                                        </div>
+                                        <div class="product-review-text">
+                                            <p>Здравствуйте Кирилл, мы рады, что вам очень понравилась, данная подушка. Спасибо за комментарий!
+                                        </div>
+                                    </div>
+
+
+                                    <div class="product-review-imgs">
+                                        <button class="slider-arrow slider-arrow-prev" aria-label="Назад">
+                                            <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
+                                        </button>
+                                        <button class="slider-arrow slider-arrow-next" aria-label="Вперед">
+                                            <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
+                                        </button>
+                                        <div class="product-review-imgs-slider swiper-container">
+                                            <div class="swiper-wrapper">
+
+
+
+                                                <div class="product-review-imgs-slide swiper-slide">
+                                                    <a href="img/product-img-full.jpg" data-fancybox="product-review-3">
+                                                        <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
+                                                    </a>
+                                                </div>
+
+                                                <div class="product-review-imgs-slide swiper-slide">
+                                                    <a href="img/product-img-full.jpg" data-fancybox="product-review-3">
+                                                        <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
+                                                    </a>
+                                                </div>
+
+                                                <div class="product-review-imgs-slide swiper-slide">
+                                                    <a href="img/product-img-full.jpg" data-fancybox="product-review-3">
+                                                        <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
+                                                    </a>
+                                                </div>
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="product-review">
+
+
+                                    <div class="product-review-name">Кирилл Сергеев</div>
+
+                                    <div class="product-review-info">
+                                        <div class="rating">
+                                            <div class="rating-state" style="width:70%;"></div>
+                                        </div>
+                                        <div class="product-review-date">13 марта 2021 г.</div>
+                                    </div>
+                                    <div class="product-review-text">
+                                        <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
+                                    </div>
+
+
+                                    <div class="product-review-imgs">
+                                        <button class="slider-arrow slider-arrow-prev" aria-label="Назад">
+                                            <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
+                                        </button>
+                                        <button class="slider-arrow slider-arrow-next" aria-label="Вперед">
+                                            <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
+                                        </button>
+                                        <div class="product-review-imgs-slider swiper-container">
+                                            <div class="swiper-wrapper">
+
+
+
+                                                <div class="product-review-imgs-slide swiper-slide">
+                                                    <a href="img/product-img-full.jpg" data-fancybox="product-review-4">
+                                                        <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
+                                                    </a>
+                                                </div>
+
+                                                <div class="product-review-imgs-slide swiper-slide">
+                                                    <a href="img/product-img-full.jpg" data-fancybox="product-review-4">
+                                                        <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
+                                                    </a>
+                                                </div>
+
+                                                <div class="product-review-imgs-slide swiper-slide">
+                                                    <a href="img/product-img-full.jpg" data-fancybox="product-review-4">
+                                                        <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
+                                                    </a>
+                                                </div>
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="product-review">
+
+
+                                    <div class="product-review-name">Кирилл Сергеев</div>
+
+                                    <div class="product-review-info">
+                                        <div class="rating">
+                                            <div class="rating-state" style="width:70%;"></div>
+                                        </div>
+                                        <div class="product-review-date">13 марта 2021 г.</div>
+                                    </div>
+                                    <div class="product-review-text">
+                                        <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
+                                    </div>
+
+
+                                </div>
+                                <div class="product-review">
+
+
+                                    <div class="product-review-name">Кирилл Сергеев</div>
+
+                                    <div class="product-review-info">
+                                        <div class="rating">
+                                            <div class="rating-state" style="width:70%;"></div>
+                                        </div>
+                                        <div class="product-review-date">13 марта 2021 г.</div>
+                                    </div>
+                                    <div class="product-review-text">
+                                        <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
+                                    </div>
+
+
+                                </div>
+                                <div class="product-review">
+
+
+                                    <div class="product-review-name">Кирилл Сергеев</div>
+
+                                    <div class="product-review-info">
+                                        <div class="rating">
+                                            <div class="rating-state" style="width:70%;"></div>
+                                        </div>
+                                        <div class="product-review-date">13 марта 2021 г.</div>
+                                    </div>
+                                    <div class="product-review-text">
+                                        <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
+                                    </div>
+
+
+                                    <div class="product-review-imgs">
+                                        <button class="slider-arrow slider-arrow-prev" aria-label="Назад">
+                                            <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
+                                        </button>
+                                        <button class="slider-arrow slider-arrow-next" aria-label="Вперед">
+                                            <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
+                                        </button>
+                                        <div class="product-review-imgs-slider swiper-container">
+                                            <div class="swiper-wrapper">
+
+
+
+                                                <div class="product-review-imgs-slide swiper-slide">
+                                                    <a href="img/product-img-full.jpg" data-fancybox="product-review-7">
+                                                        <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
+                                                    </a>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="product-review">
+
+
+                                    <div class="product-review-name">Кирилл Сергеев</div>
+
+                                    <div class="product-review-info">
+                                        <div class="rating">
+                                            <div class="rating-state" style="width:70%;"></div>
+                                        </div>
+                                        <div class="product-review-date">13 марта 2021 г.</div>
+                                    </div>
+                                    <div class="product-review-text">
+                                        <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
+                                    </div>
+
+
+                                </div>
+                                <div class="product-review">
+
+
+                                    <div class="product-review-name">Кирилл Сергеев</div>
+
+                                    <div class="product-review-info">
+                                        <div class="rating">
+                                            <div class="rating-state" style="width:70%;"></div>
+                                        </div>
+                                        <div class="product-review-date">13 марта 2021 г.</div>
+                                    </div>
+                                    <div class="product-review-text">
+                                        <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
+                                    </div>
+
+
+                                    <div class="product-review-imgs">
+                                        <button class="slider-arrow slider-arrow-prev" aria-label="Назад">
+                                            <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
+                                        </button>
+                                        <button class="slider-arrow slider-arrow-next" aria-label="Вперед">
+                                            <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
+                                        </button>
+                                        <div class="product-review-imgs-slider swiper-container">
+                                            <div class="swiper-wrapper">
+
+
+
+
+
+                                                <div class="product-review-imgs-slide swiper-slide">
+                                                    <a href="img/product-img-full.jpg" data-fancybox="product-review-9">
+                                                        <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
+                                                    </a>
+                                                </div>
+
+                                                <div class="product-review-imgs-slide swiper-slide">
+                                                    <a href="img/product-img-full.jpg" data-fancybox="product-review-9">
+                                                        <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
+                                                    </a>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="read-more-btn-wrapp">
+                                <a href="#" class="btn read-more-btn">Показать ещё</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="product-tab-3" class="tab-block">
+                        <div class="product-tab-section">
+                            <div class="product-tab-title product-tab-video-title"><div>Видеообзор</div>
+                                <b><?=$arResult["NAME"]?></b></div>
+                            <div class="product-video">
+                                <a href="<?=$element->getVideo()?>" class="product-video-link" data-fancybox
+                                   data-fancybox-type="iframe">
+								<span class="product-video-link-logo">
+									<img src="img/youtube-logo.svg" alt="">
+								</span>
+                                    <span class="product-video-link-play">
+									<i></i>
+									<span>Смотреть</span>
+								</span>
+                                    <span class="product-video-link-img cover-img">
+									<img src="<?=$element->getVideoCover()?>" alt="">
+								</span>
+                                </a>
+                                <div class="product-video-body">
+                                    <div class="product-video-desc content-text">
+                                        <p>Ознакомиться с видеопрезентацией различных товаров медицинского назначения, можно на нашем Youtube канале. Перейдя по ссылке, Вы найдете более 100 видеороликов, сможете увидеть комплектацию, внешний вид, характеристики товаров и многое другое. Подписывайтесь на наш канал, будьте всегда в курсе новинок от компании Гипермед - Центра торговли медицинскими товарами!
+                                    </div>
+                                    <a href="#" class="product-video-more-link">Посмотреть все видеопрезентации&nbsp;&#62;</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="product-tab-4" class="tab-block">
+                        <div class="product-tab-section">
+                            <div class="product-tab-title product-tab-articles-title">Статьи</div>
+                            <div class="product-articles-row articles-row flex-row">
+                                <? foreach($element->getArticles() as $article):?>
+                                    <div class="articles-col flex-row-item swiper-slide">
+                                        <div class="article-item">
+                                            <a href="<?=$article["DETAIL_PAGE_URL"]?>" class="item-link" aria-label="Читать статью"></a>
+                                            <div class="article-item-img">
+                                        <span><img src="<?=$article["PICTURE"]?>" srcset="<?=$article["PICTURE2X"]?>
+                                        2x"
+                                                   alt=""></span>
+                                            </div>
+                                            <div class="article-item-body">
+                                                <div class="article-item-title"><?=$article["NAME"]?></div>
+                                                <div class="article-item-desc"><?=$article["TEXT"]?></div>
+                                                <div class="article-item-foot">
+                                                    <div class="article-item-views">
+                                                        <svg width="20" height="20"><use xlink:href="#icon-eye"/></svg>
+                                                        <span><?=$article["VIEW_COUNTER"]?></span>
+                                                    </div>
+                                                    <div class="article-item-btn">Читать</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?endforeach;?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-programm visible-tablet">
+                    <?if($element->getIPRA()):?>
+                        <div class="product-programm-icon">
+                            <img src="img/product-programm-icon.svg" alt="">
+                        </div>
+                        <div class="product-programm-body">
+                            <div class="product-programm-desc">Данный товар участвует в индивидуальной программе реабилитации</div>
+                            <a href="#" class="product-programm-link">Подробнее&nbsp;&#62;</a>
+                        </div>
+                    <?endif?>
+                </div>
+            </div>
+        </div>
+
+<?php
+       // echo '<pre>';
+//print_r($arResult);
+//echo '</pre>';
+?>
 	<div class="product-item-detail-short-card-fixed hidden-xs" id="<?=$itemIds['SMALL_CARD_PANEL_ID']?>">
 		<div class="product-item-detail-short-card-content-container">
 			<table>
@@ -1523,7 +2127,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 		</div>
 	</div>
 	<!--Top tabs-->
-	<div class="product-item-detail-tabs-container-fixed hidden-xs" id="<?=$itemIds['TABS_PANEL_ID']?>">
+	<!--<div class="product-item-detail-tabs-container-fixed hidden-xs" id="<?=$itemIds['TABS_PANEL_ID']?>">
 		<ul class="product-item-detail-tabs-list">
 			<?php
 			if ($showDescription)
@@ -1560,7 +2164,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 			}
 			?>
 		</ul>
-	</div>
+	</div>-->
 
 	<meta itemprop="name" content="<?=$name?>" />
 	<meta itemprop="category" content="<?=$arResult['CATEGORY_PATH']?>" />
@@ -1618,7 +2222,7 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 		<?php
 	}
 	?>
-</div>
+<!--</div>-->
 <?php
 if ($haveOffers)
 {

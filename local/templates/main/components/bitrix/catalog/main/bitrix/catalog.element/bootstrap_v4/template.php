@@ -494,6 +494,7 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                     <?
 					$dd=$manufacters->where("name",$arResult['PROPERTIES']['PROIZVODITEL']['VALUE'])->first();
 					$fileImg=CFile::GetFileArray($dd->detail_picture);
+
                     ?>
                     <?if($fileImg['SRC']!=""):?>
                         <img src="<?=$fileImg['SRC']?>" style="width: 114px;height: 37px" alt="">
