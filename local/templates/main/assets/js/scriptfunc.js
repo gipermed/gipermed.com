@@ -1,15 +1,15 @@
-(function () {
+/*(function () {
     var $container = $(document.getElementById('one_string'));
     var $address = $container.find('[name="address"]');
     $address.fias({
         type: $.fias.type.city,
     });
 }
-)();
+)();*/
 
 function ans (a) {
       var namecity = $(a).attr('name');
-      $('#answer').val(namecity)
+      $('.select2-search__field').text(namecity)
 
       }
 
@@ -27,7 +27,7 @@ if(!sessionStorage.getItem('a'))
   }
 
 function region (b) {
-		sessionStorage.setItem('a',$('#answer').val());
+		sessionStorage.setItem('a',$('#my_sity').val());
 		var r = sessionStorage.getItem('a');
 		jQuery("#user-region").text(r);
 		jQuery("#user-regionr").text(r);

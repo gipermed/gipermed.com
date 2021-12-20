@@ -10,9 +10,40 @@
         <div class="modal-title modal-city-title">Выберите ваш город</div>
 		<form action="?" class="city-search">
             <label class="form-block" aria-label="Начните вводить название">
-				<div id="one_string" >
-                <input name="address" id="answer" type="search" class="input city-search-input" placeholder="Начните вводить название" required >
-				</div>
+                <!--<input name="address" id="answer" type="search" class="input city-search-input" placeholder="Начните вводить название" required >-->
+
+                <select  class="input cabinet-address-input-city" id="my_sity" style="width: 100%">
+
+                    <?
+                    $res = \Bitrix\Sale\Location\LocationTable::getList(array(
+                        'filter' => array('=TYPE.ID' => '5', '=NAME.LANGUAGE_ID' => LANGUAGE_ID),
+                        'select' => array('ID','NAME_RU' => 'NAME.NAME')
+                    ));
+
+                    while ($item = $res->fetch()) {
+                        $loc = getGroupsByLocation($item['ID']);
+                        $text = $loc;
+                        unset($text[0],$text[1]);
+                        $text = implode(",", $text);
+                        ?>
+                        <option value="<? print_r($text);?>" >
+                            <? print_r($text); ?>
+                        </option>
+                    <?} ?>
+                </select>
+
+                <!-- ПОДКЛЮЧАЕМ ОФОРМЛЕНИЕ И JS ПЛАГИНА -->
+                <link href="/local/templates/main/assets/select/select2.min.css" type="text/css" rel="stylesheet"/>
+                <script type="text/javascript" src="/local/templates/main/assets/select/select2.full.min.js"></script>
+
+                <!-- УКАЗЫВАЕМ ID НУЖНОГО SELECT-а -->
+                <script>
+                    $(document).ready(function () {
+                        $("#my_sity").select2();
+                    });
+                </script>
+
+
             </label>
             <button onclick="region(this);" type="button" class="city-search-submit modal-close-link">
                 <svg width="20" height="20"><use xlink:href="#icon-search"/></svg>

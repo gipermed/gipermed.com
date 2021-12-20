@@ -1,3 +1,4 @@
+//# sourceURL=oder_ajax.js
 BX.namespace('BX.Sale.OrderAjaxComponent');
 
 (function() {

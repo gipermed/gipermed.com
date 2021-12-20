@@ -113,8 +113,43 @@ $rsData = $entity_data_class::getList(array(
                         <div class="cabinet-address-form-col flex-row-item">
                             <div class="form-block">
                                 <span class="form-block-title">Населённый пункт</span>
-                                <div id="one_string" class="form-block-select ordering-delivery-city-select">
-                                    <input name="address"  type="search" class="input cabinet-address-input-city" required>
+                                <div class="form-block-select ordering-delivery-city-select">
+                                    <!--<input name="address"  type="search" class="input cabinet-address-input-city" required>-->
+                                    <select  class="input cabinet-address-input-city" id="my_sity" style="width: 100%">
+
+                                        <?
+                                        $res = \Bitrix\Sale\Location\LocationTable::getList(array(
+                                            'filter' => array('>=TYPE.ID' => '5', '<=TYPE.ID' => '6', '=NAME.LANGUAGE_ID' => LANGUAGE_ID),
+                                            'select' => array('ID','NAME_RU' => 'NAME.NAME')
+                                        ));
+
+                                        while ($item = $res->fetch()) {
+                                            $loc = getGroupsByLocation($item['ID']);
+                                            $text = $loc;
+                                            $region = $loc;
+
+                                            unset($region[0],$region[1],$region[2]);
+                                            unset($text[0],$text[1]);
+
+                                            $text = implode(",", $text);
+                                            $region = implode(",", $region);
+                                            ?>
+                                            <option value="<? print_r($loc[2]);?>" ind="<? print_r($loc[1]);?>" code="<? print_r($loc[0]);?>" region="<? print_r($region);?>">
+                                                <? print_r($text); ?>
+                                            </option>
+                                        <?} ?>
+                                    </select>
+
+                                    <!-- ПОДКЛЮЧАЕМ ОФОРМЛЕНИЕ И JS ПЛАГИНА -->
+                                    <link href="/local/templates/main/assets/select/select2.min.css" type="text/css" rel="stylesheet"/>
+                                    <script type="text/javascript" src="/local/templates/main/assets/select/select2.full.min.js"></script>
+
+                                    <!-- УКАЗЫВАЕМ ID НУЖНОГО SELECT-а -->
+                                    <script>
+                                        $(document).ready(function () {
+                                            $("#my_sity").select2();
+                                        });
+                                    </script>
                                 </div>
                             </div>
                         </div>
@@ -243,14 +278,6 @@ $rsData = $entity_data_class::getList(array(
         </template>
         <div class="cabinet-address-list"></div>
     </div>
-
-
-
-
-
-
-
-
 
 
 

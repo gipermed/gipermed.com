@@ -1249,12 +1249,18 @@ $(document).ready(function () {
     $(document).on('submit', '.cabinet-address-form', function (event) {
         var t = $(this);
         var title = t.find('.cabinet-address-input-title').val();
-        var city = t.find('.cabinet-address-input-city').val();
+        var city =  t.find('.cabinet-address-input-city').val();
+        var index =$('#my_sity option:selected').attr('ind');
+        var code =$('#my_sity option:selected').attr('code');
+        var region =$('#my_sity option:selected').attr('region');
         var comment = t.find('.cabinet-address-input-comment').val();
         var isMain = t.find('.cabinet-address-input-main').prop('checked');
         var data = city;
         var item;
         var arr = [];
+        arr.push(code);
+        arr.push(index);
+        arr.push(region);
         arr.push(title);
         arr.push(city);
         arr.push(comment);
