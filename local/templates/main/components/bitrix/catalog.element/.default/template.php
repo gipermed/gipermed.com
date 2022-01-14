@@ -183,6 +183,11 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 	}
 }
 ?>
+
+<style>
+    #SDEK_pvz
+    {display: none}
+</style>
 <div class="bx-catalog-element bx-<?=$arParams['TEMPLATE_THEME']?>" id="<?=$itemIds['ID']?>"
 	itemscope itemtype="http://schema.org/Product">
 	<div class="container-fluid">
@@ -874,7 +879,16 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
                     </div>
 				</div>
 			</div>
+<div>
+    Доставка курьером от <span id='SDEK_cPrice2'><?=($arResult['DELIVERY']['courier']!='no')?$arResult['DELIVERY']['courier']:""?></span>
+    <br>Доставка до пункта выдачи заказов от <span id='SDEK_cPricePicup'></span>
 
+    <? $APPLICATION->IncludeComponent("ipoll:ipol.sdekPickup", ".element", Array(
+
+    ),
+        false
+    ); ?>
+</div>
                 <?$APPLICATION->IncludeComponent(
                     "bitrix:catalog.store.amount",
                     "template1",

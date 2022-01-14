@@ -47,7 +47,8 @@ $user = User::current();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
-
+   <!-- <script type="text/javascript" src="/local/components/sdek/widjet.js" id="ISDEKscript1" ></script>-->
+    <script type="text/javascript" src="https://widget.cdek.ru/widget/widjet.js" id="ISDEKscript" ></script>
     <?php
     $asset = asset();
 

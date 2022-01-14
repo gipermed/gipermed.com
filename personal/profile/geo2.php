@@ -1,6 +1,6 @@
 <? require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/header.php');
 $APPLICATION->SetTitle("");
-$APPLICATION->SetPageProperty('title', 'Лист ожидания1');
+$APPLICATION->SetPageProperty('title', 'Лист ожидания');
 
 //GLOBAL $USER;
 
@@ -31,7 +31,10 @@ $rsData = $entity_data_class::getList(array(
 //echo "</pre>";
 
 
-?><script src="/local/templates/main/assets/js/vendor/jquery.maskedinput.js"></script> <script>
+?>
+    <script src="/local/templates/main/assets/js/vendor/jquery.maskedinput.js"></script>
+    <script>
+
         $('.check').click(sayHello);
 
         function sayHello() {
@@ -59,6 +62,7 @@ $rsData = $entity_data_class::getList(array(
         function curradio() {
             $('.curier').css("display", "block");
             $('.curnazv').css("display", "block");
+            $('.punkt').css("display", "none");
         }
 
         $('.newadrradio').click(newadrradio);
@@ -78,13 +82,13 @@ $rsData = $entity_data_class::getList(array(
         }
 
 
-
         $('.punktradio').click(punktradio);
 
         function punktradio() {
             $('.curier').css("display", "none");
             $('.curnazv').css("display", "none");
             $('.curieritog').css("display", "none");
+            $('.punkt').css("display", "block");
         }
 
         $('.checkcur').click(btncheckcur);
@@ -117,7 +121,31 @@ $rsData = $entity_data_class::getList(array(
 
             // alert(getregion);
         });
-    </script> <?
+    </script>
+
+    <script type="text/javascript">
+        var orderWidjet = new ISDEKWidjet({
+            popup: true,
+            defaultCity: $('#user-region').html(),
+            cityFrom: 'Москва',
+            goods: [ // установим данные о товарах из корзины
+                { length : 10, width : 20, height : 20, weight : 5 }
+            ],
+            onReady : function(){ // на загрузку виджета отобразим информацию о доставке до ПВЗ
+                ipjq('#linkForWidjet').css('display','inline');
+            },
+            onChoose : function(info){ // при выборе ПВЗ: запишем номер ПВЗ в текстовое поле и доп. информацию
+                ipjq('[name="chosenPost"]').val(info.id);
+                ipjq('[name="addresPost"]').val(info.PVZ.Address);
+                // расчет стоимости доставки
+                var price = (info.price < 500) ? 500 : Math.ceil( info.price/100 ) * 100;
+                ipjq('[name="pricePost"]').val(price);
+                ipjq('[name="timePost"]').val(info.term);
+                orderWidjet.close(); // закроем виджет
+            }
+        });
+    </script>
+<?
 // Выведем актуальную корзину для текущего пользователя
 
 $arBasketItems = array();
@@ -155,86 +183,121 @@ while ($arItems = $dbBasketItems->Fetch()) {
 //print_r($arBasketItems);
 //echo "</pre>";
 ?>
-<div class="form-wrap">
-	<div class="profile">
- <img src="https://html5book.ru/wp-content/uploads/2016/10/profile-image.png">
-		<h1>Оформление заказа</h1>
-	</div>
-	<form method="post" action="zakaz.php">
-		<div class="blok registr">
-			<h4>1 Контактные данные</h4>
-			<div class="tel">
-				 Введите ваш номер телефона, чтобы мы могли сообщить вам о статусе заказа <input type="text" class="phone" placeholder="Телефон" required=""> <button type="button" class="check">Выслать код</button>
-			</div>
-			<div id="code" class="hidden">
- <input type="text" name="tel" placeholder="Код подтверждения" required=""> <button type="button" class="check3 ">Подтвердить</button>
-			</div>
-		</div>
-		<div class="hidden dillev">
-			<div class="blok">
-				<h4>2 Доставка</h4>
-				<p>
- <input class="curradio" name="deliv" type="radio" value="18"> Доставка курьером
-				</p>
-				<p>
- <input class="punktradio" name="deliv" type="radio" value="19"> Доставка до пункта выдачи заказов
-				</p>
-				<p class="samoviviz">
- <input name="deliv" type="radio" value="1"> Самовывоз
-				</p>
-				<p class=" curnazv hidden">
-					 Доставка осуществляется на следующий день после оплаты
-				</p>
-				<div class="blok curier hidden">
-					<h5>Получатель заказа</h5>
-					<p>
-						 Введите ФИО, чтобы курьер доставил товар именно вам
-					</p>
-					<p>
- <input type="text" name="fio" required="" placeholder="ФИО">
-					</p>
-					<h5>Адрес доставки</h5>
-					<p>
- <input class="myadrradio" name="delivadr" type="radio" value="1" checked=""> Мои адреса
-					</p>
-					<p>
-						<select id="select" name="adrdost">
-                            <?foreach ($rsData as $arData)
-                            {?>
-							<option id="adrdost" adr="<?=$arData['UF_CITY'];?>" value="<?=$arData['ID'];?>"><?=$arData['ID'];?></option>
-							 <?}?>
-						</select>
-					</p>
-					<p>
- <input class="newadrradio" name="delivadr" type="radio" value="3"> Новый адрес
-					</p>
-					<div class=" newadr hidden">
-						 <?$APPLICATION->IncludeComponent(
-	"bitrix:sale.location.selector.search",
-	"",
-Array()
-);?>
-					</div>
- <button type="button" class=" checkcur ">
-					Применить </button>
-				</div>
-                <div class="blok curieritog hidden">
-					<h5>Получатель заказа</h5>
-					<p id="adrtype">
-					</p>
-					<h5>Адрес доставки</h5>
-					<p id="city">
-					</p>
-					<p>
-						 Стоимость доставки
-					</p>
-					<p>
-						 500 руб.
-					</p>
-				</div>
-			</div>
-		</div>
-		 <!--   <div class="hidden nameuser">
+    <div class="form-wrap">
+        <div class="profile">
+            <img src="https://html5book.ru/wp-content/uploads/2016/10/profile-image.png">
+            <h1>Оформление заказа</h1>
+        </div>
+        <form method="post" action="zakaz.php">
+            <div class="blok registr">
+                <h4>1 Контактные данные</h4>
+                <div class="tel">
+                    Введите ваш номер телефона, чтобы мы могли сообщить вам о статусе заказа <input type="text"
+                                                                                                    class="phone"
+                                                                                                    placeholder="Телефон"
+                                                                                                    required="">
+                    <button type="button" class="check">Выслать код</button>
+                </div>
+                <div id="code" class="hidden">
+                    <input type="text" name="tel" placeholder="Код подтверждения" required="">
+                    <button type="button" class="check3 ">Подтвердить</button>
+                </div>
+            </div>
+            <div class="hidden dillev">
+                <div class="blok">
+                    <h4>2 Доставка</h4>
+                    <p>
+                        <input class="curradio" name="deliv" type="radio" value="18"> Доставка курьером от <span id='SDEK_cPrice2'><?=($arResult['DELIVERY']['courier']!='no')?$arResult['DELIVERY']['courier']:""?></span>
+                    </p>
+                    <div class="hidden">
+
+                    </div>
+                    <p>
+                        <input class="punktradio" name="deliv" type="radio" value="19"> Доставка до пункта выдачи заказов от <span id='SDEK_cPricePicup'></span>
+
+                    </p>
+                    <p class="samoviviz">
+                        <input name="deliv" type="radio" value="1"> Самовывоз
+                    </p>
+                    <p class=" curnazv hidden">
+                        Доставка осуществляется на следующий день после оплаты
+                    </p>
+                    <div class="blok curier hidden">
+                        <h5>Получатель заказа</h5>
+                        <p>
+                            Введите ФИО, чтобы курьер доставил товар именно вам
+                        </p>
+                        <p>
+                            <input type="text" name="fio" required="" placeholder="ФИО">
+                        </p>
+                        <h5>Адрес доставки</h5>
+                        <p>
+                            <input class="myadrradio" name="delivadr" type="radio" value="1" checked=""> Мои адреса
+                        </p>
+                        <p>
+                            <select id="select" name="adrdost">
+                                <? foreach ($rsData as $arData) {
+                                    ?>
+                                    <option  id="adrdost" adr="<?= $arData['UF_CITY']; ?>"
+                                            value="<?= $arData['ID']; ?>"><?= $arData['UF_TYPE_ADR']; ?></option>
+                                <? } ?>
+                            </select>
+                        </p>
+                        <p>
+                            <input class="newadrradio" name="delivadr" type="radio" value="3"> Новый адрес
+                        </p>
+                        <div class=" newadr hidden">
+                            <? $APPLICATION->IncludeComponent(
+                                "bitrix:sale.location.selector.search",
+                                "",
+                                array()
+                            ); ?>
+                        </div>
+                        <button type="button" class=" checkcur" onclick='IPOLSDEK_pvz.chooseCity($("#select option:selected").attr("adr"));return false;'>
+                            Применить
+                        </button>
+                    </div>
+
+                    <div class="blok punkt hidden">
+                        Получатель заказа <br>
+                        Введите ФИО по паспорту, чтобы вы могли получить продукцию на ПВЗ
+                        <input type="text" name="fio" placeholder="ФИО" required="">
+
+                        <p> <a href='javascript:void(0)' onclick='orderWidjet.open()'>Выбрать пункт выдачи</a> </p>
+                        <div id="linkForWidjet" style="display: none;">
+                            <p>Выбран пункт выдачи заказов: <input type='text' name='chosenPost' value=''/></p>
+                            <p>Адрес пункта: <input type='text' name='addresPost' value=''/></p>
+                            <p>Стоимость доставки: <input type='text' name='pricePost' value=''/></p>
+                            <p>Примерные сроки доставки: <input type='text' name='timePost' value=''/></p>
+                        </div>
+
+                        <button type="button" class="check3 ">Выбрать пункт выдачи</button>
+
+
+                        <? $APPLICATION->IncludeComponent("ipoll:ipol.sdekPickup", ".default", Array(
+
+                        ),
+                            false
+                        ); ?>
+                    </div>
+
+                    <div class="blok curieritog hidden">
+                        <h5>Получатель заказа</h5>
+                        <p id="adrtype">
+                        </p>
+                        <h5>Адрес доставки</h5>
+                        <p id="city">
+                        </p>
+                        <p>
+                            Стоимость доставки
+                        </p>
+                        <p>
+                            <span id='SDEK_cPrice3'><?=($arResult['DELIVERY']['courier']!='no')?$arResult['DELIVERY']['courier']:""?></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!--   <div class="hidden nameuser">
             <div>
                 <label for="name">ID товара</label>
                 <input type="text" name="id" value="<? $arBasketItems[0]['PRODUCT_ID'] ?>" required>
@@ -265,9 +328,12 @@ Array()
                 </select>
                 <div class="select-arrow"></div>
             </div>
-        </div>--> <button class="hidden send" type="submit">Отправить</button>
-	</form>
-</div>
+        </div>-->
+            <button class="hidden send" type="submit">Отправить</button>
+        </form>
+    </div>
+
+
     <style>
 
         .form-wrap {
@@ -457,8 +523,7 @@ Array()
                 border-radius: 0 0 20px 20px;
             }
         }
-    </style><?$APPLICATION->IncludeComponent(
-	"ipol:ipol.sdekPickup",
-	"",
-Array()
-);?><? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
+    </style>
+
+
+<? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

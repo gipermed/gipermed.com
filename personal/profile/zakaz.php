@@ -10,7 +10,6 @@ use Bitrix\Main\Loader;
 Loader::includeModule("highloadblock");
 use Bitrix\Highloadblock as HL;
 
-
 $hlbl = 3; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
 $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
 
@@ -23,7 +22,6 @@ $rsData = $entity_data_class::getList(array(
     "filter" => array("UF_ID_USER" => $USER->GetID(),"ID"=>$_POST["adrdost"])  // Задаем параметры фильтра выборки
 ));
 $arData = $rsData->Fetch();
-
 
 //CSaleBasket::GetBasketUserID()
 
@@ -40,9 +38,7 @@ $basket = \Bitrix\Sale\Basket::loadItemsForFUser(CSaleBasket::GetBasketUserID(),
 //echo '<pre>';
 
 $result = \Bitrix\Sale\Delivery\Services\Table::getList(array(
-
     'filter' => array('ACTIVE'=>'Y'),
-
 ));
 
 foreach ($products as $product)
@@ -59,7 +55,6 @@ $order->setBasket($basket);
 //$price = $order->getPrice();
 //$cur = $order->getCurrency();
 
-
 $propertyCollection = $order->getPropertyCollection();
 //$adressPropertyCity = $propertyCollection->getAddress();
 $adressProperty = $propertyCollection->getItemByOrderPropertyId(6);
@@ -75,16 +70,14 @@ $shipmentCollection = $order->getShipmentCollection();
 $shipment = $shipmentCollection->createItem(
     Bitrix\Sale\Delivery\Services\Manager::getObjectById($_POST["deliv"])
 );
-$shipment->setBasePriceDelivery(887.48);
+//$shipment->setBasePriceDelivery(887.48);
 $shipmentItemCollection = $shipment->getShipmentItemCollection();
 
 $price = $shipment->getPrice();
 
-
 $arOrder = CSaleOrder::GetByID(53);
 if (is_array($arOrder))
     echo $arOrder['COMMENTS'];
-
 
 echo '<pre>';
 print_r($arData);
@@ -101,7 +94,6 @@ foreach ($basket as $basketItem)
     $item = $shipmentItemCollection->createItem($basketItem);
     $item->setQuantity($basketItem->getQuantity());
 }
-
 $paymentCollection = $order->getPaymentCollection();
 $payment = $paymentCollection->createItem(
     Bitrix\Sale\PaySystem\Manager::getObjectById(1)

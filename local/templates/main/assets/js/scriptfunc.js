@@ -19,11 +19,14 @@ function ans (a) {
 
 if(!sessionStorage.getItem('a'))
         {
-			sessionStorage.setItem('a',ymaps.geolocation.region);
+			sessionStorage.setItem('a',ymaps.geolocation.city);
 		}
 		var r = sessionStorage.getItem('a');
 		jQuery("#user-region").text(r);
 		jQuery("#user-regionr").text(r);
+	 jQuery("#SDEK_cityName").text(r);
+	 //IPOLSDEK_pvz.city = 'Москва';
+
   }
 
 function region (b) {
