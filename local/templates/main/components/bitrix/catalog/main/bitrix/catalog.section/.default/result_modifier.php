@@ -80,4 +80,16 @@ if($arParams["LINK_IBLOCK_ID"] && $arParams["LINK_PROPERTY_SID"] && count($arRes
 		}
 	}
 }
+if($arResult['ITEMS']){
+    foreach($arResult['ITEMS'] as $arItem){
+        $arIds[] = $arItem['ID'];
+    }
+}
+
+global $APPLICATION;
+$cp = $this->__component;
+if (is_object($cp)) {
+    $cp->arResult['IDS'] = $arIds;
+    $cp->SetResultCacheKeys(array('IDS'));
+}
 ?>

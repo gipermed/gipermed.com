@@ -22,9 +22,9 @@ if (!$USER->IsAuthorized())
  <?php
     //$GLOBALS['CATALOG_CURRENT_ELEMENT_ID'] = $elementId;
     ?> &nbsp; <?$APPLICATION->IncludeComponent(
-	"bitrix:catalog",
-	"catalog_main",
-	Array(
+	"bitrix:catalog", 
+	"catalog_main", 
+	array(
 		"ACTION_VARIABLE" => "action",
 		"ADD_ELEMENT_CHAIN" => "N",
 		"ADD_PICT_PROP" => "MORE_PHOTO",
@@ -47,21 +47,34 @@ if (!$USER->IsAuthorized())
 		"COMPONENT_TEMPLATE" => "catalog_main",
 		"CONVERT_CURRENCY" => "N",
 		"DETAIL_ADD_DETAIL_TO_SLIDER" => "Y",
-		"DETAIL_ADD_TO_BASKET_ACTION" => array(0=>"ADD",),
-		"DETAIL_ADD_TO_BASKET_ACTION_PRIMARY" => array(0=>"ADD",),
+		"DETAIL_ADD_TO_BASKET_ACTION" => array(
+			0 => "ADD",
+		),
+		"DETAIL_ADD_TO_BASKET_ACTION_PRIMARY" => array(
+			0 => "ADD",
+		),
 		"DETAIL_BACKGROUND_IMAGE" => "-",
 		"DETAIL_BRAND_USE" => "N",
 		"DETAIL_BROWSER_TITLE" => "-",
 		"DETAIL_CHECK_SECTION_ID_VARIABLE" => "N",
-		"DETAIL_DETAIL_PICTURE_MODE" => array(0=>"POPUP",),
+		"DETAIL_DETAIL_PICTURE_MODE" => array(
+			0 => "POPUP",
+		),
 		"DETAIL_DISPLAY_NAME" => "N",
 		"DETAIL_DISPLAY_PREVIEW_TEXT_MODE" => "E",
 		"DETAIL_IMAGE_RESOLUTION" => "16by9",
-		"DETAIL_MAIN_BLOCK_OFFERS_PROPERTY_CODE" => array(0=>"TSVET",1=>"RAZMER",),
-		"DETAIL_MAIN_BLOCK_PROPERTY_CODE" => array(),
+		"DETAIL_MAIN_BLOCK_OFFERS_PROPERTY_CODE" => array(
+			0 => "TSVET",
+			1 => "RAZMER",
+		),
+		"DETAIL_MAIN_BLOCK_PROPERTY_CODE" => "",
 		"DETAIL_META_DESCRIPTION" => "-",
 		"DETAIL_META_KEYWORDS" => "-",
-		"DETAIL_OFFERS_FIELD_CODE" => array(0=>"PREVIEW_TEXT",1=>"DETAIL_TEXT",2=>"",),
+		"DETAIL_OFFERS_FIELD_CODE" => array(
+			0 => "PREVIEW_TEXT",
+			1 => "DETAIL_TEXT",
+			2 => "",
+		),
 		"DETAIL_PRODUCT_INFO_BLOCK_ORDER" => "sku,props",
 		"DETAIL_PRODUCT_PAY_BLOCK_ORDER" => "rating,price,priceRanges,quantity,quantityLimit,buttons",
 		"DETAIL_SET_CANONICAL_URL" => "N",
@@ -82,7 +95,10 @@ if (!$USER->IsAuthorized())
 		"ELEMENT_SORT_FIELD2" => "id",
 		"ELEMENT_SORT_ORDER" => "asc",
 		"ELEMENT_SORT_ORDER2" => "desc",
-		"FIELDS" => array(0=>"",1=>"",),
+		"FIELDS" => array(
+			0 => "",
+			1 => "",
+		),
 		"FILTER_HIDE_ON_MOBILE" => "N",
 		"FILTER_VIEW_MODE" => "VERTICAL",
 		"GIFTS_DETAIL_BLOCK_TITLE" => "Выберите один из подарков",
@@ -103,12 +119,16 @@ if (!$USER->IsAuthorized())
 		"GIFTS_SHOW_OLD_PRICE" => "Y",
 		"HIDE_NOT_AVAILABLE" => "Y",
 		"HIDE_NOT_AVAILABLE_OFFERS" => "Y",
-		"IBLOCK_ID" => "55",
+		"IBLOCK_ID" => "75",
 		"IBLOCK_TYPE" => "1c_catalog",
 		"INCLUDE_SUBSECTIONS" => "Y",
 		"INSTANT_RELOAD" => "N",
-		"LABEL_PROP" => array(0=>"IPRA",1=>"KHIT",),
-		"LABEL_PROP_MOBILE" => array(),
+		"LABEL_PROP" => array(
+			0 => "IPRA",
+			1 => "KHIT",
+		),
+		"LABEL_PROP_MOBILE" => array(
+		),
 		"LABEL_PROP_POSITION" => "top-left",
 		"LAZY_LOAD" => "N",
 		"LINE_ELEMENT_COUNT" => "3",
@@ -120,7 +140,10 @@ if (!$USER->IsAuthorized())
 		"LIST_ENLARGE_PRODUCT" => "STRICT",
 		"LIST_META_DESCRIPTION" => "-",
 		"LIST_META_KEYWORDS" => "-",
-		"LIST_OFFERS_FIELD_CODE" => array(0=>"",1=>"",),
+		"LIST_OFFERS_FIELD_CODE" => array(
+			0 => "",
+			1 => "",
+		),
 		"LIST_OFFERS_LIMIT" => "5",
 		"LIST_PRODUCT_BLOCKS_ORDER" => "price,quantityLimit,props,sku,quantity,buttons",
 		"LIST_PRODUCT_ROW_VARIANTS" => "[{'VARIANT':'6','BIG_DATA':false},{'VARIANT':'6','BIG_DATA':false}]",
@@ -159,7 +182,9 @@ if (!$USER->IsAuthorized())
 		"PAGER_TITLE" => "Товары",
 		"PAGE_ELEMENT_COUNT" => "12",
 		"PARTIAL_PRODUCT_PROPERTIES" => "Y",
-		"PRICE_CODE" => array(0=>"Договор эквайринга",),
+		"PRICE_CODE" => array(
+			0 => "Договор эквайринга",
+		),
 		"PRICE_VAT_INCLUDE" => "Y",
 		"PRICE_VAT_SHOW_VALUE" => "N",
 		"PRODUCT_DISPLAY_MODE" => "N",
@@ -200,7 +225,13 @@ if (!$USER->IsAuthorized())
 		"SIDEBAR_PATH" => "",
 		"SIDEBAR_SECTION_POSITION" => "right",
 		"SIDEBAR_SECTION_SHOW" => "N",
-		"STORES" => array(0=>"2",1=>"6",2=>"7",3=>"8",4=>"",),
+		"STORES" => array(
+			0 => "2",
+			1 => "6",
+			2 => "7",
+			3 => "8",
+			4 => "",
+		),
 		"STORE_PATH" => "/store/#store_id#",
 		"TEMPLATE_THEME" => "green",
 		"TOP_ADD_TO_BASKET_ACTION" => "ADD",
@@ -211,7 +242,10 @@ if (!$USER->IsAuthorized())
 		"TOP_ELEMENT_SORT_ORDER2" => "desc",
 		"TOP_ENLARGE_PRODUCT" => "STRICT",
 		"TOP_LINE_ELEMENT_COUNT" => "3",
-		"TOP_OFFERS_FIELD_CODE" => array(0=>"",1=>"",),
+		"TOP_OFFERS_FIELD_CODE" => array(
+			0 => "",
+			1 => "",
+		),
 		"TOP_OFFERS_LIMIT" => "5",
 		"TOP_PRODUCT_BLOCKS_ORDER" => "price,props,sku,quantityLimit,quantity,buttons",
 		"TOP_PRODUCT_ROW_VARIANTS" => "[{'VARIANT':'2','BIG_DATA':false},{'VARIANT':'2','BIG_DATA':false},{'VARIANT':'2','BIG_DATA':false}]",
@@ -223,7 +257,10 @@ if (!$USER->IsAuthorized())
 		"USER_CONSENT_ID" => "0",
 		"USER_CONSENT_IS_CHECKED" => "Y",
 		"USER_CONSENT_IS_LOADED" => "N",
-		"USER_FIELDS" => array(0=>"",1=>"",),
+		"USER_FIELDS" => array(
+			0 => "",
+			1 => "",
+		),
 		"USE_BIG_DATA" => "N",
 		"USE_COMMON_SETTINGS_BASKET_POPUP" => "Y",
 		"USE_COMPARE" => "N",
@@ -239,9 +276,13 @@ if (!$USER->IsAuthorized())
 		"USE_PRODUCT_QUANTITY" => "Y",
 		"USE_REVIEW" => "N",
 		"USE_SALE_BESTSELLERS" => "N",
-		"USE_STORE" => "Y",
-		"VARIABLE_ALIASES" => array("ELEMENT_ID"=>"ELEMENT_ID","SECTION_ID"=>"SECTION_ID",)
-	)
+		"USE_STORE" => "N",
+		"VARIABLE_ALIASES" => array(
+			"ELEMENT_ID" => "ELEMENT_ID",
+			"SECTION_ID" => "SECTION_ID",
+		)
+	),
+	false
 );?><script>
 /*var r = sessionStorage.getItem('a');
 if (r == "Москва" || r == "Москва и Московская область") {

@@ -15,25 +15,39 @@ function ans (a) {
 
  window.onload = function () {
 
-//sessionStorage.removeItem('a');
+	//sessionStorage.removeItem('city');
 
-if(!sessionStorage.getItem('a'))
-        {
-			sessionStorage.setItem('a',ymaps.geolocation.city);
-		}
-		var r = sessionStorage.getItem('a');
-		jQuery("#user-region").text(r);
-		jQuery("#user-regionr").text(r);
-	 jQuery("#SDEK_cityName").text(r);
-	 //IPOLSDEK_pvz.city = 'Москва';
+	if(!sessionStorage.getItem('city'))
+			{
+				ymaps.ready(init);
+					function init() {
+						sessionStorage.setItem('city',ymaps.geolocation.city);
+						sessionStorage.setItem('region',ymaps.geolocation.region);
+						//alert(ymaps.geolocation.city);
+					}
 
-  }
 
-function region (b) {
-		sessionStorage.setItem('a',$('#my_sity').val());
-		var r = sessionStorage.getItem('a');
-		jQuery("#user-region").text(r);
-		jQuery("#user-regionr").text(r);
+			}
+			var r = sessionStorage.getItem('city');
+			jQuery(".user-region").text(r);
+			//jQuery("#user-regionr").text(r);
+		 //jQuery("#SDEK_cityName").text(r);
+		 //alert(r);
+		 //IPOLSDEK_pvz.city = 'Москва';
+	  }
+
+function region () {
+
+	var all =$('.cabinet-address-input-city option:selected').val();
+	var city = all.split(',')[0];
+	var region = all.substring(all.indexOf(',') + 1);
+
+		sessionStorage.setItem('city',city);
+		sessionStorage.setItem('region',region);
+		var r = sessionStorage.getItem('city');
+		jQuery(".user-region").text(r);
+		getRegionDev();
+		//jQuery("#user-regionr").text(r);
       }
 
 

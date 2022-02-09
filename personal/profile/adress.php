@@ -118,7 +118,7 @@ $rsData = $entity_data_class::getList(array(
                                     <select  class="input cabinet-address-input-city" id="my_sity" style="width: 100%">
 
                                         <?
-                                        $res = \Bitrix\Sale\Location\LocationTable::getList(array(
+                                      /*  $res = \Bitrix\Sale\Location\LocationTable::getList(array(
                                             'filter' => array('>=TYPE.ID' => '5', '<=TYPE.ID' => '6', '=NAME.LANGUAGE_ID' => LANGUAGE_ID),
                                             'select' => array('ID','NAME_RU' => 'NAME.NAME')
                                         ));
@@ -137,12 +137,12 @@ $rsData = $entity_data_class::getList(array(
                                             <option value="<? print_r($loc[2]);?>" ind="<? print_r($loc[1]);?>" code="<? print_r($loc[0]);?>" region="<? print_r($region);?>">
                                                 <? print_r($text); ?>
                                             </option>
-                                        <?} ?>
+                                        <?}*/ ?>
                                     </select>
 
                                     <!-- ПОДКЛЮЧАЕМ ОФОРМЛЕНИЕ И JS ПЛАГИНА -->
-                                    <link href="/local/templates/main/assets/select/select2.min.css" type="text/css" rel="stylesheet"/>
-                                    <script type="text/javascript" src="/local/templates/main/assets/select/select2.full.min.js"></script>
+                              <!--      <link href="/local/templates/main/assets/select/select2.min.css" type="text/css" rel="stylesheet"/>
+                                    <script type="text/javascript" src="/local/templates/main/assets/select/select2.full.min.js"></script>-->
 
                                     <!-- УКАЗЫВАЕМ ID НУЖНОГО SELECT-а -->
                                     <script>

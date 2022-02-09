@@ -47,18 +47,17 @@ $user = User::current();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
-   <!-- <script type="text/javascript" src="/local/components/sdek/widjet.js" id="ISDEKscript1" ></script>-->
-    <script type="text/javascript" src="https://widget.cdek.ru/widget/widjet.js" id="ISDEKscript" ></script>
     <?php
+    $GLOBALS["PAGE"] = explode("/", $APPLICATION->GetCurPage());
     $asset = asset();
 
     $arCss = [
-        SITE_TEMPLATE_PATH . '/assets/css/vendor/swiper-bundle.min.css',
-        SITE_TEMPLATE_PATH . '/assets/css/vendor/jquery.fancybox.min.css',
-        SITE_TEMPLATE_PATH . '/assets/css/vendor/jquery.ui.slider.css',
+        SITE_TEMPLATE_PATH . 'assets/css/vendor/swiper-bundle.min.css',
+        SITE_TEMPLATE_PATH . 'assets/css/vendor/jquery.fancybox.min.css',
+        SITE_TEMPLATE_PATH . 'assets/css/vendor/jquery.ui.slider.css',
 
-        SITE_TEMPLATE_PATH . '/assets/css/styles.css',
-		SITE_TEMPLATE_PATH . '/assets/css/jquery.fias.min.css',
+        SITE_TEMPLATE_PATH . 'assets/css/styles.css',
+		//SITE_TEMPLATE_PATH . '/assets/css/jquery.fias.min.css',
     ];
 
     foreach ($arCss as $css) {
@@ -66,27 +65,28 @@ $user = User::current();
     }
 
     $arJs = [
-        SITE_TEMPLATE_PATH . '/assets/js/vendor/jquery-3.6.0.min.js',
-        SITE_TEMPLATE_PATH . '/assets/js/vendor/swiper-bundle.min.js',
-        SITE_TEMPLATE_PATH . '/assets/js/vendor/jquery.fancybox.min.js',
-        SITE_TEMPLATE_PATH . '/assets/js/vendor/jquery.ui.slider.js',
-        SITE_TEMPLATE_PATH . '/assets/js/vendor/jquery.form.min.js',
-		SITE_TEMPLATE_PATH . '/assets/js/jquery.fias.min.js',
+        SITE_TEMPLATE_PATH . 'assets/js/vendor/jquery-3.6.0.min.js',
+        SITE_TEMPLATE_PATH . 'assets/js/vendor/swiper-bundle.min.js',
+        SITE_TEMPLATE_PATH . 'assets/js/vendor/jquery.fancybox.min.js',
+        SITE_TEMPLATE_PATH . 'assets/js/vendor/jquery.ui.slider.js',
+        SITE_TEMPLATE_PATH . 'assets/js/vendor/jquery.form.min.js',
+		//SITE_TEMPLATE_PATH . 'assets/js/jquery.fias.min.js',
 
-        SITE_TEMPLATE_PATH . '/assets/js/scripts.js',
-		SITE_TEMPLATE_PATH . '/assets/js/scriptfunc.js',
-        SITE_TEMPLATE_PATH . '/assets/build/app.js',
-
+        SITE_TEMPLATE_PATH . 'assets/js/scripts.js',
+		SITE_TEMPLATE_PATH . 'assets/js/scriptfunc.js',
+        SITE_TEMPLATE_PATH . 'assets/build/app.js',
     ];
 	\Bitrix\Main\UI\Extension::load("ui.bootstrap4");
     foreach ($arJs as $js) {
         $asset->addJs($js);
     }
-
+    $APPLICATION->AddHeadString('<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700;800&display=swap" rel="stylesheet">');
     $APPLICATION->ShowHead();
     ?>
+    <script src="//api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU" type="text/javascript"></script>
+    <link href="/local/templates/main/assets/select/select2.min.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="/local/templates/main/assets/select/select2.full.min.js"></script>
 
-<script src="//api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU" type="text/javascript"></script>
 </head>
 <body class="page-<?php $APPLICATION->ShowProperty('body-class'); ?>">
 
@@ -154,10 +154,6 @@ function getGroupsByLocation($locationId)
 <div id="panel"><?php $APPLICATION->ShowPanel() ?></div>
 
 <header class="header">
-
-
-
-
     <div class="header-alert">
         <div class="container">
             <div class="header-alert-text">
@@ -167,17 +163,15 @@ function getGroupsByLocation($locationId)
             <a href="https://gipermed.ru/" class="header-alert-link" target="_blank">Перейти ></a>
         </div>
     </div>
-
     <div class="head">
         <div class="container">
             <div class="head-row flex-row">
-
                 <div class="head-col head-col-city flex-row-item">
                     <a href="#modal-city" class="head-city-link modal-open-btn">
                         <svg width="24" height="24">
                             <use xlink:href="#icon-cursor"/>
                         </svg>
-                        <span><span class="hidden-desktop">Ваш регион доставки:</span> <b><span id="user-region"> </span></b></span>
+                        <span><span class="hidden-desktop">Ваш регион доставки:</span> <b><span class="user-region" > </span></b></span>
                     </a>
                 </div>
                 <div class="head-col head-col-menu flex-row-item">
@@ -193,7 +187,6 @@ function getGroupsByLocation($locationId)
                         "MENU_CACHE_GET_VARS" => "N",
                     )); ?>
                 </div>
-
                 <div class="head-col head-col-cabinet flex-row-item">
                     <?php if ($user && is_authorized()) { ?>
                         <div class="header-cabinet">
@@ -273,7 +266,6 @@ function getGroupsByLocation($locationId)
                             </i>
                         </a>
                         <div class="header-contacts-body">
-
                             <ul class="contacts-tels">
                                 <li>
                                     <a href="tel:<?= include_content_phone('/phone.php') ?>">
@@ -298,7 +290,6 @@ function getGroupsByLocation($locationId)
                                     </a>
                                 </li>
                             </ul>
-
                             <ul class="header-contacts-links">
                                 <li>
                                     <a href="#modal-feedback" class="modal-open-btn">
@@ -317,7 +308,6 @@ function getGroupsByLocation($locationId)
                                     </a>
                                 </li>
                             </ul>
-
                         </div>
                     </div>
                 </div>
@@ -381,9 +371,7 @@ function getGroupsByLocation($locationId)
             </div>
         </div>
     </div>
-
     <nav class="header-nav">
-
         <div class="header-alert">
             <div class="container">
                 <div class="header-alert-text">Для приобретения товаров по счету <span class="hidden-mobile">(юридические лица)</span>
@@ -391,7 +379,6 @@ function getGroupsByLocation($locationId)
                 <a href="https://gipermed.ru/" class="header-alert-link" target="_blank">Перейти ></a>
             </div>
         </div>
-
         <div class="header-catalog">
             <div class="container">
                 <a href="#" class="header-catalog-open">
@@ -664,16 +651,12 @@ function getGroupsByLocation($locationId)
             </div>
         </div>
     </nav>
-
 </header>
 <div class="main">
-    <div class="container">
-
-<?
-
-if($APPLICATION->GetCurDir()!=="index.php")
-{
-	$APPLICATION->IncludeComponent("bitrix:breadcrumb", "main",
-    [""]);
-}
-?>
+    <?if($GLOBALS["PAGE"][1]):?>
+        <div class="container">
+        <?$APPLICATION->IncludeComponent("bitrix:breadcrumb", "main",[""]);?>
+    <?endif;?>
+    <?if($GLOBALS["PAGE"][1] == 'personal' && $GLOBALS['PAGE'][2]):?>
+        <a href="/personal/" class="btn-lk-return">< Вернуться в профиль</a>
+    <?endif;?>

@@ -1,12 +1,6 @@
 <? require($_SERVER['DOCUMENT_ROOT'] . '/bitrix/header.php');
 $APPLICATION->SetTitle("");
-$APPLICATION->SetPageProperty('title', 'Лист ожидания');
-
-//GLOBAL $USER;
-
-
-Bitrix\Main\Loader::includeModule('sale');
-Bitrix\Main\Loader::includeModule('catalog');
+$APPLICATION->SetPageProperty('title', 'Оформление заказа');
 
 use Bitrix\Main\Loader;
 use Bitrix\Highloadblock as HL;
@@ -14,7 +8,6 @@ use Bitrix\Highloadblock as HL;
 Loader::includeModule("highloadblock");
 $hlbl = 3; // Указываем ID нашего highloadblock блока к которому будет делать запросы.
 $hlblock = HL\HighloadBlockTable::getById($hlbl)->fetch();
-
 $entity = HL\HighloadBlockTable::compileEntity($hlblock);
 $entity_data_class = $entity->getDataClass();
 
@@ -24,165 +17,19 @@ $rsData = $entity_data_class::getList(array(
     "filter" => array("UF_ID_USER" => $USER->GetID())  // Задаем параметры фильтра выборки
 ));
 
-//$rsData = $rsData->Fetch();
-
-//echo "<pre>";
-//print_r($rsData);
-//echo "</pre>";
-
-
+$rsStore = \Bitrix\Catalog\StoreTable::getList(array(
+    'filter' => array('ACTIVE'>='Y'),
+));
+    $res2 = \Bitrix\Sale\Location\LocationTable::getList(array(
+    'filter' => array('>=TYPE.ID' => '5', '<=TYPE.ID' => '6', '=NAME.LANGUAGE_ID' => LANGUAGE_ID),
+    'select' => array('ID','NAME_RU' => 'NAME.NAME')
+));
 ?>
     <script src="/local/templates/main/assets/js/vendor/jquery.maskedinput.js"></script>
-    <script>
+    <script type="text/javascript" src="https://t.gipermed.com/widget/widjet.js" id="ISDEKscript" ></script>
+    <link href="/sale/salecss.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="/sale/salejs.js"></script>
 
-        $('.check').click(sayHello);
-
-        function sayHello() {
-
-            alert('Код подтверждения: ' + getRandomIntInclusive());
-            $('.check').css("display", "none");
-            $('.check3').css("display", "block");
-            $('#code').css("display", "block");
-
-        }
-
-        $('.check3').click(sayHello2);
-
-        function sayHello2() {
-            alert('Код принят');
-            $('.check2').css("display", "none");
-            $('#code').css("display", "none");
-            $('.registr').css("display", "none")
-            $('.dillev').css("display", "block");
-
-        }
-
-        $('.curradio').click(curradio);
-
-        function curradio() {
-            $('.curier').css("display", "block");
-            $('.curnazv').css("display", "block");
-            $('.punkt').css("display", "none");
-        }
-
-        $('.newadrradio').click(newadrradio);
-
-        function newadrradio() {
-            $('.newadr').css("display", "block");
-            $('#select').css("display", "none");
-
-        }
-
-        $('.myadrradio').click(myadrradio);
-
-        function myadrradio() {
-            $('.newadr').css("display", "none");
-            $('#select').css("display", "block");
-
-        }
-
-
-        $('.punktradio').click(punktradio);
-
-        function punktradio() {
-            $('.curier').css("display", "none");
-            $('.curnazv').css("display", "none");
-            $('.curieritog').css("display", "none");
-            $('.punkt').css("display", "block");
-        }
-
-        $('.checkcur').click(btncheckcur);
-
-        function btncheckcur() {
-            var type = $('#select option:selected').html();
-            var city = $('#select option:selected').attr('adr');
-            $('.curieritog').css("display", "block");
-            $('#adrtype').html(type);
-            $('#city').html(city);
-            $('.curier').css("display", "none");
-            $('.nameuser').css("display", "block");
-            $('.send').css("display", "block");
-        }
-
-        function getRandomIntInclusive() {
-            min = Math.ceil(1000);
-            max = Math.floor(9999);
-            return Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
-        }
-
-        $(function ($) {
-            $(".phone").mask("+7 (999) 999-9999");
-        });
-
-        $('.check3').click(function () {
-            var getregion = $('#user-region').html();
-            if (getregion != 'Москва и Московская область')
-                $('.samoviviz').css("display", "none")
-
-            // alert(getregion);
-        });
-    </script>
-
-    <script type="text/javascript">
-        var orderWidjet = new ISDEKWidjet({
-            popup: true,
-            defaultCity: $('#user-region').html(),
-            cityFrom: 'Москва',
-            goods: [ // установим данные о товарах из корзины
-                { length : 10, width : 20, height : 20, weight : 5 }
-            ],
-            onReady : function(){ // на загрузку виджета отобразим информацию о доставке до ПВЗ
-                ipjq('#linkForWidjet').css('display','inline');
-            },
-            onChoose : function(info){ // при выборе ПВЗ: запишем номер ПВЗ в текстовое поле и доп. информацию
-                ipjq('[name="chosenPost"]').val(info.id);
-                ipjq('[name="addresPost"]').val(info.PVZ.Address);
-                // расчет стоимости доставки
-                var price = (info.price < 500) ? 500 : Math.ceil( info.price/100 ) * 100;
-                ipjq('[name="pricePost"]').val(price);
-                ipjq('[name="timePost"]').val(info.term);
-                orderWidjet.close(); // закроем виджет
-            }
-        });
-    </script>
-<?
-// Выведем актуальную корзину для текущего пользователя
-
-$arBasketItems = array();
-
-$dbBasketItems = CSaleBasket::GetList(
-    array(
-        "NAME" => "ASC",
-        "ID" => "ASC"
-    ),
-    array(
-        "FUSER_ID" => CSaleBasket::GetBasketUserID(),
-        "LID" => SITE_ID,
-        "ORDER_ID" => "NULL"
-    ),
-    false,
-    false,
-    array()
-);
-while ($arItems = $dbBasketItems->Fetch()) {
-    if (strlen($arItems["CALLBACK_FUNC"]) > 0) {
-        CSaleBasket::UpdatePrice($arItems["ID"],
-            $arItems["CALLBACK_FUNC"],
-            $arItems["MODULE"],
-            $arItems["PRODUCT_ID"],
-            $arItems["QUANTITY"]);
-        $arItems = CSaleBasket::GetByID($arItems["ID"]);
-    }
-
-    $arBasketItems[] = $arItems;
-}
-
-
-// Печатаем массив, содержащий актуальную на текущий момент корзину
-//echo "<pre>";
-//print_r($arBasketItems);
-//echo "</pre>";
-?>
     <div class="form-wrap">
         <div class="profile">
             <img src="https://html5book.ru/wp-content/uploads/2016/10/profile-image.png">
@@ -192,14 +39,12 @@ while ($arItems = $dbBasketItems->Fetch()) {
             <div class="blok registr">
                 <h4>1 Контактные данные</h4>
                 <div class="tel">
-                    Введите ваш номер телефона, чтобы мы могли сообщить вам о статусе заказа <input type="text"
-                                                                                                    class="phone"
-                                                                                                    placeholder="Телефон"
-                                                                                                    required="">
+                    Введите ваш номер телефона, чтобы мы могли сообщить вам о статусе заказа
+                    <input type="text" class="phone" placeholder="Телефон" required>
                     <button type="button" class="check">Выслать код</button>
                 </div>
                 <div id="code" class="hidden">
-                    <input type="text" name="tel" placeholder="Код подтверждения" required="">
+                    <input type="text" name="tel" placeholder="Код подтверждения" required>
                     <button type="button" class="check3 ">Подтвердить</button>
                 </div>
             </div>
@@ -207,35 +52,39 @@ while ($arItems = $dbBasketItems->Fetch()) {
                 <div class="blok">
                     <h4>2 Доставка</h4>
                     <p>
-                        <input class="curradio" name="deliv" type="radio" value="18"> Доставка курьером от <span id='SDEK_cPrice2'><?=($arResult['DELIVERY']['courier']!='no')?$arResult['DELIVERY']['courier']:""?></span>
+                        <input class="curradio" name="deliv" type="radio" value="18"> Доставка курьером от <span id='SDEK_cPrice2'></span>
                     </p>
                     <div class="hidden">
 
                     </div>
                     <p>
-                        <input class="punktradio" name="deliv" type="radio" value="19"> Доставка до пункта выдачи заказов от <span id='SDEK_cPricePicup'></span>
+                        <input class="punktradio" name="deliv" type="radio" value="19"> Доставка до пункта выдачи заказов от <span id='SDEK_cPrice'></span>
 
                     </p>
-                    <p class="samoviviz">
-                        <input name="deliv" type="radio" value="1"> Самовывоз
+                    <p class="samoviviz hidden">
+                        <input class="samradio" name="deliv"  type="radio" value="22"> Самовывоз Бесплатно из магазинов гипермед
                     </p>
-                    <p class=" curnazv hidden">
-                        Доставка осуществляется на следующий день после оплаты
-                    </p>
-                    <div class="blok curier hidden">
+
+                    <div class="fio hidden">
                         <h5>Получатель заказа</h5>
                         <p>
-                            Введите ФИО, чтобы курьер доставил товар именно вам
+                            Введите ФИО, как в паспорте
                         </p>
                         <p>
-                            <input type="text" name="fio" required="" placeholder="ФИО">
+                            <input class="fioinput" type="text" required name="fio" placeholder="ФИО">
                         </p>
+                    </div>
+                    <div class="blok curier hidden">
+                        <p>
+                            Доставка осуществляется на следующий день после оплаты
+                        </p>
+
                         <h5>Адрес доставки</h5>
                         <p>
                             <input class="myadrradio" name="delivadr" type="radio" value="1" checked=""> Мои адреса
                         </p>
                         <p>
-                            <select id="select" name="adrdost">
+                            <select class="select" name="adrdost">
                                 <? foreach ($rsData as $arData) {
                                     ?>
                                     <option  id="adrdost" adr="<?= $arData['UF_CITY']; ?>"
@@ -247,283 +96,84 @@ while ($arItems = $dbBasketItems->Fetch()) {
                             <input class="newadrradio" name="delivadr" type="radio" value="3"> Новый адрес
                         </p>
                         <div class=" newadr hidden">
-                            <? $APPLICATION->IncludeComponent(
-                                "bitrix:sale.location.selector.search",
-                                "",
-                                array()
-                            ); ?>
+                            <div class="form-block-select ordering-delivery-city-select">
+                                <select  class="select2 input cabinet-address-input-city2" name="selectreg" style="width: 100%">
+                                    <?
+                                    while ($item = $res2->fetch()) {
+                                        $loc = getGroupsByLocation($item['ID']);
+                                        $text = $loc;
+                                        $region = $loc;
+                                        unset($region[0],$region[1],$region[2]);
+                                        unset($text[0],$text[1]);
+                                        $text = implode(",", $text);
+                                        $region = implode(",", $region);
+                                        ?>
+                                        <option adr="<?= $loc[2]; ?>" value="<? print_r($loc[0]);print_r(";");print_r($loc[1]);?>">
+                                            <? print_r($text); ?>
+                                        </option>
+                                    <?} ?>
+                                </select>
+                            </div>
+                            <span class="form-block-title">Адрес</span>
+                            <input type="text" name="adres" class="input cabinet-address-input-data">
+                            <span class="form-block-title">Комментарий курьеру:</span>
+                            <textarea
+                                    class="input textarea cabinet-address-input-comment"
+                                    placeholder="Напишите ваш комментарий" name="comentcur"></textarea>
                         </div>
-                        <button type="button" class=" checkcur" onclick='IPOLSDEK_pvz.chooseCity($("#select option:selected").attr("adr"));return false;'>
+                        <button type="button" class="checkcur" >
                             Применить
                         </button>
                     </div>
-
                     <div class="blok punkt hidden">
-                        Получатель заказа <br>
-                        Введите ФИО по паспорту, чтобы вы могли получить продукцию на ПВЗ
-                        <input type="text" name="fio" placeholder="ФИО" required="">
-
-                        <p> <a href='javascript:void(0)' onclick='orderWidjet.open()'>Выбрать пункт выдачи</a> </p>
+                        <p> <a href='javascript:void(0)' onclick='widjet.open()'>Выбрать ПВЗ</a> </p>
                         <div id="linkForWidjet" style="display: none;">
-                            <p>Выбран пункт выдачи заказов: <input type='text' name='chosenPost' value=''/></p>
+                            <input type='hidden' name='chosenPost' value=''/>
+                            <p>Выбран город выдачи заказов: <input type='text' name='cityPost' value=''/></p>
+                            <input type='hidden' name='cityIdPost' value=''/>
                             <p>Адрес пункта: <input type='text' name='addresPost' value=''/></p>
                             <p>Стоимость доставки: <input type='text' name='pricePost' value=''/></p>
                             <p>Примерные сроки доставки: <input type='text' name='timePost' value=''/></p>
+                            <input type='hidden' name='tarifPost' value=''/>
                         </div>
+                    </div>
+                    <div class=" blok samovivoz hidden">
+                        <div class="form-block-select ordering-delivery-city-select">
 
-                        <button type="button" class="check3 ">Выбрать пункт выдачи</button>
-
-
-                        <? $APPLICATION->IncludeComponent("ipoll:ipol.sdekPickup", ".default", Array(
-
-                        ),
-                            false
-                        ); ?>
+                            <select id="selectsam" name="adrsam">
+                                <?
+                                while($arStore=$rsStore->fetch())
+                                {?>
+                                    <option value="<?= $arStore['TITLE']; ?>"><?= $arStore['TITLE']; ?></option>
+                                <?
+                                }
+                                ?>
+                            </select>
+                            <h5>Оплата</h5>
+                            <p>
+                                <input  name="PaySystem" type="radio" value="2" checked=""> Онлайн оплата
+                            </p>
+                            <p>
+                                <input  name="PaySystem" type="radio" value="3"> Оплата при получении
+                            </p>
+                        </div>
                     </div>
 
                     <div class="blok curieritog hidden">
-                        <h5>Получатель заказа</h5>
-                        <p id="adrtype">
-                        </p>
                         <h5>Адрес доставки</h5>
                         <p id="city">
                         </p>
                         <p>
-                            Стоимость доставки
+                        <h5>Стоимость доставки</h5>
                         </p>
                         <p>
-                            <span id='SDEK_cPrice3'><?=($arResult['DELIVERY']['courier']!='no')?$arResult['DELIVERY']['courier']:""?></span>
+                            <span id='SDEK_cPrice3'></span>
                         </p>
                     </div>
                 </div>
             </div>
-            <!--   <div class="hidden nameuser">
-            <div>
-                <label for="name">ID товара</label>
-                <input type="text" name="id" value="<? $arBasketItems[0]['PRODUCT_ID'] ?>" required>
-            </div>
-            <div>
-                <label for="name">Наименование товара</label>
-                <input type="text" name="name" required>
-            </div>
-            <div>
-                <label for="name">Цена</label>
-                <input type="text" name="price" required>
-            </div>
-            <div>
-                <label for="name">Количество</label>
-                <input type="text" name="col" required>
-            </div>
-            <div>
-                <label for="email">E-mail</label>
-                <input type="email" name="email" required>
-            </div>
-            <div>
-                <label for="country">Страна</label>
-                <select name="country">
-                    <option>Выберите страну проживания</option>
-                    <option value="Россия">Россия</option>
-                    <option value="Украина">Украина</option>
-                    <option value="Беларусь">Беларусь</option>
-                </select>
-                <div class="select-arrow"></div>
-            </div>
-        </div>-->
             <button class="hidden send" type="submit">Отправить</button>
         </form>
     </div>
-
-
-    <style>
-
-        .form-wrap {
-            /*  width: 550px;*/
-            background: #ffd500;
-            border-radius: 20px;
-        }
-
-        .form-wrap * {
-            transition: .1s linear
-        }
-
-        .profile {
-            width: 240px;
-            float: left;
-            text-align: center;
-            padding: 30px;
-        }
-
-        .form-wrap form {
-            background: white;
-            float: left;
-            width: calc(100% - 240px);
-            padding: 30px;
-            border-radius: 0 20px 20px 0;
-            color: #7b7b7b;
-        }
-
-        .form-wrap:after, form div:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        form div {
-            margin-bottom: 15px;
-            position: relative;
-        }
-
-        h1 {
-            font-size: 24px;
-            font-weight: 400;
-            position: relative;
-            margin-top: 50px;
-        }
-
-        h1:after {
-            content: "\f138";
-            font-size: 40px;
-            font-family: FontAwesome;
-            position: absolute;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        /********************** стилизация элементов формы **********************/
-
-        input[type="text"], input[type="email"] {
-            border-width: 0;
-            outline: none;
-            margin: 0;
-            width: 100%;
-            padding: 10px 15px;
-            background: #e6e6e6;
-        }
-
-        input[type="text"]:focus, input[type="email"]:focus {
-            box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .2);
-        }
-
-        .radio label {
-            position: relative;
-            padding-left: 50px;
-            cursor: pointer;
-            width: 50%;
-            float: left;
-            line-height: 40px;
-        }
-
-        .radio input {
-            position: absolute;
-            opacity: 0;
-        }
-
-        .radio-control {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 40px;
-            width: 40px;
-            background: #e6e6e6;
-            border-radius: 50%;
-            text-align: center;
-        }
-
-        .male:before {
-            content: "\f222";
-            font-family: FontAwesome;
-            font-weight: bold;
-        }
-
-        .female:before {
-            content: "\f221";
-            font-family: FontAwesome;
-            font-weight: bold;
-        }
-
-        .radio label:hover input ~ .radio-control,
-        .radiol input:focus ~ .radio-control {
-            box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .2);
-        }
-
-        .radio input:checked ~ .radio-control {
-            color: red;
-        }
-
-        select {
-            width: 100%;
-            cursor: pointer;
-            padding: 10px 15px;
-            outline: 0;
-            border: 0;
-            background: #e6e6e6;
-            color: #7b7b7b;
-            -webkit-appearance: none; /*убираем галочку в webkit-браузерах*/
-            -moz-appearance: none; /*убираем галочку в Mozilla Firefox*/
-        }
-
-        select::-ms-expand {
-            display: none; /*убираем галочку в IE*/
-        }
-
-        .select-arrow {
-            position: absolute;
-            top: 38px;
-            right: 15px;
-            width: 0;
-            height: 0;
-            pointer-events: none; /*активизируем показ списка при нажатии на стрелку*/
-            border-style: solid;
-            border-width: 8px 5px 0 5px;
-            border-color: #7b7b7b transparent transparent transparent;
-        }
-
-        .form-wrap button {
-            padding: 10px 0;
-            border-width: 0;
-            /*display: block;*/
-            width: 120px;
-            margin: 25px auto 0;
-            background: #60e6c5;
-            color: white;
-            font-size: 14px;
-            outline: none;
-            text-transform: uppercase;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .blok {
-            border: solid 1px #E2E2E2;
-            padding: 20px;
-        }
-
-        /********************** добавляем форме адаптивность **********************/
-        @media (max-width: 600px) {
-            .form-wrap {
-                margin: 20px auto;
-                max-width: 550px;
-                width: 100%;
-            }
-
-            .profile, form {
-                float: none;
-                width: 100%;
-            }
-
-            h1 {
-                margin-top: auto;
-                padding-bottom: 50px;
-            }
-
-            form {
-                border-radius: 0 0 20px 20px;
-            }
-        }
-    </style>
-
 
 <? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

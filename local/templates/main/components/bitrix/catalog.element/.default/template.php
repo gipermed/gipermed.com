@@ -890,41 +890,41 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
     ); ?>
 </div>
                 <?$APPLICATION->IncludeComponent(
-                    "bitrix:catalog.store.amount",
-                    "template1",
-                    array(
-                        "CACHE_TIME" => "36000",
-                        "CACHE_TYPE" => "A",
-                        "ELEMENT_CODE" => "bandazh-gryzhevoy-pakhovyy-t-29-03",
-                        "ELEMENT_ID" => "bandazh-gryzhevoy-pakhovyy-t-29-03",
-                        "FIELDS" => array(
-                            0 => "",
-                            1 => "",
-                        ),
-                        "IBLOCK_ID" => "55",
-                        "IBLOCK_TYPE" => "1c_catalog",
-                        "MAIN_TITLE" => "",
-                        "MIN_AMOUNT" => "3",
-                        "OFFER_ID" => "57548",
-                        "SHOW_EMPTY_STORE" => "Y",
-                        "SHOW_GENERAL_STORE_INFORMATION" => "N",
-                        "STORES" => array(
-                            0 => "2",
-                            1 => "6",
-                            2 => "7",
-                            3 => "8",
-                            4 => "",
-                        ),
-                        "STORE_PATH" => "/contacts/",
-                        "USER_FIELDS" => array(
-                            0 => "",
-                            1 => "",
-                        ),
-                        "USE_MIN_AMOUNT" => "Y",
-                        "COMPONENT_TEMPLATE" => "template1"
-                    ),
-                    false
-                );?>
+	"bitrix:catalog.store.amount", 
+	"template1", 
+	array(
+		"CACHE_TIME" => "36000",
+		"CACHE_TYPE" => "A",
+		"ELEMENT_CODE" => "bandazh-gryzhevoy-pakhovyy-t-29-03",
+		"ELEMENT_ID" => "bandazh-gryzhevoy-pakhovyy-t-29-03",
+		"FIELDS" => array(
+			0 => "",
+			1 => "",
+		),
+		"IBLOCK_ID" => "55",
+		"IBLOCK_TYPE" => "1c_catalog",
+		"MAIN_TITLE" => "",
+		"MIN_AMOUNT" => "3",
+		"OFFER_ID" => "57548",
+		"SHOW_EMPTY_STORE" => "Y",
+		"SHOW_GENERAL_STORE_INFORMATION" => "N",
+		"STORES" => array(
+			0 => "2",
+			1 => "6",
+			2 => "7",
+			3 => "8",
+			4 => "",
+		),
+		"STORE_PATH" => "/contacts/",
+		"USER_FIELDS" => array(
+			0 => "",
+			1 => "",
+		),
+		"USE_MIN_AMOUNT" => "N",
+		"COMPONENT_TEMPLATE" => "template1"
+	),
+	false
+);?>
 
                 <div class="product-info product-delivery">
                     <div class="product-info-title">Доставка:</div>

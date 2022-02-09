@@ -26,7 +26,7 @@ $APPLICATION->SetTitle("Все товары");
 		"COMMON_SHOW_CLOSE_POPUP" => "N",
 		"COMPATIBLE_MODE" => "N",
 		"CONVERT_CURRENCY" => "N",
-		"DETAIL_ADD_DETAIL_TO_SLIDER" => "N",
+		"DETAIL_ADD_DETAIL_TO_SLIDER" => "Y",
 		"DETAIL_ADD_TO_BASKET_ACTION" => array(
 			0 => "BUY",
 			1 => "ADD",
@@ -42,7 +42,6 @@ $APPLICATION->SetTitle("Все товары");
 		"DETAIL_CHECK_SECTION_ID_VARIABLE" => "N",
 		"DETAIL_DETAIL_PICTURE_MODE" => array(
 			0 => "POPUP",
-			1 => "MAGNIFIER",
 		),
 		"DETAIL_DISPLAY_NAME" => "Y",
 		"DETAIL_DISPLAY_PREVIEW_TEXT_MODE" => "E",
@@ -54,7 +53,8 @@ $APPLICATION->SetTitle("Все товары");
 		"DETAIL_IMAGE_RESOLUTION" => "16by9",
 		"DETAIL_MAIN_BLOCK_OFFERS_PROPERTY_CODE" => array(
 		),
-		"DETAIL_MAIN_BLOCK_PROPERTY_CODE" => "",
+		"DETAIL_MAIN_BLOCK_PROPERTY_CODE" => array(
+		),
 		"DETAIL_META_DESCRIPTION" => "-",
 		"DETAIL_META_KEYWORDS" => "-",
 		"DETAIL_OFFERS_FIELD_CODE" => array(
@@ -123,7 +123,7 @@ $APPLICATION->SetTitle("Все товары");
 		"GIFTS_SHOW_OLD_PRICE" => "Y",
 		"HIDE_NOT_AVAILABLE" => "Y",
 		"HIDE_NOT_AVAILABLE_OFFERS" => "N",
-		"IBLOCK_ID" => "37",
+		"IBLOCK_ID" => IBLOCK_CATALOG_ID,
 		"IBLOCK_TYPE" => "1c_catalog",
 		"ICON_MENU" => "",
 		"INCLUDE_SUBSECTIONS" => "Y",
@@ -279,7 +279,7 @@ $APPLICATION->SetTitle("Все товары");
 			0 => "6",
 			1 => "7",
 			2 => "8",
-			3 => "",
+			3 => "2",
 		),
 		"USE_MIN_AMOUNT" => "Y",
 		"USER_FIELDS" => array(

@@ -1,8 +1,19 @@
 <?php check_prolog();
 
+$res = \Bitrix\Sale\Location\LocationTable::getList(array(
+    'filter' => array('>=TYPE.ID' => '5', '<=TYPE.ID' => '6', '=NAME.LANGUAGE_ID' => LANGUAGE_ID),
+    'select' => array('ID','NAME_RU' => 'NAME.NAME')
+));
+
 ?>
 
-<div id="modal-city" class="modal modal-city" style= "z-index:99999">
+<script>
+    $(document).ready(function () {
+        $('.cabinet-address-input-city').select2();
+    });
+</script>
+
+<div id="modal-city" class="modal modal-city">
     <div class="modal-body">
         <a href="#" class="modal-close-btn" aria-label="Закрыть">
             <svg width="24" height="24"><use xlink:href="#icon-close"/></svg>
@@ -12,40 +23,27 @@
             <label class="form-block" aria-label="Начните вводить название">
                 <!--<input name="address" id="answer" type="search" class="input city-search-input" placeholder="Начните вводить название" required >-->
 
-                <select  class="input cabinet-address-input-city" id="my_sity" style="width: 100%">
+                <select  class="input cabinet-address-input-city"  style="width: 100%">
 
                     <?
-                    $res = \Bitrix\Sale\Location\LocationTable::getList(array(
-                        'filter' => array('=TYPE.ID' => '5', '=NAME.LANGUAGE_ID' => LANGUAGE_ID),
-                        'select' => array('ID','NAME_RU' => 'NAME.NAME')
-                    ));
-
                     while ($item = $res->fetch()) {
                         $loc = getGroupsByLocation($item['ID']);
                         $text = $loc;
+                        $region = $loc;
+
+                        unset($region[0],$region[1],$region[2]);
                         unset($text[0],$text[1]);
+
                         $text = implode(",", $text);
+                        $region = implode(",", $region);
                         ?>
                         <option value="<? print_r($text);?>" >
                             <? print_r($text); ?>
                         </option>
                     <?} ?>
                 </select>
-
-                <!-- ПОДКЛЮЧАЕМ ОФОРМЛЕНИЕ И JS ПЛАГИНА -->
-                <link href="/local/templates/main/assets/select/select2.min.css" type="text/css" rel="stylesheet"/>
-                <script type="text/javascript" src="/local/templates/main/assets/select/select2.full.min.js"></script>
-
-                <!-- УКАЗЫВАЕМ ID НУЖНОГО SELECT-а -->
-                <script>
-                    $(document).ready(function () {
-                        $("#my_sity").select2();
-                    });
-                </script>
-
-
             </label>
-            <button onclick="region(this);" type="button" class="city-search-submit modal-close-link">
+            <button onclick="region();" type="button" class="city-search-submit modal-close-link">
                 <svg width="20" height="20"><use xlink:href="#icon-search"/></svg>
             </button>
         </form>

@@ -1,6 +1,162 @@
 'use strict';
 
+// import {clickFavorite} from "../../../../../../scp58331/local/templates/main/assets/js/helpers/catalogElement";
+function clickFavorite(id){
+    isFavorite(id,0);
+}
+function isFavoriteShow(id){
+    isFavorite(id,1);
+}
+function isFavorite(id,action){
+    axios.get('/ajax/', {
+        params: {
+            ID: id,
+            action: 'is-favorite',
+            sessid: BX.bitrix_sessid(),
+        }
+    }).then(response => {
+        let favInfo = response.data.result['favorite'];
+
+        if(action == 1){
+            if (favInfo) {
+                $('[data-product='+id+']').addClass("active").find('span').text("Удалить из избранного");
+            }
+        }else{
+            if (favInfo) {
+                removeFromFavorite(id);
+            } else {
+                addToFavorite(id);
+            }
+        }
+
+    });
+}
+function removeFromFavorite(id){
+    axios.get('/ajax/', {
+        params: {
+            ID: id,
+            action: 'remove-from-favorites',
+            sessid: BX.bitrix_sessid(),
+        }
+    }).then(response => {
+        if (response.data.success) {
+            // $('[data-product='+id+']').addClass("active").find('span').text("Удалить из избранного");
+            $('[data-product='+id+']').removeClass("active").find('span').text("В избранное");
+        }
+    });
+}
+function addToFavorite(id){
+    axios.get('/ajax/', {
+        params: {
+            ID: id,
+            action: 'add-to-favorites',
+            sessid: BX.bitrix_sessid(),
+        }
+    }).then(response => {
+        if (response.data.success) {
+            $('[data-product='+id+']').addClass("active").find('span').text("Удалить из избранного");
+            // $('[data-product='+id+']').removeClass("active").find('span').text("В избранное");
+        }
+    });
+}
+///
 $(document).ready(function () {
+    let productHotSlidersList = document.querySelectorAll('.product-hot-slider-container ');
+    productHotSlidersList.forEach(function(sliderItem) {
+        const swiper = new Swiper(sliderItem.querySelector('.product-hot-slider'), {
+            speed: 700,
+            slidesPerView: 2,
+            breakpoints: {
+                320: {
+                    spaceBetween: 6,
+                    slidesPerView: 2,
+                },
+                768: {
+                    slidesPerView: 3,
+                },
+                992: {
+                    spaceBetween: 30,
+                    slidesPerView: 3,
+                }
+            }
+        });
+    });
+
+    var productSlidersList = document.querySelectorAll('.product-item-slider-container');
+    productSlidersList.forEach(function(sliderItem) {
+        const swiper = new Swiper(sliderItem.querySelector('.product-item-slider'), {
+            speed: 700,
+            slidesPerView: 5,
+            navigation: {
+                nextEl: sliderItem.querySelector('.swiper-button-next'),
+                prevEl: sliderItem.querySelector('.swiper-button-prev'),
+            },
+            breakpoints: {
+                320: {
+                    spaceBetween: 6,
+                    slidesPerView: 2,
+                },
+                576: {
+                    slidesPerView: 3,
+                },
+                992: {
+                    spaceBetween: 30,
+                    slidesPerView: 5,
+                }
+            }
+        });
+    });
+
+    var brandsSlidersList = document.querySelectorAll('.brands-slider-container');
+    brandsSlidersList.forEach(function(sliderItem) {
+        const brandsSwiper = new Swiper(sliderItem.querySelector('.brands-main-slider'), {
+            speed: 700,
+            loop: false,
+            spaceBetween: 6,
+            slidesPerView: 'auto',
+            navigation: {
+                nextEl: sliderItem.querySelector('.swiper-button-next'),
+                prevEl: sliderItem.querySelector('.swiper-button-prev'),
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 3,
+                },
+                992: {
+                    spaceBetween: 28,
+                    slidesPerView: 5,
+                },
+                1366: {
+                    spaceBetween: 28,
+                    slidesPerView: 8,
+                }
+            }
+        });
+        console.log(brandsSwiper);
+    });
+
+    $('.form-order-cancel').on('submit',function(){
+        $('.order-cancel__success').addClass('visible');
+    });
+    $(document).on('click', '.order-products__toggle', function(){
+        $(this).toggleClass('open').closest('.order-item').find('.order-item__products-previews-cont, .order-item__products').stop().slideToggle();
+    });
+
+    $(document).on('click', '.order-item__cancel .order-tip-toggler', function(e){
+        e.preventDefault();
+        $(this).closest('.order-item__cancel').find('.order-cancel__tip').toggleClass('visible');
+    });
+
+    $(document).on('click', '.order-cancel__tip', function(e){
+        e.preventDefault();
+        $(this).closest('.order-cancel__tip').toggleClass('visible');
+    });
+
+    $(document).on('click', '.order-cancel__success .close', function(e){
+        e.preventDefault();
+        $(this).closest('.order-cancel__success').toggleClass('visible');
+    });
+
     /* header-contacts */
     $(document).on('click', '.header-contacts-open', function () {
         $('.header-contacts').toggleClass('active');
@@ -393,7 +549,10 @@ $(document).ready(function () {
 
     $(document).on('click', '.cabinet.cabinet-products .add-to-favorites-btn', function () {
         elementHelpers.removeFromFavorite($(this).data('product'));
-
+    });
+    $(document).on('click', '.js-add-favorites', function () {
+        // elementHelpers.clickFavorite($(this).data('product'));
+        clickFavorite($(this).data('product'));
     });
     /* add-to-cart-btn */
 
@@ -1250,9 +1409,9 @@ $(document).ready(function () {
         var t = $(this);
         var title = t.find('.cabinet-address-input-title').val();
         var city =  t.find('.cabinet-address-input-city').val();
-        var index =$('#my_sity option:selected').attr('ind');
-        var code =$('#my_sity option:selected').attr('code');
-        var region =$('#my_sity option:selected').attr('region');
+        var index =$('.cabinet-address-input-city option:selected').attr('ind');
+        var code =$('.cabinet-address-input-city option:selected').attr('code');
+        var region =$('.cabinet-address-input-city option:selected').attr('region');
         var comment = t.find('.cabinet-address-input-comment').val();
         var isMain = t.find('.cabinet-address-input-main').prop('checked');
         var data = city;

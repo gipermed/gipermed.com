@@ -34,7 +34,7 @@ $APPLICATION->AddChainItem('404');
                 <div class="page-404-desc">страницу, на которую вы пытаетесь попасть, не существует или удалена.
                 </div>
                 <div class="page-404-btn-wrapp">
-                    <a href="/" class="page-404-btn btn btn-full btn-green">Перейти на главную</a>
+                    <a href="/" class="page-404-btn btn btn-full btn-green">Перейти на главную.</a>
                 </div>
             </div>
         </div>

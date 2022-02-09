@@ -195,7 +195,7 @@ global $APPLICATION;
 
 $modals = [
 
-    'city',
+    //'city',
     'sent',
     'feedback',
     'recall',
