@@ -1,14 +1,9 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
-//pre($arResult['ID']);
-//pre($arResult['RECOMMEND']);
-//pre($arResult['SALE_ID']);
-
 $productCurSale = get_sale_product($arResult['SALE_ID']);
 global $productFilter;
 $productFilter['ID'] = $productCurSale['IDS'];
 ?>
-
 <?if($arResult['ID']):?>
     <?if($productCurSale['IDS']):?>
         <h3>В акции участвуют товары</h3>

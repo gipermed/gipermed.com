@@ -170,28 +170,39 @@ Loc::loadMessages(__FILE__);
                         <? foreach ($order["BASKET_ITEMS"] as $basketItem):?>
                             <?if($arResult['PHOTOS'][$basketItem['PRODUCT_ID']]):?>
                                 <a href="<?=$basketItem['DETAIL_PAGE_URL']?>"><img src="<?=$arResult['PHOTOS'][$basketItem['PRODUCT_ID']]?>" alt="<?=$basketItem['NAME']?>"></a>
+                            <?elseif($arResult['PHOTOS'][$arResult['CATALOG_IDS'][$basketItem['PRODUCT_ID']]]):?>
+                                <a href="<?=$basketItem['DETAIL_PAGE_URL']?>"><img src="<?=$arResult['PHOTOS'][$arResult['CATALOG_IDS'][$basketItem['PRODUCT_ID']]]?>" alt="<?=$basketItem['NAME']?>"></a>
                             <?endif;?>
                         <?endforeach; ?>
                     </div>
                 </div>
                 <div class="order-item__products">
                     <? foreach ($order["BASKET_ITEMS"] as $basketItem):?>
-                        <?$basketElement = new BasketElement($basketItem);?>
                         <div class="order-product">
                             <?if($arResult['PHOTOS'][$basketItem['PRODUCT_ID']]):?>
-                            <a href="<?=$basketItem['DETAIL_PAGE_URL']?>" class="order-product__thumb">
-                                <img src="<?=$arResult['PHOTOS'][$basketItem['PRODUCT_ID']]?>" alt="<?=$basketItem['NAME']?>">
-                            </a>
+                                <a href="<?=$basketItem['DETAIL_PAGE_URL']?>" class="order-product__thumb">
+                                    <img src="<?=$arResult['PHOTOS'][$basketItem['PRODUCT_ID']]?>" alt="<?=$basketItem['NAME']?>">
+                                </a>
+                            <?elseif($arResult['PHOTOS'][$arResult['CATALOG_IDS'][$basketItem['PRODUCT_ID']]]):?>
+                                <a href="<?=$basketItem['DETAIL_PAGE_URL']?>" class="order-product__thumb">
+                                    <img src="<?=$arResult['PHOTOS'][$arResult['CATALOG_IDS'][$basketItem['PRODUCT_ID']]]?>" alt="<?=$basketItem['NAME']?>">
+                                </a>
                             <?endif;?>
                             <div class="order-product__content">
                                 <a href="<?=$basketItem['DETAIL_PAGE_URL']?>" class="order-product__title"><?= $basketItem['NAME'] ?></a>
-                                <ul class="order-product__options">
-                                    <li><?= $basketElement->getSku()->getColorFormatted() ?></li>
-                                    <li><?= $basketElement->getSku()->getSizeFormatted() ?></li>
-                                </ul>
+                                <?if($arResult['COLORS'][$basketItem['PRODUCT_ID']] || $arResult['SIZES'][$basketItem['PRODUCT_ID']]):?>
+                                    <ul class="order-product__options">
+                                        <?if($arResult['COLORS'][$basketItem['PRODUCT_ID']]):?>
+                                            <li><?=$arResult['COLORS'][$basketItem['PRODUCT_ID']]?></li>
+                                        <?endif;?>
+                                        <?if($arResult['SIZES'][$basketItem['PRODUCT_ID']]):?>
+                                            <li><?=$arResult['SIZES'][$basketItem['PRODUCT_ID']]?></li>
+                                        <?endif;?>
+                                    </ul>
+                                <?endif;?>
                             </div>
                             <div class="order-product__qty"><?= $basketItem['QUANTITY'] ?> шт</div>
-                            <div class="order-product__price"><?= $basketElement->getFormattedPrice() ?></div>
+                            <div class="order-product__price"><?= number_format($basketItem['PRICE'], 0, '', ' ');?> ₽</div>
                         </div>
                     <?endforeach;?>
                 </div>
@@ -204,25 +215,25 @@ Loc::loadMessages(__FILE__);
                 </div>
             </div>
 		<?endforeach;
-				echo $arResult["NAV_STRING"];
+        echo $arResult["NAV_STRING"];
 
-				if ($_REQUEST["filter_history"] !== 'Y')
-				{
-					$javascriptParams = array(
-						"url"            => CUtil::JSEscape($this->__component->GetPath() . '/ajax.php'),
-						"templateFolder" => CUtil::JSEscape($templateFolder),
-						"templateName"   => $this->__component->GetTemplateName(),
-						"paymentList"    => $paymentChangeData,
-						"returnUrl"      => CUtil::JSEscape($arResult["RETURN_URL"]),
-					);
-					$javascriptParams = CUtil::PhpToJSObject($javascriptParams);
-					?>
-                    <script>
-                        BX.Sale.PersonalOrderComponent.PersonalOrderList.init(<?=$javascriptParams?>);
-                    </script>
-					<?
-				}
-		}
-				?>
-            </div>
-        </div>
+        if ($_REQUEST["filter_history"] !== 'Y')
+        {
+            $javascriptParams = array(
+                "url"            => CUtil::JSEscape($this->__component->GetPath() . '/ajax.php'),
+                "templateFolder" => CUtil::JSEscape($templateFolder),
+                "templateName"   => $this->__component->GetTemplateName(),
+                "paymentList"    => $paymentChangeData,
+                "returnUrl"      => CUtil::JSEscape($arResult["RETURN_URL"]),
+            );
+            $javascriptParams = CUtil::PhpToJSObject($javascriptParams);
+            ?>
+            <script>
+                BX.Sale.PersonalOrderComponent.PersonalOrderList.init(<?=$javascriptParams?>);
+            </script>
+            <?
+        }
+    }
+        ?>
+    </div>
+</div>

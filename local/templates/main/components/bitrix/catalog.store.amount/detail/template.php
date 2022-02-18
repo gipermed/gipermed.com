@@ -31,10 +31,14 @@ $this->setFrameMode(true);
 				<li style="<? echo ($arParams['SHOW_EMPTY_STORE'] == 'N' && isset($arProperty['REAL_AMOUNT']) && $arProperty['REAL_AMOUNT'] <= 0 ? 'display: none' : ''); ?>;">
 					<?if (isset($arProperty["TITLE"])):?>
                         <div class="char">
-                            <div class="caption">Магазин</div>
-                            <a href="/contacts/<?//=$arProperty["URL"]?>" style="color:<?=$arUF['UF_COLOR']['VALUE']?>;">
-                                <svg width="24" height="24" class="icon"><use xlink:href="#icon-metro"></use></svg><?=str_replace('Магазин ','',$arProperty["TITLE"]);?>
-                            </a>
+                            <?if($arProperty["TITLE"] == 'Основной склад'):?>
+                                <div class="caption">Интернет-магазин</div>
+                            <?else:?>
+                                <div class="caption">Магазин</div>
+                                <a href="/contacts/<?//=$arProperty["URL"]?>" style="color:<?=$arUF['UF_COLOR']['VALUE']?>;">
+                                    <svg width="24" height="24" class="icon"><use xlink:href="#icon-metro"></use></svg><?=str_replace('Магазин ','',$arProperty["TITLE"]);?>
+                                </a>
+                            <?endif;?>
                         </div>
 					<?endif;?>
 					<?/*if (isset($arProperty["IMAGE_ID"]) && !empty($arProperty["IMAGE_ID"])):?>

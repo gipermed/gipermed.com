@@ -1953,7 +1953,7 @@
                 this.currentQuantityRanges = newOffer.ITEM_QUANTITY_RANGES;
                 this.currentQuantityRangeSelected = newOffer.ITEM_QUANTITY_RANGE_SELECTED;
 
-                if (this.canBuy)
+                if (this.canBuy && newOffer.MAX_QUANTITY > 0)
                 {
                     this.node.quantity && BX.style(this.node.quantity, 'display', '');
 
@@ -2985,7 +2985,7 @@
                     if (price && this.obQuantity && this.obQuantity.value != this.stepQuantity)
                     {
                         BX.adjust(this.obPrice.total, {
-                            html: BX.message('PRICE_TOTAL_PREFIX') + ' <strong>'
+                            html: /*BX.message('PRICE_TOTAL_PREFIX') +*/ ' <strong>'
                                 + BX.Currency.currencyFormat(price.PRICE * this.obQuantity.value, price.CURRENCY, true)
                                 + '</strong>',
                             style: {display: ''}
@@ -2999,7 +2999,7 @@
                         // });
                         if(price){
                             BX.adjust(this.obPrice.total, {
-                                html: BX.message('PRICE_TOTAL_PREFIX') + ' <strong>'
+                                html: /*BX.message('PRICE_TOTAL_PREFIX') +*/ ' <strong>'
                                     + BX.Currency.currencyFormat(price.PRICE, price.CURRENCY, true)
                                     + '</strong>',
                                 style: {display: ''}

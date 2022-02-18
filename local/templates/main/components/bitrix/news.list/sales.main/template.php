@@ -4,7 +4,9 @@ use Bitrix\Main\Localization\Loc;
 if ($arResult["ITEMS"]) { ?>
     <div class="section home-promotions-section">
         <div class="container">
-            <?if(!$arParams['INNER_PAGE']):?>
+            <?if($arParams['DETAIL_PRODUCT_PAGE'] == 'Y'):?>
+                <h3><?=Loc::getMessage('SALES_MAIN_TITLE')?></h3>
+            <?elseif(!$arParams['INNER_PAGE']):?>
                 <div class="section-title"><?=Loc::getMessage('SALES_MAIN_TITLE')?></div>
             <?endif;?>
             <div class="promo-row">

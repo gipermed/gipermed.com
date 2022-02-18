@@ -348,24 +348,37 @@ $APPLICATION->SetPageProperty('body-class', 'home');
 	)
 );?>
 </div>
-<div class="section category-section">
+
+<?
+CModule::IncludeModule('iblock');
+$arSelect = Array("ID", "NAME", "PREVIEW_TEXT",'PROPERTY_BG_COLOR','PROPERTY_TEXT_COLOR','PROPERTY_TEXT_BTN','PROPERTY_PRODUCTS','PROPERTY_BG','PROPERTY_LINK_BTN');
+$arFilter = Array("IBLOCK_ID"=>78, "ACTIVE"=>"Y");
+$res = CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize"=>1), $arSelect);
+while($ob = $res->Fetch()) {
+    if($ob['PROPERTY_BG_VALUE']){
+        $ob['BG'] = CFile::GetPath($ob['PROPERTY_BG_VALUE']);
+    }
+    $arSettings = $ob;
+}
+?>
+<div class="section category-section" style="background-image:url(<?=$arSettings['BG']?>);background-color:<?=$arSettings['PROPERTY_BG_COLOR_VALUE']?>;">
 	<div class="container">
 		<div class="category-section-body">
 			<div class="category-section-content">
 				<div class="category-section-title">
-					 Товары для спорта и фитнеса
+					 <?=$arSettings['NAME']?>
 				</div>
 				<div class="category-section-desc">
-					 Позаботьтесь о себе и своих близких
+                    <?=$arSettings['PREVIEW_TEXT']?>
 				</div>
-                <a href="#" class="category-section-btn btn btn-border btn-white">Все товары</a>
+                <a href="<?=$arSettings['PROPERTY_LINK_BTN_VALUE']?>" class="category-section-btn btn btn-border btn-white"><?=$arSettings['PROPERTY_TEXT_BTN_VALUE']?></a>
 			</div>
 		</div>
 		<div class="category-section-products">
 			<div class="category-section-products-slider">
                 <?
                 global $arFitness;
-                $arFitness['PROPERTY_FOR_FITNESS_VALUE'] = 'Y';
+                $arFitness['ID'] = $arSettings['PROPERTY_PRODUCTS_VALUE'];
                 $APPLICATION->IncludeComponent(
                     "bitrix:catalog.section",
                     "main.slider",
@@ -461,7 +474,7 @@ $APPLICATION->SetPageProperty('body-class', 'home');
                         "PAGER_SHOW_ALWAYS" => "N",
                         "PAGER_TEMPLATE" => ".default",
                         "PAGER_TITLE" => "Товары",
-                        "PAGE_ELEMENT_COUNT" => "6",
+                        "PAGE_ELEMENT_COUNT" => "3",
                         "PARTIAL_PRODUCT_PROPERTIES" => "N",
                         "PRICE_CODE" => array(
                             0 => "Договор эквайринга",

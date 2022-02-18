@@ -190,9 +190,12 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                         <i class="visible-mobile">
                             <svg width="16" height="16"><use xlink:href="#icon-star-fill"/></svg>
                         </i>
+                        <div class="review-main__stars product-head__stars">
+                            <div class="rating"><div class="rating-state" style="width:<?=(($arResult['AVG_RATING']/5)*100);?>%;"></div></div>
+                        </div>
 
 							<?
-							$APPLICATION->IncludeComponent(
+							/*$APPLICATION->IncludeComponent(
 								'bitrix:iblock.vote',
 								'bootstrap_v4',
 								array(
@@ -211,12 +214,14 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
 								),
 								$component,
 								array('HIDE_ICONS' => 'Y')
-							);
+							);*/
 							?>
 
 
-
-                        <a href="#" class="product-reviews-count">120 отзывов</a>
+                        <?
+                        $all_count = count($arResult['REVIEWS']);
+                        ?>
+                        <a href="javascript:void(0)" class="product-reviews-count"><?=$all_count;?> <?=endingsForm($all_count,'отзыв','отзыва','отзывов');?></a>
                     </div>
                     <a href="javascript:void(0)" data-product="<?=$arResult['ID']?>" class="js-add-favorites add-to-favorites-btn product-favorites">
                         <svg width="24" height="24"><use xlink:href="#icon-like"/></svg>
@@ -276,14 +281,7 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                             if ($haveOffers)
                             {
                                 ?>
-                                <div class="product-item-label-ring <?=$discountPositionClass?>" id="<?=$itemIds['DISCOUNT_PERCENT_ID']?>"
-                                     style="display: none; width: 128px;
-                                                height: 40px;
-                                                line-height: 40px;
-                                                top: 20px;
-
-                                                background: linear-gradient(90deg, #FF5858 0%, #F09819 100%);
-                                                border-radius: 3px;">
+                                <div class="product-detail-discount-label <?=$discountPositionClass?>" id="<?=$itemIds['DISCOUNT_PERCENT_ID']?>" style="display: none;">
                                 </div>
                                 <?php
                             }
@@ -838,25 +836,24 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                     </div>
                     <div class="product-info product-price">
                         <div class="product-info-title">Цена:</div>
-                        <div class="product-price-old"></div>
+                        <?if($price['PRINT_BASE'] != $price['PRINT']):?>
+                            <div class="product-price-old" id="<?=$itemIds['OLD_PRICE_ID']?>">
+                                <?=$price['PRINT_BASE_PRICE'];?>
+                            </div>
+                        <?endif;?>
                         <div class="product-price-body">
-
-
                             <div class="product-cost"><span id="<?=$itemIds['PRICE_TOTAL']?>"></span></div>
                             <div class="product-cost-unit" id="<?=$itemIds['PRICE_ID']?>"><?=$price['PRINT_RATIO_PRICE']?> за
-                            <span id="<?=$itemIds['QUANTITY_MEASURE']?>"><?=$actualItem['ITEM_MEASURE']['TITLE']?></span></div>
-                            <span id="<?=$itemIds['QUANTITY_MEASURE']?>"><?=$actualItem['ITEM_MEASURE']['TITLE']?></span>
+                            <?/*span id="<?=$itemIds['QUANTITY_MEASURE']?>"> / <?=$actualItem['ITEM_MEASURE']['TITLE']?></span*/?></div>
+                            <span> / </span><span id="<?=$itemIds['QUANTITY_MEASURE']?>"><?=$actualItem['ITEM_MEASURE']['TITLE']?></span>
                             <span id="<?=$itemIds['PRICE_TOTAL']?>"></span>
                         </div>
                     </div>
 
-                    <div data-entity="main-button-container"
-                         class="mb-3">
+                    <div data-entity="main-button-container" class="mb-3">
 
                     </div>
-
-                    <div class="product-info product-btns"
-                         data-entity="main-button-container">
+                    <div class="product-info product-btns" data-entity="main-button-container">
                         <?
                         $APPLICATION->IncludeComponent('bitrix:catalog.product.subscribe', '', array(
                                 'CUSTOM_SITE_ID'     => isset($arParams['CUSTOM_SITE_ID']) ? $arParams['CUSTOM_SITE_ID'] : null,
@@ -867,14 +864,12 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                                 'MESS_BTN_SUBSCRIBE' => $arParams['~MESS_BTN_SUBSCRIBE'],
                             ), $component, array('HIDE_ICONS' => 'Y'));
                         ?>
-                        <div id="<?= $itemIds['BASKET_ACTIONS_ID'] ?>"
-                             style="display: <?= ($actualItem['CAN_BUY'] ? '' : 'none') ?>;">
+                        <div id="<?= $itemIds['BASKET_ACTIONS_ID'] ?>" style="display: <?= ($actualItem['CAN_BUY'] ? '' : 'none') ?>;">
                             <ul class="product-btns-list">
                                 <li>
                                     <a href="javascript:void(0);"
                                        id="<?= $itemIds['ADD_BASKET_LINK'] ?>"
-                                       class="<?= $showButtonClassName ?> btn btn-large btn-full product-cart-btn
-                                    add-to-cart-btn"
+                                       class="<?= $showButtonClassName ?> btn btn-large btn-full product-cart-btn add-to-cart-btn"
                                        data-text="Добавить в корзину"
                                        data-text-active="В корзине">Добавить
                                         в
@@ -887,13 +882,11 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                                         Купить в один клик
                                     </a>
                                 </li*/?>
-
                                 <?/*li>
                                     <a href="#modal-registration" class="btn btn-large btn-full btn-border btn-border-alt product-registration-btn modal-open-btn">Зарегистистрируйтесь и получите скидку на первую покупку</a>
                                 </li*/?>
                             </ul>
                         </div>
-
                     </div>
 
                     <?/*div class="product-info product-state product-state-available">В наличии</div*/?>
@@ -925,37 +918,6 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                     <div class="product-info product-delivery">
                         <div class="product-info-title">Доставка:</div>
                         <div class="product-info-desc">
-                            <?//pre(getHomeDeliveryByLocationAndPriceRestriction('0000550426',100,getLocationToDeliveryEntity()));?>
-                            <?//pre(getHomeDeliveryByLocationAndPriceRestriction('0000073738',100,getLocationToDeliveryEntity()));?>
-
-<?//pre(getLocationToDeliveryEntity());?>
-                            <?pre($_SESSION);?>
-                            <? $APPLICATION->IncludeComponent( "prymery:geoip.city",
-                                ".default",
-                                array(
-                                    "COMPONENT_TEMPLATE" => ".default",
-                                    "CITY_SHOW" => "Y",
-                                    "CITY_LABEL" => "Ваш город:",
-                                    "QUESTION_SHOW" => "N",
-                                    "QUESTION_TEXT" => "Ваш город<br/>#CITY#?",
-                                    "INFO_SHOW" => "N",
-                                    "INFO_TEXT" => "<a href=\"#\" rel=\"nofollow\" target=\"_blank\">Подробнее о доставке</a>",
-                                    "BTN_EDIT" => "Изменить город",
-                                    "SEARCH_SHOW" => "Y",
-                                    "FAVORITE_SHOW" => "Y",
-                                    "CITY_COUNT" => "30",
-                                    "FID" => "12",
-                                    "CACHE_TYPE" => "A",
-                                    "CACHE_TIME" => "3600",
-                                    "COMPOSITE_FRAME_MODE" => "A",
-                                    "COMPOSITE_FRAME_TYPE" => "AUTO",
-                                    "POPUP_LABEL" => "МЫ ДОСТАВЛЯЕМ ПО ВСЕЙ РОССИИ!",
-                                    "INPUT_LABEL" => "Введите название города...",
-                                    "MSG_EMPTY_RESULT" => "Ничего не найдено"
-                                ),
-                                $component
-                            ); ?>
-
                             <? $APPLICATION->IncludeComponent( "prymery:geoip.delivery",
                                 ".default",
                                 array(
@@ -967,13 +929,10 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                                     "PRODUCT_ID" => $arResult['ID'],
                                     "IMG_SHOW" => "Y",
                                     "PROLOG" => "Способы доставки в ваш город - #CITY#",
-                                    "EPILOG" => "Бесплатная доставка от 5000 руб."
+//                                    "EPILOG" => "Бесплатная доставка от 5000 руб."
                                 ),
                                 $component
                             ); ?>
-                            <?/*p>Доставим по Москве и МО 05 марта - от 100 ₽</p>
-                            <p>Самовывоз в магазине в Москве 04 марта - бесплатно</p>
-                            <p>В пункте выдачи 05 марта - от 1 ₽</p*/?>
                         </div>
                     </div>
                     <div class="product-info product-short-desc">
@@ -1380,15 +1339,19 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
 		?>
     </div>
 
-
+    <?
+    $all_count = count($arResult['REVIEWS']);
+    ?>
     <div class="section product-tabs-section">
         <div class="container">
             <div class="product-tabs-nav-wrapp">
                 <ul class="product-tabs-nav tabs-nav" data-tabs="#product-tabs">
                     <li class="active"><a href="#product-tab-1">Описание товара</a></li>
-                    <li><a href="#product-tab-2">Отзывы (120)</a></li>
+                    <li><a href="#product-tab-2">Отзывы (<?=$all_count;?>)</a></li>
                     <li><a href="#product-tab-3">Видеообзор</a></li>
-                    <li><a href="#product-tab-4">Статьи</a></li>
+                    <?if($arResult['ARTICLES']):?>
+                        <li><a href="#product-tab-4">Статьи</a></li>
+                    <?endif;?>
                 </ul>
             </div>
             <div id="product-tabs" class="tabs-wrapp">
@@ -1455,409 +1418,169 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                         </div>
                     </div>
                 </div>
+
                 <div id="product-tab-2" class="tab-block">
 
                     <div class="product-tab-section">
-
-
-							<?
-							$componentCommentsParams = array(
-								'ELEMENT_ID' => $arResult['ID'],
-								'ELEMENT_CODE' => '',
-								'IBLOCK_ID' => $arParams['IBLOCK_ID'],
-								'SHOW_DEACTIVATED' => $arParams['SHOW_DEACTIVATED'],
-								'URL_TO_COMMENT' => '',
-								'WIDTH' => '',
-								'COMMENTS_COUNT' => '5',
-								'BLOG_USE' => "Y",
-								'FB_USE' => $arParams['FB_USE'],
-								'FB_APP_ID' => $arParams['FB_APP_ID'],
-								'VK_USE' => $arParams['VK_USE'],
-								'VK_API_ID' => $arParams['VK_API_ID'],
-								'CACHE_TYPE' => $arParams['CACHE_TYPE'],
-								'CACHE_TIME' => $arParams['CACHE_TIME'],
-								'CACHE_GROUPS' => $arParams['CACHE_GROUPS'],
-								'BLOG_TITLE' => '',
-								'BLOG_URL' => $arParams['BLOG_URL'],
-								'PATH_TO_SMILE' => '',
-								'EMAIL_NOTIFY' => $arParams['BLOG_EMAIL_NOTIFY'],
-								'AJAX_POSTUSE_COMMENTS' => 'Y',
-								'SHOW_SPAM' => 'Y',
-								'SHOW_RATING' => 'N',
-								'FB_TITLE' => '',
-								'FB_USER_ADMIN_ID' => '',
-								'FB_COLORSCHEME' => 'light',
-								'FB_ORDER_BY' => 'reverse_time',
-								'VK_TITLE' => '',
-								'TEMPLATE_THEME' => $arParams['~TEMPLATE_THEME']
-							);
-							if(isset($arParams["USER_CONSENT"]))
-								$componentCommentsParams["USER_CONSENT"] = $arParams["USER_CONSENT"];
-							if(isset($arParams["USER_CONSENT_ID"]))
-								$componentCommentsParams["USER_CONSENT_ID"] = $arParams["USER_CONSENT_ID"];
-							if(isset($arParams["USER_CONSENT_IS_CHECKED"]))
-								$componentCommentsParams["USER_CONSENT_IS_CHECKED"] = $arParams["USER_CONSENT_IS_CHECKED"];
-							if(isset($arParams["USER_CONSENT_IS_LOADED"]))
-								$componentCommentsParams["USER_CONSENT_IS_LOADED"] = $arParams["USER_CONSENT_IS_LOADED"];
-							$APPLICATION->IncludeComponent(
-								'bitrix:catalog.comments',
-								'',
-								$componentCommentsParams,
-								$component,
-								array('HIDE_ICONS' => 'Y')
-							);
-							?>
-
-
-                        <div class="product-tab-title product-tab-review-title">Все отзывы <span>(120)</span></div>
-
-                        <div class="product-tab-reviews">
-                            <div class="product-review">
-
-
-                                <div class="product-review-name">Кирилл Сергеев</div>
-
-                                <div class="product-review-info">
-                                    <div class="rating">
-                                        <div class="rating-state" style="width:70%;"></div>
+                        <div class="tab-product-reviews__head">
+                            <div class="tab-product-reviews__title">
+                                <div class="product-tab-title product-tab-review-title">Все отзывы <span>(<?=$all_count?>)</span></div>
+                                <?global $USER;
+                                if(!$USER->IsAuthorized()):?>
+                                    <div class="custom-modal modal-user-enter">
+                                        <div class="custom-modal__content">
+                                            <div class="custom-modal__close"><svg class="icon"><use xlink:href="#icon-close"></use></svg></div>
+                                            <div class="custom-modal__description">
+                                                Для того, чтобы написать отзыв вам необходимо войти в свой аккаунт или зарегистрироваться на сайте
+                                            </div>
+                                            <div class="custom-modal__footer">
+                                                <a href="#">Регистрация</a> <span>|</span> <a href="#">Вход</a>
+                                            </div>
+                                        </div>
+                                        <div class="custom-modal__bg"></div>
                                     </div>
-                                    <div class="product-review-date">13 марта 2021 г.</div>
-                                </div>
-                                <div class="product-review-text">
-                                    <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
-                                </div>
-
-
+                                <?endif;?>
+                                <a href="#" class="<?if(!$USER->IsAuthorized()):?>js-open-user-enter <?endif;?>btn btn-review-toggle desktop"><span>Написать отзыв</span><span>Закрыть отзыв</span></a>
                             </div>
-                            <div class="product-review">
-
-
-                                <div class="product-review-name">Кирилл Сергеев</div>
-
-                                <div class="product-review-info">
-                                    <div class="rating">
-                                        <div class="rating-state" style="width:70%;"></div>
+                            <div class="tab-product-reviews__main">
+                                <div class="reviews-main">
+                                    <div class="reviews-main__head">
+                                        <div class="review-main__val"><?=$arResult['AVG_RATING']?></div>
+                                        <div class="review-main__description">На основании <?=$all_count;?> <?=endingsForm($all_count,'отзыва','отзывов','отзывов');?></div>
+                                        <div class="review-main__stars">
+                                            <div class="rating"><div class="rating-state" style="width:<?=(($arResult['AVG_RATING']/5)*100);?>%;"></div></div>
+                                        </div>
                                     </div>
-                                    <div class="product-review-date">13 марта 2021 г.</div>
-                                </div>
-                                <div class="product-review-text">
-                                    <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
-                                </div>
-
-
-                                <div class="product-review-imgs">
-                                    <button class="slider-arrow slider-arrow-prev" aria-label="Назад">
-                                        <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
-                                    </button>
-                                    <button class="slider-arrow slider-arrow-next" aria-label="Вперед">
-                                        <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
-                                    </button>
-                                    <div class="product-review-imgs-slider swiper-container">
-                                        <div class="swiper-wrapper">
-
-
-                                            <div class="product-review-imgs-slide swiper-slide">
-                                                <a href="img/product-img-full.jpg" data-fancybox="product-review-2">
-                                                    <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
-                                                </a>
-                                            </div>
-
-                                            <div class="product-review-imgs-slide swiper-slide">
-                                                <a href="img/product-img-full.jpg" data-fancybox="product-review-2">
-                                                    <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
-                                                </a>
-                                            </div>
-
-                                            <div class="product-review-imgs-slide swiper-slide">
-                                                <a href="img/product-img-full.jpg" data-fancybox="product-review-2">
-                                                    <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
-                                                </a>
-                                            </div>
-
-                                            <div class="product-review-imgs-slide swiper-slide">
-                                                <a href="img/product-img-full.jpg" data-fancybox="product-review-2">
-                                                    <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
-                                                </a>
-                                            </div>
-
-                                            <div class="product-review-imgs-slide swiper-slide">
-                                                <a href="img/product-img-full.jpg" data-fancybox="product-review-2">
-                                                    <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
-                                                </a>
-                                            </div>
-
-
-
-
-
+                                    <div class="reviews-main__values">
+                                        <?
+                                        if($arResult['REVIEWS_GROUP'][5]){
+                                            $percent_5 = round((count($arResult['REVIEWS_GROUP'][5])*100)/$all_count);
+                                        }
+                                        if($arResult['REVIEWS_GROUP'][4]){
+                                            $percent_4 = round((count($arResult['REVIEWS_GROUP'][4])*100)/$all_count);
+                                        }
+                                        if($arResult['REVIEWS_GROUP'][3]){
+                                            $percent_3 = round((count($arResult['REVIEWS_GROUP'][3])*100)/$all_count);
+                                        }
+                                        if($arResult['REVIEWS_GROUP'][2]){
+                                            $percent_2 = round((count($arResult['REVIEWS_GROUP'][2])*100)/$all_count);
+                                        }
+                                        if($arResult['REVIEWS_GROUP'][1]){
+                                            $percent_1 = round((count($arResult['REVIEWS_GROUP'][1])*100)/$all_count);
+                                        }
+                                        ?>
+                                        <div class="review-main__value">
+                                            <div class="review-main__grade">5</div>
+                                            <div class="review-main__slider"><div class="review-main__slider-track" style="width: <?=$percent_5;?>%"></div></div>
+                                            <div class="review-main__percentage"><?=$percent_5;?><?if($percent_5):?>%<?endif;?></div>
+                                        </div>
+                                        <div class="review-main__value">
+                                            <div class="review-main__grade">4</div>
+                                            <div class="review-main__slider"><div class="review-main__slider-track" style="width: <?=$percent_4;?>%"></div></div>
+                                            <div class="review-main__percentage"><?=$percent_4;?><?if($percent_4):?>%<?endif;?></div>
+                                        </div>
+                                        <div class="review-main__value">
+                                            <div class="review-main__grade">3</div>
+                                            <div class="review-main__slider"><div class="review-main__slider-track" style="width: <?=$percent_3;?>%"></div></div>
+                                            <div class="review-main__percentage"><?=$percent_3;?><?if($percent_3):?>%<?endif;?></div>
+                                        </div>
+                                        <div class="review-main__value">
+                                            <div class="review-main__grade">2</div>
+                                            <div class="review-main__slider"><div class="review-main__slider-track" style="width: <?=$percent_2;?>%"></div></div>
+                                            <div class="review-main__percentage"><?=$percent_2;?><?if($percent_2):?>%<?endif;?></div>
+                                        </div>
+                                        <div class="review-main__value">
+                                            <div class="review-main__grade">1</div>
+                                            <div class="review-main__slider"><div class="review-main__slider-track" style="width: <?=$percent_1;?>%"></div></div>
+                                            <div class="review-main__percentage"><?=$percent_1;?><?if($percent_1):?>%<?endif;?></div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-                            <div class="product-review">
-
-
-                                <div class="product-review-name">Кирилл Сергеев</div>
-
-                                <div class="product-review-info">
-                                    <div class="rating">
-                                        <div class="rating-state" style="width:70%;"></div>
-                                    </div>
-                                    <div class="product-review-date">13 марта 2021 г.</div>
-                                </div>
-                                <div class="product-review-text">
-                                    <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
-                                </div>
-
-                                <div class="product-review-answer">
-                                    <div class="product-review-answer-head">
-                                        <div class="product-review-name">Гипермед</div>
-                                        <div class="product-review-date">13 марта 2021 г.</div>
+                            <a href="javascript:void(0)" class="btn btn-review-toggle mobile"><span>Написать отзыв</span><span>Закрыть отзыв</span></a>
+                        </div>
+                        <?
+                        global $USER;
+                        if($USER->IsAuthorized()):?>
+                            <?$APPLICATION->IncludeComponent(
+                                "prymery:feedback.form",
+                                "add-reviews",
+                                array(
+                                    "ARFIELDS" => array(
+                                        0 => "RATING",
+                                        1 => "MESSAGE",
+                                        2 => "FILES",
+                                        2 => "USER_ID",
+                                    ),
+                                    "REQUEST_ARFIELDS" => array(
+                                        0 => "MESSAGE",
+                                        1 => "RATING",
+                                    ),
+                                    "COMPONENT_TEMPLATE" => ".default",
+                                    "EMAIL_TO" => "apdnnb@mail.ru",
+                                    "SUCCESS_MESSAGE_TITLE" => "Ваш отзыв отправлен!",
+                                    "SUCCESS_MESSAGE" => "Отзыв будет опубликован после проверки модератором.",
+                                    "GOAL_METRIKA" => "",
+                                    "GOAL_ANALITICS" => "",
+                                    "USE_CAPTCHA" => "N",
+                                    "SAVE" => "Y",
+                                    "ELEMENT_ID" => $arResult['ID'],
+                                    "BUTTON" => "Отправить",
+                                    "TITLE" => "Написать отзыв",
+                                    "SUBTITLE" => "",
+                                    "PERSONAL_DATA" => "Y",
+                                    "PERSONAL_DATA_PAGE" => "/policy/",
+                                    "LEAD_IBLOCK" => 77,
+                                    "LINK_ELEMENT_IBLOCK" => IBLOCK_CATALOG_ID
+                                ),
+                                false
+                            ); ?>
+                        <?endif;?>
+                        <div class="product-tab-reviews">
+                            <?foreach($arResult['REVIEWS'] as $item):?>
+                                <div class="product-review">
+                                    <div class="product-review-name"><?=$item['NAME']?></div>
+                                    <div class="product-review-info">
+                                        <div class="rating">
+                                            <div class="rating-state" style="width:<?=(($item['PROPERTY_RATING_VALUE']/5)*100);?>%;"></div>
+                                        </div>
+                                        <div class="product-review-date">
+                                            <?=FormatDate(array("" => 'j F Y'), MakeTimeStamp($item["DATE_CREATE"]), time());?>
+                                        </div>
                                     </div>
                                     <div class="product-review-text">
-                                        <p>Здравствуйте Кирилл, мы рады, что вам очень понравилась, данная подушка. Спасибо за комментарий!
+                                        <p><?=$item['PREVIEW_TEXT']?></p>
                                     </div>
-                                </div>
-
-
-                                <div class="product-review-imgs">
-                                    <button class="slider-arrow slider-arrow-prev" aria-label="Назад">
-                                        <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
-                                    </button>
-                                    <button class="slider-arrow slider-arrow-next" aria-label="Вперед">
-                                        <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
-                                    </button>
-                                    <div class="product-review-imgs-slider swiper-container">
-                                        <div class="swiper-wrapper">
-
-
-
-                                            <div class="product-review-imgs-slide swiper-slide">
-                                                <a href="img/product-img-full.jpg" data-fancybox="product-review-3">
-                                                    <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
-                                                </a>
+                                    <?if($item['FILES']):?>
+                                        <div class="product-review-imgs">
+                                            <button class="slider-arrow slider-arrow-prev" aria-label="Назад">
+                                                <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
+                                            </button>
+                                            <button class="slider-arrow slider-arrow-next" aria-label="Вперед">
+                                                <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
+                                            </button>
+                                            <div class="product-review-imgs-slider swiper-container">
+                                                <div class="swiper-wrapper">
+                                                    <?foreach($item['FILES'] as $file):?>
+                                                        <div class="product-review-imgs-slide swiper-slide">
+                                                            <a href="<?=$file['BIG']?>" data-fancybox="product-review-<?=$item['ID']?>">
+                                                                <img src="<?=$file['SMALL']['src']?>" alt="">
+                                                            </a>
+                                                        </div>
+                                                    <?endforeach;?>
+                                                </div>
                                             </div>
-
-                                            <div class="product-review-imgs-slide swiper-slide">
-                                                <a href="img/product-img-full.jpg" data-fancybox="product-review-3">
-                                                    <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
-                                                </a>
-                                            </div>
-
-                                            <div class="product-review-imgs-slide swiper-slide">
-                                                <a href="img/product-img-full.jpg" data-fancybox="product-review-3">
-                                                    <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
-                                                </a>
-                                            </div>
-
-
-
-
                                         </div>
-                                    </div>
+                                    <?endif;?>
                                 </div>
-
-                            </div>
-                            <div class="product-review">
-
-
-                                <div class="product-review-name">Кирилл Сергеев</div>
-
-                                <div class="product-review-info">
-                                    <div class="rating">
-                                        <div class="rating-state" style="width:70%;"></div>
-                                    </div>
-                                    <div class="product-review-date">13 марта 2021 г.</div>
-                                </div>
-                                <div class="product-review-text">
-                                    <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
-                                </div>
-
-
-                                <div class="product-review-imgs">
-                                    <button class="slider-arrow slider-arrow-prev" aria-label="Назад">
-                                        <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
-                                    </button>
-                                    <button class="slider-arrow slider-arrow-next" aria-label="Вперед">
-                                        <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
-                                    </button>
-                                    <div class="product-review-imgs-slider swiper-container">
-                                        <div class="swiper-wrapper">
-
-
-
-                                            <div class="product-review-imgs-slide swiper-slide">
-                                                <a href="img/product-img-full.jpg" data-fancybox="product-review-4">
-                                                    <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
-                                                </a>
-                                            </div>
-
-                                            <div class="product-review-imgs-slide swiper-slide">
-                                                <a href="img/product-img-full.jpg" data-fancybox="product-review-4">
-                                                    <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
-                                                </a>
-                                            </div>
-
-                                            <div class="product-review-imgs-slide swiper-slide">
-                                                <a href="img/product-img-full.jpg" data-fancybox="product-review-4">
-                                                    <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
-                                                </a>
-                                            </div>
-
-
-
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="product-review">
-
-
-                                <div class="product-review-name">Кирилл Сергеев</div>
-
-                                <div class="product-review-info">
-                                    <div class="rating">
-                                        <div class="rating-state" style="width:70%;"></div>
-                                    </div>
-                                    <div class="product-review-date">13 марта 2021 г.</div>
-                                </div>
-                                <div class="product-review-text">
-                                    <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
-                                </div>
-
-
-                            </div>
-                            <div class="product-review">
-
-
-                                <div class="product-review-name">Кирилл Сергеев</div>
-
-                                <div class="product-review-info">
-                                    <div class="rating">
-                                        <div class="rating-state" style="width:70%;"></div>
-                                    </div>
-                                    <div class="product-review-date">13 марта 2021 г.</div>
-                                </div>
-                                <div class="product-review-text">
-                                    <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
-                                </div>
-
-
-                            </div>
-                            <div class="product-review">
-
-
-                                <div class="product-review-name">Кирилл Сергеев</div>
-
-                                <div class="product-review-info">
-                                    <div class="rating">
-                                        <div class="rating-state" style="width:70%;"></div>
-                                    </div>
-                                    <div class="product-review-date">13 марта 2021 г.</div>
-                                </div>
-                                <div class="product-review-text">
-                                    <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
-                                </div>
-
-
-                                <div class="product-review-imgs">
-                                    <button class="slider-arrow slider-arrow-prev" aria-label="Назад">
-                                        <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
-                                    </button>
-                                    <button class="slider-arrow slider-arrow-next" aria-label="Вперед">
-                                        <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
-                                    </button>
-                                    <div class="product-review-imgs-slider swiper-container">
-                                        <div class="swiper-wrapper">
-
-
-
-                                            <div class="product-review-imgs-slide swiper-slide">
-                                                <a href="img/product-img-full.jpg" data-fancybox="product-review-7">
-                                                    <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
-                                                </a>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="product-review">
-
-
-                                <div class="product-review-name">Кирилл Сергеев</div>
-
-                                <div class="product-review-info">
-                                    <div class="rating">
-                                        <div class="rating-state" style="width:70%;"></div>
-                                    </div>
-                                    <div class="product-review-date">13 марта 2021 г.</div>
-                                </div>
-                                <div class="product-review-text">
-                                    <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
-                                </div>
-
-
-                            </div>
-                            <div class="product-review">
-
-
-                                <div class="product-review-name">Кирилл Сергеев</div>
-
-                                <div class="product-review-info">
-                                    <div class="rating">
-                                        <div class="rating-state" style="width:70%;"></div>
-                                    </div>
-                                    <div class="product-review-date">13 марта 2021 г.</div>
-                                </div>
-                                <div class="product-review-text">
-                                    <p>Очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец, очень удобная подушка, со временем перестала болеть шея, сплю всю ночь как младенец.
-                                </div>
-
-
-                                <div class="product-review-imgs">
-                                    <button class="slider-arrow slider-arrow-prev" aria-label="Назад">
-                                        <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
-                                    </button>
-                                    <button class="slider-arrow slider-arrow-next" aria-label="Вперед">
-                                        <svg width="30" height="30"><use xlink:href="#icon-arrow-down"/></svg>
-                                    </button>
-                                    <div class="product-review-imgs-slider swiper-container">
-                                        <div class="swiper-wrapper">
-
-
-
-
-
-                                            <div class="product-review-imgs-slide swiper-slide">
-                                                <a href="img/product-img-full.jpg" data-fancybox="product-review-9">
-                                                    <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
-                                                </a>
-                                            </div>
-
-                                            <div class="product-review-imgs-slide swiper-slide">
-                                                <a href="img/product-img-full.jpg" data-fancybox="product-review-9">
-                                                    <img src="img/product-img-small.jpg" srcset="img/product-img-small@2x.jpg 2x" alt="">
-                                                </a>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
+                            <?endforeach;?>
                         </div>
                         <div class="read-more-btn-wrapp">
                             <a href="#" class="btn read-more-btn">Показать ещё</a>
                         </div>
                     </div>
                 </div>
+
                 <div id="product-tab-3" class="tab-block">
                     <div class="product-tab-section">
                         <div class="product-tab-title product-tab-video-title"><div>Видеообзор</div>
@@ -1885,36 +1608,38 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                         </div>
                     </div>
                 </div>
-                <div id="product-tab-4" class="tab-block">
-                    <div class="product-tab-section">
-                        <div class="product-tab-title product-tab-articles-title">Статьи</div>
-                        <div class="product-articles-row articles-row flex-row">
-                            <? foreach($element->getArticles() as $article):?>
-                            <div class="articles-col flex-row-item swiper-slide">
-                                <div class="article-item">
-                                    <a href="<?=$article["DETAIL_PAGE_URL"]?>" class="item-link" aria-label="Читать статью"></a>
-                                    <div class="article-item-img">
-                                        <span><img src="<?=$article["PICTURE"]?>" srcset="<?=$article["PICTURE2X"]?>
-                                        2x"
-                                                   alt=""></span>
-                                    </div>
-                                    <div class="article-item-body">
-                                        <div class="article-item-title"><?=$article["NAME"]?></div>
-                                        <div class="article-item-desc"><?=$article["TEXT"]?></div>
-                                        <div class="article-item-foot">
-                                            <div class="article-item-views">
-                                                <svg width="20" height="20"><use xlink:href="#icon-eye"/></svg>
-                                                <span><?=$article["VIEW_COUNTER"]?></span>
+                <?if($arResult['ARTICLES']):?>
+                    <div id="product-tab-4" class="tab-block">
+                        <div class="product-tab-section">
+                            <div class="product-tab-title product-tab-articles-title">Статьи</div>
+                            <div class="product-articles-row articles-row flex-row">
+                                <? foreach($arResult['ARTICLES'] as $article):?>
+                                <div class="articles-col flex-row-item swiper-slide">
+                                    <div class="article-item">
+                                        <a href="<?=$article["DETAIL_PAGE_URL"]?>" class="item-link" aria-label="Читать статью"></a>
+                                        <div class="article-item-img">
+                                            <span><img src="<?=$article["PREVIEW_PICTURE"]?>" alt="<?=$article["NAME"]?>"></span>
+                                        </div>
+                                        <div class="article-item-body">
+                                            <div class="article-item-title"><?=$article["NAME"]?></div>
+                                            <div class="article-item-desc"><?=cut_string($article["PREVIEW_TEXT"],100)?></div>
+                                            <div class="article-item-foot">
+                                                <div class="article-item-views">
+                                                    <svg width="20" height="20"><use xlink:href="#icon-eye"/></svg>
+                                                    <span><?=$article["SHOW_COUNTER"]?></span>
+                                                </div>
+                                                <div class="article-item-btn">
+                                                    Читать >
+                                                </div>
                                             </div>
-                                            <div class="article-item-btn">Читать</div>
                                         </div>
                                     </div>
                                 </div>
+                                <?endforeach;?>
                             </div>
-                            <?endforeach;?>
                         </div>
                     </div>
-                </div>
+                <?endif;?>
             </div>
             <div class="product-programm visible-tablet">
                 <?if($element->getIPRA()):?>

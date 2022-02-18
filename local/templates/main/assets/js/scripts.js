@@ -59,8 +59,254 @@ function addToFavorite(id){
         }
     });
 }
-///
+
+
 $(document).ready(function () {
+    $('.custom-file__value').on('change', function(){
+        const chooseSelector = this;
+        const chooseFiles = chooseSelector.files[0];
+        if ( chooseFiles ) {
+            console.log(chooseFiles);
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(chooseFiles);
+            fileReader.addEventListener("load", function () {
+                $(chooseSelector).closest('.custom-file__item').addClass('file-loaded');
+                $(chooseSelector).prev().empty().append('<img src="' + this.result + '" />');
+            });
+        }
+    });
+
+    const chooseFile = document.querySelector('.reviews-photo__value');
+    $('.reviews-photo__value').on('change', function(){
+        getImgData();
+    });
+
+    function getImgData() {
+        const files = chooseFile.files;
+        if (files) {
+            $('.review-item__photo').removeClass('current-photo').empty();
+            for ( let i = 0; i < chooseFile.files.length; i++ ) {
+                const fileReader = new FileReader();
+                fileReader.readAsDataURL(files[i]);
+                fileReader.addEventListener("load", function () {
+                    $('.review-item__photo').eq(i).append('<img src="' + this.result + '" />');
+                });
+            }
+            if ( chooseFile.files.length < 5 ) {
+                $('.review-item__photo').eq(chooseFile.files.length).addClass('current-photo');
+            }
+        }
+    }
+
+    $(".js-datepicker").datepicker({
+        dateFormat: 'dd/mm/yy',
+        changeYear: true,
+        changeMonth: true,
+        yearRange: "1940:2006",
+        firstDay: 1,
+        monthNames : ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь' ],
+        monthNamesShort : [ 'Янв', 'Февр', 'Март', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сент', 'Окт', 'Нояб', 'Дек' ],
+        dayNames: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота',  'Воскресенье' ],
+        dayNamesMin: [ 'Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб' ],
+    });
+
+    $('.jsChangeMail').on('click',function(){
+        $.getJSON('/local/ajax/profile.php',
+            {
+                FIELD: 'EMAIL',
+                PROMO_UPDATE: 'Y',
+                VAL: $(this).prev().val()
+            },
+            function (data) {
+
+            }
+        );
+    });
+    $('.jsDelProfile').on('click',function(){
+        $.getJSON('/local/ajax/del_profile.php',
+            {
+                DEL: 'Y',
+            },
+            function (data) {
+                location.reload();
+            }
+        );
+    });
+    $('.jsCloseModal').on('click',function(){
+        $('.modal-profile-delete').removeClass('open');
+    });
+
+    $('.notification-enable-all').on('click', function(){
+        $('.notification-checkbox').addClass('active');
+        $('.notification-checkbox').find('.checkbox-input').prop('checked', true);
+    });
+
+    $('.notification-disable-all').on('click', function(){
+        $('.notification-checkbox').removeClass('active');
+        $('.notification-checkbox').find('.checkbox-input').prop('checked', false);
+    });
+
+    $('.edit-personal-value').on('click', function(){
+        $(this).closest('.personal-info__val').addClass('editing').removeClass('editing-complete');
+    });
+
+    $('.personal-info__val .custom-checkbox').on('click', function(){
+        let currentTextValue = $(this).find('.custom-checkbox__text').text();
+        $(this).closest('.personal-info__val').removeClass('editing').addClass('editing-complete');
+        $(this).closest('.personal-info__val').find('.personal-info__val__current').text(currentTextValue);
+
+        $.getJSON('/local/ajax/profile.php',
+            {
+                FIELD: 'GENDER',
+                VAL: $('input[name=personal-gender]:checked').val()
+            },
+            function (data) {
+
+            }
+        );
+    });
+    $('input[name=personal-birthday]').on('change', function(){
+        $.getJSON('/local/ajax/profile.php',
+            {
+                FIELD: 'HB',
+                VAL: $('input[name=personal-birthday]').val()
+            },
+            function (data) {
+
+            }
+        );
+    });
+    $('.nameComplete').on('click', function(){
+        $.getJSON('/local/ajax/profile.php',
+            {
+                FIELD: 'NAME',
+                VAL: $('input[name=user-name]').val()
+            },
+            function (data) {
+
+            }
+        );
+    });
+    $('.notification-enable-all').on('click', function(){
+        $.getJSON('/local/ajax/profile.php',
+            {
+                FIELD: 'ALL_PROMO',
+                VAL: 1
+            },
+            function (data) {
+
+            }
+        );
+    });
+    $('.notification-disable-all').on('click', function(){
+        $.getJSON('/local/ajax/profile.php',
+            {
+                FIELD: 'ALL_PROMO',
+                VAL: 0
+            },
+            function (data) {
+
+            }
+        );
+    });
+    $('.promoJs').on('change', function(){
+        if($(this).prop('checked')){
+            var val = 1;
+        }else{
+            var val = 0;
+        }
+        $.getJSON('/local/ajax/profile.php',
+            {
+                PROMO_UPDATE: 'Y',
+                FIELD: $(this).data('code'),
+                VAL: val
+            },
+            function (data) {
+
+            }
+        );
+    });
+    $('.delAwait').on('click', function(){
+        $.getJSON('/local/ajax/del_await.php',
+            {
+                ITEM_ID: $(this).data('product'),
+                ID: $(this).data('id'),
+                ACTION: 'DEL'
+            },
+            function (data) {
+                location.reload();
+            }
+        );
+    });
+
+    $('.product-reviews-count').on('click', function(){
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $(".product-tabs-section").offset().top
+        }, 1000);
+        $('.product-tabs-nav li, .product-tabs-section .tab-block').removeClass('active');
+        $('.product-tabs-nav li:nth-child(2)').addClass('active');
+        $('#product-tab-2').addClass('active');
+
+    });
+
+    $('.step-completed').on('click', function(){
+        let currentTextValue = $(this).prev().val();
+        $(this).closest('.personal-info__val').removeClass('editing').addClass('editing-complete');
+        $(this).closest('.personal-info__val').find('.personal-info__val__current').text(currentTextValue);
+    });
+
+    $('.custom-modal__close, .custom-modal__bg').on('click', function(e){
+        e.preventDefault();
+        $(this).closest('.custom-modal').toggleClass('open');
+    });
+
+    $('.js-open-profile-delete').on('click', function(e){
+        e.preventDefault();
+        $('.modal-profile-delete').addClass('open');
+    });
+
+    $('.js-open-user-enter').on('click', function(e){
+        e.preventDefault();
+        $('.modal-user-enter').addClass('open');
+    });
+
+    $('.btn-review-toggle').on('click', function(e){
+        e.preventDefault();
+        if ( $(this).hasClass('js-open-user-enter') ) { return; }
+        $(this).closest('.product-tab-section').find('.btn-review-toggle').toggleClass('active');
+        $(this).closest('.product-tab-section').find('.new-review-add').stop().slideToggle();
+    });
+
+    $('.new-review-cancel').on('click', function(e){
+        e.preventDefault();
+        $(this).closest('.product-tab-section').find('.btn-review-toggle').toggleClass('active');
+        $(this).closest('.product-tab-section').find('.new-review-add').stop().slideToggle();
+    });
+
+    $('.js-rating-star li').on('mouseenter', function(){
+        if ( $(this).closest('.js-rating-star').hasClass('rating-set') ) { return; }
+        let ratingIndex = $(this).index();
+        $('.js-rating-star li').removeClass('active');
+        for ( let i = 0; i <= ratingIndex; i++ ) {
+            $('.js-rating-star li').eq(i).addClass('active');
+        }
+    });
+
+    $('.js-rating-star li').on('click', function(){
+        $('.js-rating-star').addClass('rating-set');
+        let ratingIndex = $(this).index();
+        $('rating-value').val(ratingIndex);
+        $('.js-rating-star li').removeClass('active');
+        for ( let i = 0; i <= ratingIndex; i++ ) {
+            $('.js-rating-star li').eq(i).addClass('active');
+        }
+        $('.rating-value').val(ratingIndex+1);
+    });
+
+    $('.js-review-message').on('input', function(){
+        $('.review-current-symbols').text($(this).val().length);
+    });
+
     let productHotSlidersList = document.querySelectorAll('.product-hot-slider-container ');
     productHotSlidersList.forEach(function(sliderItem) {
         const swiper = new Swiper(sliderItem.querySelector('.product-hot-slider'), {
@@ -1391,9 +1637,9 @@ $(document).ready(function () {
     });
     /* cabinet-profile-del-btn */
 
-    $(document).on('click', '.cabinet-profile-del-btn', function () {
-        $(this).addClass('active');
-    });
+    // $(document).on('click', '.cabinet-profile-del-btn', function () {
+    //     $(this).addClass('active');
+    // });
     /* cabinet-address */
 
     $(document).on('click', '.cabinet-address-add-btn', function () {

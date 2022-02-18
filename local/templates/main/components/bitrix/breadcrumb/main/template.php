@@ -13,7 +13,7 @@ if (empty($arResult))
 
 $content = '<ul class="breadcrumbs">';
 foreach ($arResult as $index => $item) {
-	$content.=$item['TITLE'];
+//	$content.=$item['TITLE'];
     if (!empty($item['LINK']) && $index !== count($arResult) - 1) {
         $content .= "<li><a href=\"{$item['LINK']}\">{$item['TITLE']}</a></li>";
     } else {

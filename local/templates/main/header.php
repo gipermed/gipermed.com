@@ -55,6 +55,7 @@ $user = User::current();
         SITE_TEMPLATE_PATH . 'assets/css/vendor/swiper-bundle.min.css',
         SITE_TEMPLATE_PATH . 'assets/css/vendor/jquery.fancybox.min.css',
         SITE_TEMPLATE_PATH . 'assets/css/vendor/jquery.ui.slider.css',
+        SITE_TEMPLATE_PATH . 'assets/css/vendor/jquery-ui.min.css',
 
         SITE_TEMPLATE_PATH . 'assets/css/styles.css',
 		//SITE_TEMPLATE_PATH . '/assets/css/jquery.fias.min.css',
@@ -70,7 +71,11 @@ $user = User::current();
         SITE_TEMPLATE_PATH . 'assets/js/vendor/jquery.fancybox.min.js',
         SITE_TEMPLATE_PATH . 'assets/js/vendor/jquery.ui.slider.js',
         SITE_TEMPLATE_PATH . 'assets/js/vendor/jquery.form.min.js',
+        SITE_TEMPLATE_PATH . 'assets/js/vendor/jquery-ui.min.js',
 		//SITE_TEMPLATE_PATH . 'assets/js/jquery.fias.min.js',
+		'/local/components/prymery/feedback.form/js/inputmask-robin.min.js',
+		'/local/components/prymery/feedback.form/js/jquery.form.min.js',
+		'/local/components/prymery/feedback.form/js/prForm.js',
 
         SITE_TEMPLATE_PATH . 'assets/js/scripts.js',
 		SITE_TEMPLATE_PATH . 'assets/js/scriptfunc.js',
@@ -167,12 +172,37 @@ function getGroupsByLocation($locationId)
         <div class="container">
             <div class="head-row flex-row">
                 <div class="head-col head-col-city flex-row-item">
-                    <a href="#modal-city" class="head-city-link modal-open-btn">
+                    <?/*a href="#modal-city" class="head-city-link modal-open-btn">
                         <svg width="24" height="24">
                             <use xlink:href="#icon-cursor"/>
                         </svg>
                         <span><span class="hidden-desktop">Ваш регион доставки:</span> <b><span class="user-region" > </span></b></span>
-                    </a>
+                    </a*/?>
+                    <? $APPLICATION->IncludeComponent( "prymery:geoip.city",
+                        ".default",
+                        array(
+                            "COMPONENT_TEMPLATE" => ".default",
+                            "CITY_SHOW" => "Y",
+                            "CITY_LABEL" => "Ваш регион доставки:",
+                            "QUESTION_SHOW" => "N",
+                            "QUESTION_TEXT" => "Ваш город<br/>#CITY#?",
+                            "INFO_SHOW" => "N",
+                            "INFO_TEXT" => "<a href=\"#\" rel=\"nofollow\" target=\"_blank\">Подробнее о доставке</a>",
+                            "BTN_EDIT" => "Изменить город",
+                            "SEARCH_SHOW" => "Y",
+                            "FAVORITE_SHOW" => "Y",
+                            "CITY_COUNT" => "30",
+                            "FID" => "12",
+                            "CACHE_TYPE" => "A",
+                            "CACHE_TIME" => "3600",
+                            "COMPOSITE_FRAME_MODE" => "A",
+                            "COMPOSITE_FRAME_TYPE" => "AUTO",
+                            "POPUP_LABEL" => "МЫ ДОСТАВЛЯЕМ ПО ВСЕЙ РОССИИ!",
+                            "INPUT_LABEL" => "Введите название города...",
+                            "MSG_EMPTY_RESULT" => "Ничего не найдено"
+                        ),
+                        $component
+                    ); ?>
                 </div>
                 <div class="head-col head-col-menu flex-row-item">
                     <?php $APPLICATION->IncludeComponent("bitrix:menu", "header", array(
@@ -658,5 +688,5 @@ function getGroupsByLocation($locationId)
         <?$APPLICATION->IncludeComponent("bitrix:breadcrumb", "main",[""]);?>
     <?endif;?>
     <?if($GLOBALS["PAGE"][1] == 'personal' && $GLOBALS['PAGE'][2]):?>
-        <a href="/personal/" class="btn-lk-return">< Вернуться в профиль</a>
+        <a href="/personal/main/" class="btn-lk-return">< Вернуться в профиль</a>
     <?endif;?>

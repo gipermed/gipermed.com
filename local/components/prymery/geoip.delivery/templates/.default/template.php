@@ -19,11 +19,11 @@
 
 		<? $frame = $this->createFrame('prymery__geoip__delivery-id' . $arParams['RAND_STRING'], false)->begin(); ?>
 
-		<? if (strlen(trim($arParams['PROLOG'])) > 0): ?>
+		<? /*if (strlen(trim($arParams['PROLOG'])) > 0): ?>
             <div class="prymery__geoip__delivery-prolog">
 				<?= preg_replace('/#CITY#/', '<span class="prymery__geoip__delivery-city js-prymery__geoip__delivery-city">' . $arResult['DEFAULT_CITY'] . '</span>', trim($arParams['PROLOG'])); ?>
             </div>
-		<? endif; ?>
+		<? endif; */?>
 
         <div class="prymery__geoip__delivery-preloader prymery__geoip__delivery-preloader--hide"></div>
 
@@ -41,9 +41,9 @@
 							?>
                             <td class="prymery__geoip__delivery-box-item-name <?= ($img ? ' prymery__geoip__delivery-box-item-name--image ' : ''); ?>">
 
-								<? if ($img): ?>
+								<? /*if ($img): ?>
                                         <img class="prymery__geoip__delivery-box-item-name-img" src="<?= $img['src']; ?>" alt="<?= $delivery['NAME']; ?>"/>
-								<? endif; ?>
+								<? endif; */?>
 
                                 <div class="prymery__geoip__delivery-box-item-name-text">
                                     <?if($arParams['SHOW_PARENT'] == 'Y' && !!$delivery['PARENT_NAME'])
@@ -111,11 +111,11 @@
 
 		<? $frame->beginStub(); ?>
 
-		<? if (strlen(trim($arParams['PROLOG'])) > 0): ?>
+		<?/* if (strlen(trim($arParams['PROLOG'])) > 0): ?>
             <div class="prymery__geoip__delivery-prolog">
 				<?= preg_replace('/#CITY#/', '<span class="prymery__geoip__delivery-city js-prymery__geoip__delivery-city">' . $arResult['DEFAULT_CITY'] . '</span>', trim($arParams['PROLOG'])); ?>
             </div>
-		<? endif; ?>
+		<? endif; */?>
 
         <div class="prymery__geoip__delivery-preloader prymery__geoip__delivery-preloader--hide"></div>
         <table class="prymery__geoip__delivery-box js-prymery__geoip__delivery-box" data-city="" data-location="" data-cookie-domain=""></table>
@@ -146,71 +146,54 @@
     
 <? else: ?>
 
-    <table class="prymery__geoip__delivery-box js-prymery__geoip__delivery-box" data-city="<?=$arParams['CITY'];?>" data-location="<?=$arParams['LOCATION'];?>"  >
+    <div class="prymery__geoip__delivery-box js-prymery__geoip__delivery-box" data-city="<?=$arParams['CITY'];?>" data-location="<?=$arParams['LOCATION'];?>"  >
 		<? if (count($arResult['ITEMS'])): ?>
 			<? foreach ($arResult['ITEMS'] as $delivery): ?>
 
-                <tr class="prymery__geoip__delivery-box-item  prymery__geoip__delivery-box-item--<?= $delivery['ID'] ?>">
-					<?php
-						$img = false;
-						if (intval($delivery['LOGOTIP']) && $arParams['IMG_SHOW'] == 'Y') {
-							$img = CFile::ResizeImageGet($delivery['LOGOTIP'], array('width' => $arParams['IMG_WIDTH'], 'height' => $arParams['IMG_HEIGHT']), BX_RESIZE_IMAGE_PROPORTIONAL_ALT);
-						}
-					?>
-                    <td class="prymery__geoip__delivery-box-item-name <?= ($img ? ' prymery__geoip__delivery-box-item-name--image ' : ''); ?>">
-
-						<? if ($img): ?>
-                            <img class="prymery__geoip__delivery-box-item-name-img" src="<?= $img['src']; ?>" alt="<?= $delivery['NAME']; ?>"/>
-						<? endif; ?>
-
-                        <div class="prymery__geoip__delivery-box-item-name-text">
-							<?if($arParams['SHOW_PARENT'] == 'Y' && !!$delivery['PARENT_NAME'])
-							{
-								echo $delivery['PARENT_NAME'] . ' <span>(' .  $delivery['NAME'] . ') </span>';
-							}
-							else {
-								echo $delivery['NAME'];
-							}
-							?>
-                        </div>
-
-
-						<? if (!!$delivery['DESCRIPTION']): ?>
-                            <div class="prymery__geoip__delivery-box-item-more">
-                                <div class="prymery__geoip__delivery-box-item-more-content"><?= $delivery['DESCRIPTION'] ?></div>
-                            </div>
-						<? endif; ?>
-                    </td>
-                    <td class="prymery__geoip__delivery-box-item-period">
-                        <?=$delivery['PERIOD_TEXT'];?>
-						<?//=$oManager->getDeliveryPeriodFormat($delivery['PERIOD_FROM'], $delivery['PERIOD_TO']); ?>
-                    </td>
-                    <td class="prymery__geoip__delivery-box-item-price">
-                        <?php
-                            if(trim($delivery['PRICE']) === '0')
-                            {
-                                echo GetMessage($COMPONENT_NAME . 'FREE');
-                            }
-                            elseif(trim($delivery['PRICE']) === '')
-                            {
-                                echo '';
-                            }
-                            else
-                            {
-                                echo $delivery['PRICE_FORMATED'];
-                            }
+                <p class="prymery__geoip__delivery-box-item  prymery__geoip__delivery-box-item--<?= $delivery['ID'] ?>">
+                    <span class="prymery__geoip__delivery-box-item-name-text">
+                        <?if($arParams['SHOW_PARENT'] == 'Y' && !!$delivery['PARENT_NAME'])
+                        {
+                            echo $delivery['PARENT_NAME'] . ' <span>(' .  $delivery['NAME'] . ') </span>';
+                        }
+                        else {
+                            echo $delivery['NAME'];
+                        }
                         ?>
-                    </td>
-                </tr>
+                    </span>
+                    <? /*if (!!$delivery['DESCRIPTION']): ?>
+                        <span class="prymery__geoip__delivery-box-item-more">
+                            <?= $delivery['DESCRIPTION'] ?>
+                        </span>
+                    <? endif; */?>
+                    <?if($delivery['PERIOD_TEXT']):?>
+                        - <?=$delivery['PERIOD_TEXT'];?>
+                    <?endif;?>
+                        -
+                    <?php
+                        if(trim($delivery['PRICE']) === '0')
+                        {
+                            echo GetMessage($COMPONENT_NAME . 'FREE');
+                        }
+                        elseif(trim($delivery['PRICE']) === '')
+                        {
+                            echo '';
+                        }
+                        else
+                        {
+                            echo $delivery['PRICE_FORMATED'];
+                        }
+                    ?>
+                </p>
 
 
 			<? endforeach; ?>
 		<? else: ?>
-            <tr class="prymery__geoip__delivery-box-item prymery__geoip__delivery-box-item--empty">
-                <td><?= GetMessage($COMPONENT_NAME . 'EMPTY') ?></td>
-            </tr>
+            <div class="prymery__geoip__delivery-box-item prymery__geoip__delivery-box-item--empty">
+                <div><?= GetMessage($COMPONENT_NAME . 'EMPTY') ?></div>
+            </div>
 		<? endif; ?>
-    </table>
+    </div>
 
 <? endif; ?>
 

@@ -192,7 +192,7 @@ if (!isset($arParams['HIDE_SECTION_DESCRIPTION']) || $arParams['HIDE_SECTION_DES
                             $item = reset($rowItems);
                             $APPLICATION->IncludeComponent(
                                 'bitrix:catalog.item',
-                                '',
+                                'main',
                                 array(
                                     'RESULT' => array(
                                         'ITEM' => $item,
@@ -228,7 +228,7 @@ if (!isset($arParams['HIDE_SECTION_DESCRIPTION']) || $arParams['HIDE_SECTION_DES
 												<?
 												$APPLICATION->IncludeComponent(
 													'bitrix:catalog.item',
-													'',
+													'main',
 													array(
 														'RESULT' => array(
 															'ITEM' => $item,
@@ -271,7 +271,7 @@ if (!isset($arParams['HIDE_SECTION_DESCRIPTION']) || $arParams['HIDE_SECTION_DES
 												<?
 												$APPLICATION->IncludeComponent(
 													'bitrix:catalog.item',
-													'',
+													'main',
 													array(
 														'RESULT' => array(
 															'ITEM' => $item,
@@ -312,7 +312,7 @@ if (!isset($arParams['HIDE_SECTION_DESCRIPTION']) || $arParams['HIDE_SECTION_DES
 										<?
 										$APPLICATION->IncludeComponent(
 											'bitrix:catalog.item',
-											'',
+											'main',
 											array(
 												'RESULT' => array(
 													'ITEM' => $item,
@@ -347,7 +347,7 @@ if (!isset($arParams['HIDE_SECTION_DESCRIPTION']) || $arParams['HIDE_SECTION_DES
                             $item = array_shift($rowItems);
                             $APPLICATION->IncludeComponent(
                                 'bitrix:catalog.item',
-                                '',
+                                'main',
                                 array(
                                     'RESULT' => array(
                                         'ITEM' => $item,
@@ -377,7 +377,7 @@ if (!isset($arParams['HIDE_SECTION_DESCRIPTION']) || $arParams['HIDE_SECTION_DES
 										<?
 										$APPLICATION->IncludeComponent(
 											'bitrix:catalog.item',
-											'',
+											'main',
 											array(
 												'RESULT' => array(
 													'ITEM' => $rowItems[$i],
@@ -417,7 +417,7 @@ if (!isset($arParams['HIDE_SECTION_DESCRIPTION']) || $arParams['HIDE_SECTION_DES
 										<?
 										$APPLICATION->IncludeComponent(
 											'bitrix:catalog.item',
-											'',
+											'main',
 											array(
 												'RESULT' => array(
 													'ITEM' => $rowItems[$i],
@@ -448,7 +448,7 @@ if (!isset($arParams['HIDE_SECTION_DESCRIPTION']) || $arParams['HIDE_SECTION_DES
 									$item = end($rowItems);
 									$APPLICATION->IncludeComponent(
 										'bitrix:catalog.item',
-										'',
+										'main',
 										array(
 											'RESULT' => array(
 												'ITEM' => $item,
@@ -482,7 +482,7 @@ if (!isset($arParams['HIDE_SECTION_DESCRIPTION']) || $arParams['HIDE_SECTION_DES
                                     <?
                                     $APPLICATION->IncludeComponent(
                                         'bitrix:catalog.item',
-                                        '',
+                                        'main',
                                         array(
                                             'RESULT' => array(
                                                 'ITEM' => $item,
@@ -517,7 +517,7 @@ if (!isset($arParams['HIDE_SECTION_DESCRIPTION']) || $arParams['HIDE_SECTION_DES
 									$item = array_shift($rowItems);
 									$APPLICATION->IncludeComponent(
 										'bitrix:catalog.item',
-										'',
+										'main',
 										array(
 											'RESULT' => array(
 												'ITEM' => $item,
@@ -549,7 +549,7 @@ if (!isset($arParams['HIDE_SECTION_DESCRIPTION']) || $arParams['HIDE_SECTION_DES
 										<?
 										$APPLICATION->IncludeComponent(
 											'bitrix:catalog.item',
-											'',
+											'main',
 											array(
 												'RESULT' => array(
 													'ITEM' => $rowItems[$i],
@@ -589,7 +589,7 @@ if (!isset($arParams['HIDE_SECTION_DESCRIPTION']) || $arParams['HIDE_SECTION_DES
 										<?
 										$APPLICATION->IncludeComponent(
 											'bitrix:catalog.item',
-											'',
+											'main',
 											array(
 												'RESULT' => array(
 													'ITEM' => $rowItems[$i],
@@ -620,7 +620,7 @@ if (!isset($arParams['HIDE_SECTION_DESCRIPTION']) || $arParams['HIDE_SECTION_DES
 									$item = end($rowItems);
 									$APPLICATION->IncludeComponent(
 										'bitrix:catalog.item',
-										'',
+										'main',
 										array(
 											'RESULT' => array(
 												'ITEM' => $item,
@@ -657,7 +657,7 @@ if (!isset($arParams['HIDE_SECTION_DESCRIPTION']) || $arParams['HIDE_SECTION_DES
 										<?
 										$APPLICATION->IncludeComponent(
 											'bitrix:catalog.item',
-											'',
+											'main',
 											array(
 												'RESULT' => array(
 													'ITEM' => $item,
