@@ -10,12 +10,12 @@ if (!$USER->IsAuthorized())
 }
 
 $arSelect = Array("ID", "DATE_CREATE", "NAME", "PROPERTY_RATING", "PREVIEW_TEXT");
-$arFilter = Array("IBLOCK_ID"=>77, "PROPERTY_USER_ID"=>$USER->GetId(), "ACTIVE"=>"Y");
+$arFilter = Array("IBLOCK_ID"=>77, "PROPERTY_USER"=>$USER->GetId(), "ACTIVE"=>"Y");
 $res = CIBlockElement::GetList(Array('ID'=>'DESC'), $arFilter, false, Array("nPageSize"=>8), $arSelect);
 while($ob = $res->Fetch()) {
     $res2 = CIBlockElement::GetProperty(77, $ob['ID'], "sort", "asc", array("CODE" => "FILES"));
     while ($ob2 = $res2->GetNext()) {
-        $file = CFile::ResizeImageGet($ob2['VALUE'], array('width'=>90, 'height'=>90), BX_RESIZE_IMAGE_EXACT, true);
+        $file = CFile::ResizeImageGet($ob2['VALUE'], array('width'=>90, 'height'=>90), BX_RESIZE_IMAGE_PROPORTIONAL, true);
         $file2 = CFile::GetPath($ob2['VALUE']);
 
         $ob['FILES'][] = ['SMALL'=>$file,'BIG'=>$file2];
@@ -28,7 +28,7 @@ while($ob = $res->Fetch()) {
     <div class="cabinet cabinet-reviews cabinet-section">
         <div class="cabinet-section-title">
             Мои
-            отзывы
+            отзывы<a href="/personal/main/" class="btn-lk-return">< Вернуться в профиль</a>
         </div>
         <div class="cabinet-reviews-wrapp">
             <?foreach($arReviews as $item):?>

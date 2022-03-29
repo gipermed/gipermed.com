@@ -16,10 +16,11 @@
 
 
     // component parameters
+    global $signedParameters;
+    global $signedTemplate;
     $signer = new \Bitrix\Main\Security\Sign\Signer;
     $signedParameters = $signer->sign(base64_encode(serialize($arResult['_ORIGINAL_PARAMS'])), 'prymery.geoip.city');
     $signedTemplate = $signer->sign((string)$arResult['TEMPLATE'], 'prymery.geoip.city');
-
 
 ?>
 
@@ -69,27 +70,33 @@
 
             <?if($arParams['SEARCH_SHOW'] == 'Y'):?>
             <div class="prymery__geoip__popup-search">
+                <div class="prymery__geoip__popup-icon"></div>
                 <input type="text" name="city" value="" placeholder="<?= $arParams['~INPUT_LABEL']; ?>" autocomplete="off">
                 <span class="prymery__geoip__popup-search-clean js-prymery__geoip__popup-search-clean">&times;</span>
                 <div class="prymery__geoip__popup-search-options js-prymery__geoip__popup-search-options"></div>
             </div>
             <?endif;?>
 
-
+            <div class="prymery__geoip__popup-options-title">
+                Популярные города
+            </div>
             <div class="prymery__geoip__popup-options">
                 <?
-                    $iColRows = ceil(count($arResult['ITEMS']) / 3);
+                    $iColRows = ceil(count($arResult['ITEMS']) / 4);
                 ?>
                 <div class="prymery__geoip__popup-options-col">
                     <?
+
                         $i = -1;
                         foreach ($arResult['ITEMS'] as $item) {
 
                             if (++$i > 0 && $i % $iColRows == 0) {
                                 echo '</div><div class="prymery__geoip__popup-options-col ">';
                             }
-
-                            echo '<div class="prymery__geoip__popup-option ' . ($item['MARK'] ? 'prymery__geoip__popup-option--bold' : '') . ' js-prymery__geoip__popup-option  "	data-id="' . $item['ID'] . '"><span>' . $item['NAME'] . '</span></div>';
+                            if($_COOKIE['prymery_geoip_2_8_1_city_id'] == $item['ID'] ){
+                                $item['MARK'] = 'Y';
+                            }
+                            echo '<div class="prymery__geoip__popup-option ' . ($item['MARK'] && $_COOKIE['prymery_geoip_2_8_1_location_confirm'] ? 'prymery__geoip__popup-option--bold' : '') . ' js-prymery__geoip__popup-option  "	data-id="' . $item['ID'] . '"><span>' . $item['NAME'] . '</span></div>';
                         }
                     ?>
                 </div>
@@ -109,4 +116,8 @@
         'debug'      => $arParams['IS_DEBUG'],
         'version'      => $arParams['LV'],
     ));?>;
+    $('.js-prymery__geoip__popup-option').on('click',function(e){
+        $('body').find('.js-prymery__geoip__popup-option').removeClass('prymery__geoip__popup-option--bold');
+        $(this).addClass('prymery__geoip__popup-option--bold');
+    });
 </script>

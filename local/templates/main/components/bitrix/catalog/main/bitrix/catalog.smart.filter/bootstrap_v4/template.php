@@ -160,7 +160,7 @@ $this->setFrameMode(true);
 						continue;
 					?>
 
-					<div class="<?if ($arParams["FILTER_VIEW_MODE"] == "HORIZONTAL"):?>col-sm-6 col-md-4<?else:?>col-lg-12<?endif?> mb-2 smart-filter-parameters-box <?if ($arItem["DISPLAY_EXPANDED"]== "Y"):?>bx-active<?endif?>">
+					<div class="<?if ($arParams["FILTER_VIEW_MODE"] == "HORIZONTAL"):?>col-sm-6 col-md-4<?else:?>col-lg-12<?endif?> smart-filter-parameters-box <?if ($arItem["DISPLAY_EXPANDED"]== "Y"):?>bx-active<?endif?>">
 						<span class="smart-filter-container-modef"></span>
 
 						<div class="smart-filter-parameters-box-title" onclick="smartFilter.hideFilterProps(this)">

@@ -118,5 +118,5 @@ $this->setFrameMode(true);
         });
         $('input[name=PHONE]').inputmask('(9)|(+7) (999)999-99-99');
     </script>
-</div>
+
 <!--/noindex-->

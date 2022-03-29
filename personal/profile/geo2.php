@@ -17,13 +17,13 @@ $rsData = $entity_data_class::getList(array(
     "filter" => array("UF_ID_USER" => $USER->GetID())  // Задаем параметры фильтра выборки
 ));
 
-$rsStore = \Bitrix\Catalog\StoreTable::getList(array(
+/*$rsStore = \Bitrix\Catalog\StoreTable::getList(array(
     'filter' => array('ACTIVE'>='Y'),
 ));
     $res2 = \Bitrix\Sale\Location\LocationTable::getList(array(
     'filter' => array('>=TYPE.ID' => '5', '<=TYPE.ID' => '6', '=NAME.LANGUAGE_ID' => LANGUAGE_ID),
     'select' => array('ID','NAME_RU' => 'NAME.NAME')
-));
+));*/
 ?>
     <script src="/local/templates/main/assets/js/vendor/jquery.maskedinput.js"></script>
     <script type="text/javascript" src="https://t.gipermed.com/widget/widjet.js" id="ISDEKscript" ></script>
@@ -41,7 +41,7 @@ $rsStore = \Bitrix\Catalog\StoreTable::getList(array(
                 <div class="tel">
                     Введите ваш номер телефона, чтобы мы могли сообщить вам о статусе заказа
                     <input type="text" class="phone" placeholder="Телефон" required>
-                    <button type="button" class="check">Выслать код</button>
+                    <button type="button" class="check1">Выслать код</button>
                 </div>
                 <div id="code" class="hidden">
                     <input type="text" name="tel" placeholder="Код подтверждения" required>
@@ -98,7 +98,7 @@ $rsStore = \Bitrix\Catalog\StoreTable::getList(array(
                         <div class=" newadr hidden">
                             <div class="form-block-select ordering-delivery-city-select">
                                 <select  class="select2 input cabinet-address-input-city2" name="selectreg" style="width: 100%">
-                                    <?
+                                    <?/*
                                     while ($item = $res2->fetch()) {
                                         $loc = getGroupsByLocation($item['ID']);
                                         $text = $loc;
@@ -111,7 +111,7 @@ $rsStore = \Bitrix\Catalog\StoreTable::getList(array(
                                         <option adr="<?= $loc[2]; ?>" value="<? print_r($loc[0]);print_r(";");print_r($loc[1]);?>">
                                             <? print_r($text); ?>
                                         </option>
-                                    <?} ?>
+                                    <?} */?>
                                 </select>
                             </div>
                             <span class="form-block-title">Адрес</span>
@@ -141,12 +141,12 @@ $rsStore = \Bitrix\Catalog\StoreTable::getList(array(
                         <div class="form-block-select ordering-delivery-city-select">
 
                             <select id="selectsam" name="adrsam">
-                                <?
+                                <?/*
                                 while($arStore=$rsStore->fetch())
                                 {?>
                                     <option value="<?= $arStore['TITLE']; ?>"><?= $arStore['TITLE']; ?></option>
                                 <?
-                                }
+                                }*/
                                 ?>
                             </select>
                             <h5>Оплата</h5>

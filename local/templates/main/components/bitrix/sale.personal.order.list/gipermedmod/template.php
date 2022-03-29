@@ -19,7 +19,7 @@ Loc::loadMessages(__FILE__);
 ?>
 
 <div class="cabinet cabinet-orders">
-    <div class="cabinet-section-title">Мои заказы </div>
+    <div class="cabinet-section-title">Мои заказы <a href="/personal/main/" class="btn-lk-return">< Вернуться в профиль</a></div>
     <div class="orders-list">
 
 		<?php

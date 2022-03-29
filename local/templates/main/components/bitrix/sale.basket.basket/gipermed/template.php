@@ -2,22 +2,9 @@
 
 use Bitrix\Main;
 use Bitrix\Main\Localization\Loc;
-
 \Bitrix\Main\UI\Extension::load("ui.fonts.ruble");
 
-/**
- * @var array $arParams
- * @var array $arResult
- * @var string $templateFolder
- * @var string $templateName
- * @var CMain $APPLICATION
- * @var CBitrixBasketComponent $component
- * @var CBitrixComponentTemplate $this
- * @var array $giftParameters
- */
-
-if (!isset($arParams['DISPLAY_MODE']) || !in_array($arParams['DISPLAY_MODE'], array('extended', 'compact')))
-{
+if (!isset($arParams['DISPLAY_MODE']) || !in_array($arParams['DISPLAY_MODE'], array('extended', 'compact'))) {
 	$arParams['DISPLAY_MODE'] = 'extended';
 }
 
@@ -83,6 +70,7 @@ if (empty($arResult['ERROR_MESSAGE']))
 		<?
 	}
 	?>
+
 	<div id="basket-root" class="bx-basket bx-<?=$arParams['TEMPLATE_THEME']?> bx-step-opacity" style="opacity: 0;">
 
 		<div class="row">
@@ -98,30 +86,53 @@ if (empty($arResult['ERROR_MESSAGE']))
 		</div>
         <div class="cart-head">
             <h1 class="section-title">Корзина</h1>
-            <div class="cart-count">12 товаров</div>
         </div>
 
 
         <div class="cart section">
-            <div class="cart-body">
-                <div class="cart-nav">
-                    <label class="cart-select-all checkbox-label">
-                        <input type="checkbox" class="checkbox-input">
-                        <span>Выбрать все</span>
-                    </label>
-                    <a href="#" data-entity="basket-clear" class="cart-clear-btn">
-                        <span>Очистить корзину</span>
-                    </a>
-                </div>
-                <div class="cart-items" id="basket-item-table">
+            <div class="cart__blocks">
+                <?$APPLICATION->IncludeComponent("bitrix:main.include","",Array(
+                        "AREA_FILE_SHOW" => "file",
+                        "PATH" => "/include/basket-notify.php",
+                    )
+                );?>
+                <div class="cart-body">
+                    <div class="cart-nav">
+                        <div class="cart__count">
+                            У вас в корзине <?=$arResult['BASKET_ITEMS_COUNT'];?> <?=endingsForm($arResult['BASKET_ITEMS_COUNT'],'товар','товара','товаров');?>
+                        </div>
+                        <a href="<?=$APPLICATION->GetCurPage();?>?del_all=1" data-entity="basket-clear" class="cart-clear-btn">
+                            <span>Очистить корзину</span>
+                        </a>
+                    </div>
+                    <div class="cart-items" id="basket-item-table">
+                    </div>
+                    <div class="delAll_mobile">
+                        <a href="<?=$APPLICATION->GetCurPage();?>?del_all=1" data-entity="basket-clear" class="cart-clear-btn">
+                            <span>Очистить корзину</span>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div data-entity="basket-total-block">
+            <div>
+                <div data-entity="basket-total-block">
+                </div>
+                <? $APPLICATION->IncludeComponent( "prymery:geoip.delivery",
+                    "basket",
+                    array(
+                        "COMPONENT_TEMPLATE" => ".default",
+                        "CACHE_TYPE" => "A",
+                        "CACHE_TIME" => "3600",
+                        "COMPOSITE_FRAME_MODE" => "A",
+                        "COMPOSITE_FRAME_TYPE" => "AUTO",
+                        "PRODUCT_ID" => $arResult['BASKET_ITEM_RENDER_DATA'][0]['PRODUCT_ID'],
+                        "IMG_SHOW" => "Y",
+                        "PROLOG" => "Способы доставки в ваш город - #CITY#",
+                    ),
+                    $component
+                ); ?>
             </div>
         </div>
-
-
-
     </div>
 	<?
 	if (!empty($arResult['CURRENCIES']) && Main\Loader::includeModule('currency'))

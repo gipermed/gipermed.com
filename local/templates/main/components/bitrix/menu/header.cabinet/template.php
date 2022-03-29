@@ -5,27 +5,24 @@
  * @var array $arParams
  */
 
+$class = array(
+    'Профиль'=>'has-divider ',
+    'Мои адреса'=>'has-divider ',
+    'Лист ожидания'=>'has-divider ',
+);
 ?>
 
-<?php if (!empty($arResult)) { ?>
+<? if (!empty($arResult)) { ?>
     <ul class="header-cabinet-menu">
-        <?php foreach ($arResult as $item) { ?>
-            <?php if ($item['DEPTH_LEVEL'] > $arParams['MAX_LEVEL']) {
+        <? foreach ($arResult as $item) { ?>
+            <? if ($item['DEPTH_LEVEL'] > $arParams['MAX_LEVEL']) {
                 continue;
             } ?>
-            <?php if ($item['SELECTED']) { ?>
-                <li class="active <?= $item['PARAMS']['ITEM_CLASS'] ?>">
-                    <a href="javascript:void(0);">
-                        <span><?= $item['TEXT'] ?></span>
-                    </a>
-                </li>
-            <?php } else { ?>
-                <li class="<?= $item['PARAMS']['ITEM_CLASS'] ?>">
-                    <a href="<?= $item['LINK'] ?>">
-                        <span><?= $item['TEXT'] ?></span>
-                    </a>
-                </li>
-            <?php } ?>
-        <?php } ?>
+            <li class="<?=$class[$item['TEXT']];?><? if ($item['SELECTED']) { ?>active <?}?><?= $item['PARAMS']['ITEM_CLASS'] ?>">
+                <a href="<? if ($item['SELECTED']) { ?>javascript:void(0);<?}else{?><?= $item['LINK'] ?><?}?>">
+                    <span><?= $item['TEXT'] ?></span>
+                </a>
+            </li>
+        <? } ?>
     </ul>
-<?php } ?>
+<? } ?>

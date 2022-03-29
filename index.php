@@ -220,7 +220,10 @@ $APPLICATION->SetPageProperty('body-class', 'home');
 	</div>
 </div>
 
-<?$APPLICATION->IncludeComponent(
+<?
+global $arFilSale;
+$arFilSale['PROPERTY_SHOW_MAIN_VALUE'] = 'Y';
+$APPLICATION->IncludeComponent(
 	"bitrix:news.list", 
 	"sales.main", 
 	array(
@@ -249,7 +252,7 @@ $APPLICATION->SetPageProperty('body-class', 'home');
 			2 => "PREVIEW_PICTURE",
 			3 => "",
 		),
-		"FILTER_NAME" => "",
+		"FILTER_NAME" => "arFilSale",
 		"HIDE_LINK_WHEN_NO_DETAIL" => "N",
 		"IBLOCK_ID" => "59",
 		"IBLOCK_TYPE" => "lists",

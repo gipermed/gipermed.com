@@ -6,7 +6,7 @@ $this->setFrameMode(true);
         <div class="container">
             <?php $APPLICATION->IncludeComponent(
                 "bitrix:news.list",
-                "sales.main",
+                "",
                 array(
                     "INNER_PAGE" => "Y",
                     "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],

@@ -1,0 +1,229 @@
+<?php
+
+/** @noinspection UnknownInspectionInspection */
+/** @noinspection SpellCheckingInspection */
+/** @noinspection PhpUnused */
+
+
+/** 
+ * Сгенерировано console deploy:constants
+ * ВНИМАНИЕ!!! Данный файл генерируется. Все внесенные в этот файл изменения
+ * могут быть удалены.
+ */
+
+/**
+ * ----------------------------------------
+ * Константы инфоблоков
+ * ----------------------------------------
+ */
+   // ID служб доставки для карточки товара
+   const DELIVERIES_IDS = array(17,18,19,20,21,23);
+   // Инфоблок Магазины, Сайт: s1
+   const IBLOCK_SHOPS_ID = 1;
+   // Инфоблок Статьи, Сайт: s1 
+   const IBLOCK_ARTICLES_ID = 2;
+   // Инфоблок Слайдер на главной, Сайт: s1 
+   const IBLOCK_MAIN_SLIDER_ID = 3;
+   // Инфоблок Цвета и размеры, Сайт: s1 
+   const IBLOCK_CHARACTERISTICS_FILE_BINDINGS_ID = 34;
+   // Инфоблок Страны, Сайт: s1 
+   const IBLOCK_COUNTRIES_ID = 35;
+   // Инфоблок Производители, Сайт: s1 
+   const IBLOCK_MANUFACTERS_ID = 36;
+   // Инфоблок Каталог товаров 364FD872, Сайт: s1 
+   const IBLOCK_CATALOG_ID = 75;
+
+
+/** 
+ * ----------------------------------------
+ * Константы свойств инфоблоков
+ * ----------------------------------------
+ */
+   // Инфоблок 37} 
+   const PROPERTY_CML2_BAR_CODE_ID = 8972;
+   // Инфоблок 37} 
+   const PROPERTY_CML2_ARTICLE_ID = 8973;
+   // Инфоблок 37} 
+   const PROPERTY_CML2_ATTRIBUTES_ID = 8974;
+   // Инфоблок 37} 
+   const PROPERTY_CML2_TRAITS_ID = 8975;
+   // Инфоблок 37} 
+   const PROPERTY_CML2_BASE_UNIT_ID = 8976;
+   // Инфоблок 37} 
+   const PROPERTY_CML2_TAXES_ID = 8977;
+   // Инфоблок 37} 
+   const PROPERTY_MORE_PHOTO_ID = 8978;
+   // Инфоблок 37} 
+   const PROPERTY_FILES_ID = 8979;
+   // Инфоблок 37} 
+   const PROPERTY_CML2_MANUFACTURER_ID = 8980;
+   // Инфоблок 37} 
+   const PROPERTY_MINIMALNYY_OSTATOK_ID = 8981;
+   // Инфоблок 37} 
+   const PROPERTY_STRANA_ID = 8982;
+   // Инфоблок 37} 
+   const PROPERTY_PROIZVODITEL_ID = 8983;
+   // Инфоблок 37} 
+   const PROPERTY_REGISTRATSIONNOE_UDOSTOVERENIE_ID = 8984;
+   // Инфоблок 37} 
+   const PROPERTY_ZASTEZHKI_LIPUCHKI_ID = 8985;
+   // Инфоблок 37} 
+   const PROPERTY_RASPOLOZHENIE_ID = 8986;
+   // Инфоблок 37} 
+   const PROPERTY_POSLEOPERATSIONNYY_ID = 8987;
+   // Инфоблок 37} 
+   const PROPERTY_POL_ID = 8988;
+   // Инфоблок 37} 
+   const PROPERTY_KRATKOE_OPISANIE_ID = 8989;
+   // Инфоблок 37} 
+   const PROPERTY_VIDEO_ID = 8990;
+   // Инфоблок 37} 
+   const PROPERTY_POLNOE_OPISANIE_ID = 8991;
+   // Инфоблок 37} 
+   const PROPERTY_KHIT_ID = 8992;
+   // Инфоблок 37} 
+   const PROPERTY_VID_RASPYLA_ID = 8993;
+   // Инфоблок 37} 
+   const PROPERTY_PITANIE_ID = 8994;
+   // Инфоблок 37} 
+   const PROPERTY_DAVLENIE_ID = 8995;
+   // Инфоблок 37} 
+   const PROPERTY_RASKHOD_VOZDUKHA_ID = 8996;
+   // Инфоблок 37} 
+   const PROPERTY_OBEM_STAKANA_ID = 8997;
+   // Инфоблок 37} 
+   const PROPERTY_SKOROST_RASPYLENIYA_ID = 8998;
+   // Инфоблок 37} 
+   const PROPERTY_SHUMOVOY_POROG_ID = 8999;
+   // Инфоблок 37} 
+   const PROPERTY_REZHIM_RABOTY_1_ID = 9000;
+   // Инфоблок 37} 
+   const PROPERTY_REZHIM_RABOTY_2_ID = 9001;
+   // Инфоблок 37} 
+   const PROPERTY_REZHIM_RABOTY_3_ID = 9002;
+   // Инфоблок 37} 
+   const PROPERTY_REZHIM_RABOTY_I_PAUZY_ID = 9003;
+   // Инфоблок 37} 
+   const PROPERTY_TIP_ID = 9004;
+   // Инфоблок 37} 
+   const PROPERTY_PROIZVODITELNOST_ID = 9005;
+   // Инфоблок 37} 
+   const PROPERTY_SREDNIY_RAZMER_CHASTITS_ID = 9006;
+   // Инфоблок 37} 
+   const PROPERTY_OBYEM_REZERVUARA_ID = 9007;
+   // Инфоблок 37} 
+   const PROPERTY_UROVEN_SHUMA_ID = 9008;
+   // Инфоблок 37} 
+   const PROPERTY_CHASTOTA_GENERATORA_ID = 9009;
+   // Инфоблок 37} 
+   const PROPERTY_TAYMER_ID = 9010;
+   // Инфоблок 37} 
+   const PROPERTY_ELEKTROPITANIE_ID = 9011;
+   // Инфоблок 37} 
+   const PROPERTY_POTREBLYAEMAYA_MOSHCHNOST_ID = 9012;
+   // Инфоблок 37} 
+   const PROPERTY_USLOVIYA_EKSPLUATATSII_ID = 9013;
+   // Инфоблок 37} 
+   const PROPERTY_USLOVIYA_EKSPLUATATSII_VLAZHNOST_ID = 9014;
+   // Инфоблок 37} 
+   const PROPERTY_GARANTIYA_ID = 9015;
+   // Инфоблок 37} 
+   const PROPERTY_SROK_GODNOSTI_ID = 9016;
+   // Инфоблок 37} 
+   const PROPERTY_BLOG_POST_ID_ID = 9062;
+   // Инфоблок 37} 
+   const PROPERTY_BLOG_COMMENTS_CNT_ID = 9063;
+   // Инфоблок 37} 
+   const PROPERTY_VOTE_COUNT_ID = 9064;
+   // Инфоблок 37} 
+   const PROPERTY_VOTE_SUM_ID = 9065;
+   // Инфоблок 37} 
+   const PROPERTY_RATING_ID = 9066;
+   // Инфоблок 37} 
+   const PROPERTY_IPRA_ID = 9067;
+   // Инфоблок 37} 
+   const PROPERTY_NAIMENOVANIE_DLYA_SAYTA_ID = 9069;
+
+
+/** 
+ * ----------------------------------------
+ * Константы типов доставки
+ * ----------------------------------------
+ */
+   // Тип доставки bx_614adfcfdb627 
+   const DELIVERY_SERVICE_BX_614ADFCFDB627_ID = 2;
+   // Тип доставки bx_614adfde2fc1f 
+   const DELIVERY_SERVICE_BX_614ADFDE2FC1F_ID = 3;
+   // Тип доставки bx_614adfde2fc22 
+   const DELIVERY_SERVICE_BX_614ADFDE2FC22_ID = 4;
+   // Тип доставки bx_614adfde2fc23 
+   const DELIVERY_SERVICE_BX_614ADFDE2FC23_ID = 5;
+   // Тип доставки bx_614adfde2fc24 
+   const DELIVERY_SERVICE_BX_614ADFDE2FC24_ID = 6;
+   // Тип доставки bx_614adfde2fc25 
+   const DELIVERY_SERVICE_BX_614ADFDE2FC25_ID = 7;
+   // Тип доставки bx_614adfde2fc26 
+   const DELIVERY_SERVICE_BX_614ADFDE2FC26_ID = 8;
+   // Тип доставки bx_614adfde2fc27 
+   const DELIVERY_SERVICE_BX_614ADFDE2FC27_ID = 9;
+   // Тип доставки bx_614adfde2fc29 
+   const DELIVERY_SERVICE_BX_614ADFDE2FC29_ID = 10;
+   // Тип доставки bx_614adfde2fc2b 
+   const DELIVERY_SERVICE_BX_614ADFDE2FC2B_ID = 11;
+   // Тип доставки bx_614adfde2fc2c 
+   const DELIVERY_SERVICE_BX_614ADFDE2FC2C_ID = 12;
+   // Тип доставки bx_614adfde2fc2d 
+   const DELIVERY_SERVICE_BX_614ADFDE2FC2D_ID = 13;
+   // Тип доставки bx_614da1739c6b2 
+   const DELIVERY_SERVICE_BX_614DA1739C6B2_ID = 14;
+   // Тип доставки bx_614da21089a2d 
+   const DELIVERY_SERVICE_BX_614DA21089A2D_ID = 15;
+   // Тип доставки bx_614da27dd6b9f 
+   const DELIVERY_SERVICE_BX_614DA27DD6B9F_ID = 16;
+   // Тип доставки bx_614db81875c47 
+   const DELIVERY_SERVICE_BX_614DB81875C47_ID = 17;
+   // Тип доставки bx_614db82325dc7 
+   const DELIVERY_SERVICE_BX_614DB82325DC7_ID = 18;
+   // Тип доставки bx_614db82325dcd 
+   const DELIVERY_SERVICE_BX_614DB82325DCD_ID = 19;
+   // Тип доставки bx_614db82325dcf 
+   const DELIVERY_SERVICE_BX_614DB82325DCF_ID = 20;
+   // Тип доставки bx_614db82325dc7 
+   const DELIVERY_SERVICE_BX_614DB82325DC7_ID = 21;
+   // Тип доставки bx_614ddf1141df7 
+   const DELIVERY_SERVICE_BX_614DDF1141DF7_ID = 22;
+   // Тип доставки bx_614db82325dcd 
+   const DELIVERY_SERVICE_BX_614DB82325DCD_ID = 23;
+
+
+/** 
+ * ----------------------------------------
+ * Константы highload-блоков
+ * ----------------------------------------
+ */
+   // Highload-блок ProductMarkingCodeGroup 
+   const HLBLOCK_PRODUCTMARKINGCODEGROUP_ID = 1;
+   // Highload-блок PlWishlist 
+   const HLBLOCK_PLWISHLIST_ID = 2;
+
+
+/** 
+ * ----------------------------------------
+ * Константы типов цен
+ * ----------------------------------------
+ */
+   // Тип цены Договор эквайринга 
+   const PRICE_DOGOVOR_EKVAYRINGA_ID = 1;
+   // Код цены Договор эквайринга 
+   const PRICE_DOGOVOR_EKVAYRINGA_CODE = "Договор эквайринга";
+
+
+/** 
+ * ----------------------------------------
+ * Константы групп свойств заказа
+ * ----------------------------------------
+ */
+   // Группа заказа Свойства заказа 
+   const ORDER_PROPERTY_GROUP_SVOYSTVA_ZAKAZA_ID = 1;
+   // Группа заказа Личные данные 
+   const ORDER_PROPERTY_GROUP_LICHNYE_DANNYE_ID = 2;

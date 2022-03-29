@@ -1,8 +1,8 @@
-$('.check').click(sayHello);
+$('.check1').click(sayHello);
 
 function sayHello() {
     alert('Код подтверждения: ' + getRandomIntInclusive());
-    $('.check').css("display", "none");
+    $('.check1').css("display", "none");
     $('.check3').css("display", "block");
     $('#code').css("display", "block");
 }

@@ -74,35 +74,6 @@ if(empty($arJSON['ERROR'])){
             $arResult['MESS_TEMPLATE_ID'],
             (!empty($arFileID)) ? $arFileID : ''
         );
-
-        if($_POST['DATA']['PRESENT'] == 'Y'){
-            if($_POST["ELEMENT_ID"]){
-                CModule::IncludeModule('iblock');
-                $arSelect = Array("ID", "NAME", "DETAIL_PAGE_URL");
-                $arFilter = Array("IBLOCK_ID" => 150, "ID" => $_POST["ELEMENT_ID"], "ACTIVE"=>"Y");
-                $res = CIBlockElement::GetList(Array(), $arFilter, false, Array(), $arSelect);
-                while($ob = $res->GetNext()){
-                    $detailUrl = $ob['DETAIL_PAGE_URL'];
-                }
-            }
-
-            $arEventFields = array(
-                "FRIEND" => $_POST["FRIEND"],
-                "EMAIL_TO" => $_POST["EMAIL_FRIEND"],
-                "PR_FF_THEME" => $_POST['DATA']['TITLE'],
-                "FIO" => htmlspecialcharsbx($_POST["NAME"]),
-                "MESSAGE" => $MESSAGE,
-                "PRODUCT" => 'https://lacybird.ru'.$detailUrl,
-            );
-            CEvent::Send(
-                'FEEDBACK_FORM',
-                SITE_ID,
-                $arEventFields,
-                'N',
-                160,
-                (!empty($arFileID)) ? $arFileID : ''
-            );
-        }
     }
     if($_POST['DATA']['SAVE'] == 'Y') {
         if (!Loader::includeModule("iblock")) {
@@ -128,7 +99,7 @@ if(empty($arJSON['ERROR'])){
                 'EMAIL' => htmlspecialcharsbx($_POST['EMAIL']),
                 'FORM_TITLE' => htmlspecialcharsbx($_POST['DATA']['TITLE']),
 				"FILES" => $FILES_IBLOCK,
-				"USER_ID" => $USER->GetId(),
+				"USER" => $USER->GetId(),
 				"NAME" => htmlspecialcharsbx($_POST['NAME']),
 				"COMMENT" => htmlspecialcharsbx($_POST['MESSAGE']),
             ),
@@ -139,6 +110,18 @@ if(empty($arJSON['ERROR'])){
             "PREVIEW_PICTURE"   => $DETAIL_PICTURE,
         );
         $el_id = $el->Add($arLoadProductArray);
+
+        //обновим рейтинг у товаров
+        $avg_rating = 0;
+        $count = 0;
+        $arSelect = Array("ID", "NAME", "PROPERTY_RATING");
+        $arFilter = Array("IBLOCK_ID"=>$_POST['DATA']['LEAD_IBLOCK'], "PROPERTY_PRODUCT"=>$_POST['DATA']['ELEMENT_ID'], "ACTIVE"=>"Y");
+        $res = CIBlockElement::GetList(Array(), $arFilter, false, Array(), $arSelect);
+        while($ob = $res->Fetch()) {
+            $avg_rating = $avg_rating + $ob['PROPERTY_RATING_VALUE']; $count++;
+        }
+        $avg_rating = round($avg_rating/$count,2);
+        CIBlockElement::SetPropertyValuesEx($_POST['DATA']['ELEMENT_ID'], false, array('RATING_VAL' => $avg_rating));
     }
 
     if($_FILES["FILES"]['tmp_name']){

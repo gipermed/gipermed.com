@@ -207,7 +207,7 @@ if (!is_authorized()) {
     $modals = array_merge($modals, [
         'enter',
         'forgot',
-        'registration',
+//        'registration',
         'password-change',
         'password-change-sent',
     ]);

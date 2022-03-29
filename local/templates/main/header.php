@@ -5,7 +5,6 @@ use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Web\Cookie;
 use Palladiumlab\Management\User;
 use Palladiumlab\Support\Bitrix\Sale\BasketManager;
-
 global $APPLICATION;
 
 $context = Context::getCurrent();
@@ -72,6 +71,7 @@ $user = User::current();
         SITE_TEMPLATE_PATH . 'assets/js/vendor/jquery.ui.slider.js',
         SITE_TEMPLATE_PATH . 'assets/js/vendor/jquery.form.min.js',
         SITE_TEMPLATE_PATH . 'assets/js/vendor/jquery-ui.min.js',
+        SITE_TEMPLATE_PATH . 'assets/js/inputmask-robin.min.js',
 		//SITE_TEMPLATE_PATH . 'assets/js/jquery.fias.min.js',
 		'/local/components/prymery/feedback.form/js/inputmask-robin.min.js',
 		'/local/components/prymery/feedback.form/js/jquery.form.min.js',
@@ -91,6 +91,7 @@ $user = User::current();
     <script src="//api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU" type="text/javascript"></script>
     <link href="/local/templates/main/assets/select/select2.min.css" type="text/css" rel="stylesheet"/>
     <script type="text/javascript" src="/local/templates/main/assets/select/select2.full.min.js"></script>
+    <script data-skip-moving="true" src="https://api-maps.yandex.ru/2.1.79/?apikey=c617d6aa-9ec6-4567-8bb9-7b600859bc60&lang=ru_RU" type="text/javascript"></script>
 
 </head>
 <body class="page-<?php $APPLICATION->ShowProperty('body-class'); ?>">
@@ -178,31 +179,35 @@ function getGroupsByLocation($locationId)
                         </svg>
                         <span><span class="hidden-desktop">Ваш регион доставки:</span> <b><span class="user-region" > </span></b></span>
                     </a*/?>
-                    <? $APPLICATION->IncludeComponent( "prymery:geoip.city",
-                        ".default",
-                        array(
-                            "COMPONENT_TEMPLATE" => ".default",
-                            "CITY_SHOW" => "Y",
-                            "CITY_LABEL" => "Ваш регион доставки:",
-                            "QUESTION_SHOW" => "N",
-                            "QUESTION_TEXT" => "Ваш город<br/>#CITY#?",
-                            "INFO_SHOW" => "N",
-                            "INFO_TEXT" => "<a href=\"#\" rel=\"nofollow\" target=\"_blank\">Подробнее о доставке</a>",
-                            "BTN_EDIT" => "Изменить город",
-                            "SEARCH_SHOW" => "Y",
-                            "FAVORITE_SHOW" => "Y",
-                            "CITY_COUNT" => "30",
-                            "FID" => "12",
-                            "CACHE_TYPE" => "A",
-                            "CACHE_TIME" => "3600",
-                            "COMPOSITE_FRAME_MODE" => "A",
-                            "COMPOSITE_FRAME_TYPE" => "AUTO",
-                            "POPUP_LABEL" => "МЫ ДОСТАВЛЯЕМ ПО ВСЕЙ РОССИИ!",
-                            "INPUT_LABEL" => "Введите название города...",
-                            "MSG_EMPTY_RESULT" => "Ничего не найдено"
-                        ),
-                        $component
-                    ); ?>
+                    <? $APPLICATION->IncludeComponent(
+	"prymery:geoip.city",
+	".default",
+	array(
+		"COMPONENT_TEMPLATE" => ".default",
+		"CITY_SHOW" => "Y",
+		"CITY_LABEL" => "Ваш регион доставки:",
+		"QUESTION_SHOW" => "Y",
+		"QUESTION_TEXT" => "Ваш город<br/>#CITY#<span>?</span>",
+		"INFO_SHOW" => "N",
+		"INFO_TEXT" => "<a href=\"#\" rel=\"nofollow\" target=\"_blank\">Подробнее о доставке</a>",
+		"BTN_EDIT" => "Изменить город",
+		"SEARCH_SHOW" => "Y",
+		"FAVORITE_SHOW" => "Y",
+		"CITY_COUNT" => "30",
+        "FID" => "1",
+		"CACHE_TYPE" => "A",
+		"CACHE_TIME" => "3600",
+		"COMPOSITE_FRAME_MODE" => "A",
+		"COMPOSITE_FRAME_TYPE" => "AUTO",
+		"POPUP_LABEL" => "Выберите ваш город",
+		"INPUT_LABEL" => "Начните вводить название",
+		"MSG_EMPTY_RESULT" => "Ничего не найдено",
+		"RELOAD_PAGE" => "N",
+		"ENABLE_JQUERY" => "Y",
+		"REDIRECT_WAIT_CONFIRM" => "N"
+	),
+	$component
+); ?>
                 </div>
                 <div class="head-col head-col-menu flex-row-item">
                     <?php $APPLICATION->IncludeComponent("bitrix:menu", "header", array(
@@ -227,10 +232,8 @@ function getGroupsByLocation($locationId)
                                 <span><?= $user->login ?></span>
                             </a>
                             <nav class="header-cabinet-nav hidden-tablet">
-                                <a href="#" class="header-cabinet-name">
-                                    <?= $user->name ?>
-                                </a>
-                                <?php $APPLICATION->IncludeComponent("bitrix:menu", "header.cabinet", array(
+                                <a href="#" class="header-cabinet-name"><?= $user->name ?></a>
+                                <?$APPLICATION->IncludeComponent("bitrix:menu", "header.cabinet", array(
 									"ROOT_MENU_TYPE"        => "headercabinet",
 									"MAX_LEVEL"             => "1",
 									"CHILD_MENU_TYPE"       => "bottom",
@@ -241,15 +244,14 @@ function getGroupsByLocation($locationId)
 									"MENU_CACHE_USE_GROUPS" => "N",
 									"MENU_CACHE_GET_VARS"   => "N",
 								)); ?>
-                                <a href="?logout=yes&<?= bitrix_sessid_get() ?>" class="header-cabinet-exit">
-                                    Выход
-                                </a>
+
+                                <a href="?logout=yes&<?= bitrix_sessid_get() ?>" class="header-cabinet-exit">Выход</a>
                             </nav>
                         </div>
                     <?php } else { ?>
                         <ul class="head-cabinet-links">
                             <li>
-                                <a href="#modal-registration" class="modal-open-btn">
+                                <a href="#modal-enter" class="modal-open-btn">
                                     Регистрация
                                 </a>
                             </li>
@@ -342,18 +344,58 @@ function getGroupsByLocation($locationId)
                     </div>
                 </div>
                 <div class="header-col header-col-search flex-row-item">
-                    <form action="/search/" class="header-search">
-                        <label class="form-block" aria-label="Поиск по товарам">
-                            <input type="search" class="input search-input header-search-input"
-                                   placeholder="Поиск по товарам" value="<?= e($request['q']) ?>"
-                                   name="q" required>
-                        </label>
-                        <button type="submit" class="header-search-submit">
-                            <svg width="24" height="24">
-                                <use xlink:href="#icon-search"/>
-                            </svg>
-                        </button>
-                    </form>
+                    <?$APPLICATION->IncludeComponent(
+	"bitrix:search.title", 
+	"header", 
+	array(
+		"SHOW_INPUT" => "Y",
+		"INPUT_ID" => "title-search-input",
+		"CONTAINER_ID" => "title-search",
+		"PRICE_CODE" => array(
+			0 => "BASE",
+			1 => "RETAIL",
+		),
+		"PRICE_VAT_INCLUDE" => "Y",
+		"PREVIEW_TRUNCATE_LEN" => "150",
+		"SHOW_PREVIEW" => "Y",
+		"PREVIEW_WIDTH" => "75",
+		"PREVIEW_HEIGHT" => "75",
+		"CONVERT_CURRENCY" => "Y",
+		"CURRENCY_ID" => "RUB",
+		"PAGE" => "#SITE_DIR#catalog/search.php",
+		"NUM_CATEGORIES" => "1",
+		"TOP_COUNT" => "10",
+		"ORDER" => "date",
+		"USE_LANGUAGE_GUESS" => "N",
+		"CHECK_DATES" => "Y",
+		"SHOW_OTHERS" => "N",
+		"CATEGORY_0_TITLE" => "Каталог",
+		"CATEGORY_0" => array(
+			0 => "iblock_1c_catalog",
+		),
+		"CATEGORY_0_iblock_news" => array(
+			0 => "all",
+		),
+		"CATEGORY_1_TITLE" => "Форумы",
+		"CATEGORY_1" => array(
+			0 => "forum",
+		),
+		"CATEGORY_1_forum" => array(
+			0 => "all",
+		),
+		"CATEGORY_2_TITLE" => "Каталоги",
+		"CATEGORY_2" => array(
+			0 => "iblock_books",
+		),
+		"CATEGORY_2_iblock_books" => "all",
+		"CATEGORY_OTHERS_TITLE" => "Прочее",
+		"COMPONENT_TEMPLATE" => "header",
+		"CATEGORY_0_iblock_1c_catalog" => array(
+			0 => "75",
+		)
+	),
+	false
+);?>
                 </div>
                 <div class="header-col header-col-links flex-row-item">
                     <ul class="header-links">
@@ -535,7 +577,7 @@ function getGroupsByLocation($locationId)
                 </a>
                 <ul class="head-cabinet-links">
                     <li>
-                        <a href="#modal-registration" class="modal-open-btn">
+                        <a href="#modal-enter" class="modal-open-btn">
                             Регистрация
                         </a>
                     </li>
@@ -589,14 +631,31 @@ function getGroupsByLocation($locationId)
                             </a>
                         </li>
                         <li>
-                            <a href="#modal-city" class="modal-open-btn">
-                                <i>
-                                    <svg width="24" height="24">
-                                        <use xlink:href="#icon-location"/>
-                                    </svg>
-                                </i>
-                                <span>Город: Москва</span>
-                            </a>
+                            <? $APPLICATION->IncludeComponent( "prymery:geoip.city",
+                                "mobile",
+                                array(
+                                    "COMPONENT_TEMPLATE" => ".default",
+                                    "CITY_SHOW" => "Y",
+                                    "CITY_LABEL" => "Город:",
+                                    "QUESTION_SHOW" => "N",
+                                    "QUESTION_TEXT" => "Ваш город<br/>#CITY#?",
+                                    "INFO_SHOW" => "N",
+                                    "INFO_TEXT" => "<a href=\"#\" rel=\"nofollow\" target=\"_blank\">Подробнее о доставке</a>",
+                                    "BTN_EDIT" => "Изменить город",
+                                    "SEARCH_SHOW" => "Y",
+                                    "FAVORITE_SHOW" => "Y",
+                                    "CITY_COUNT" => "30",
+                                    "FID" => "1",
+                                    "CACHE_TYPE" => "A",
+                                    "CACHE_TIME" => "3600",
+                                    "COMPOSITE_FRAME_MODE" => "A",
+                                    "COMPOSITE_FRAME_TYPE" => "AUTO",
+                                    "POPUP_LABEL" => "Выберите ваш город",
+                                    "INPUT_LABEL" => "Начните вводить название",
+                                    "MSG_EMPTY_RESULT" => "Ничего не найдено"
+                                ),
+                                $component
+                            ); ?>
                         </li>
                         <li>
                             <a href="#">
@@ -609,7 +668,7 @@ function getGroupsByLocation($locationId)
                             </a>
                         </li>
                     </ul>
-                    <ul class="header-nav-mobile-menu">
+                    <?/*ul class="header-nav-mobile-menu">
                         <li>
                             <a href="#">
                                 <i>
@@ -660,7 +719,7 @@ function getGroupsByLocation($locationId)
                                 <span>Адреса магазинов</span>
                             </a>
                         </li>
-                    </ul>
+                    </ul*/?>
                 </div>
                 <div class="header-nav-mobile-menus">
                     <a href="#" class="header-nav-mobile-about-toggle">
@@ -686,7 +745,4 @@ function getGroupsByLocation($locationId)
     <?if($GLOBALS["PAGE"][1]):?>
         <div class="container">
         <?$APPLICATION->IncludeComponent("bitrix:breadcrumb", "main",[""]);?>
-    <?endif;?>
-    <?if($GLOBALS["PAGE"][1] == 'personal' && $GLOBALS['PAGE'][2]):?>
-        <a href="/personal/main/" class="btn-lk-return">< Вернуться в профиль</a>
     <?endif;?>

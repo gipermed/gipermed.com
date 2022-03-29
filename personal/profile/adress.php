@@ -16,7 +16,7 @@ if (!$USER->IsAuthorized())
 }
 ?>
 <div class="cabinet cabinet-addresses">
-    <div class="cabinet-section-title">Мои адреса</div>
+    <div class="cabinet-section-title">Мои адреса<a href="/personal/main/" class="btn-lk-return">< Вернуться в профиль</a></div>
     <div class="personal-address-description">При оформлении заказа выберите необходимый для доставки адрес из выпадающего списка.</div>
 </div>
 
@@ -48,15 +48,18 @@ while($arData = $rsData->Fetch()){
                         <span>Удалить адрес</span>
                     </a>
                 </div>
+                <input type="hidden" class="input cabinet-address-code" value="<?=$arData['UF_CODE']; ?>">
                 <input type="hidden" class="input cabinet-address-input-id" value="<?=$arData['ID']; ?>">
                 <input type="hidden" class="input cabinet-address-input-typeadr" value="<?=$arData['UF_TYPE_ADR']; ?>">
                 <input type="hidden" class="input cabinet-address-input-cityn" value="<?=$arData['UF_CITY']; ?>">
                 <input type="hidden" class="input cabinet-address-input-street" value="<?=$arData['UF_STREET']; ?>">
+                <input type="hidden" class="input cabinet-address-street_code" value="<?=$arData['UF_STREET_CODE']; ?>">
                 <input type="hidden" class="input cabinet-address-input-home" value="<?=$arData['UF_HOME']; ?>">
                 <input type="hidden" class="input cabinet-address-input-korpus" value="<?=$arData['UF_KORPUS']; ?>">
                 <input type="hidden" class="input cabinet-address-input-stroenie" value="<?=$arData['UF_STROENIE']; ?>">
                 <input type="hidden" class="input cabinet-address-input-kvartira" value="<?=$arData['UF_KVARTIRA']; ?>">
                 <input type="hidden" class="input cabinet-address-input-coment" value="<?=$arData['UF_COMENT']; ?>">
+                <input type="hidden" class="input cabinet-address-input-index" value="<?=$arData['UF_INDEX']; ?>">
 
                 <div class="personal-address__group">
                     <div class="personal-address__char">Адрес доставки:</div>
@@ -103,7 +106,11 @@ while($arData = $rsData->Fetch()){
                             <div class="form-block">
                                 <span class="form-block-title">Населённый пункт</span>
                                 <div class="form-block-select ordering-delivery-city-select">
-                                    <select  class="input cabinet-address-input-city" id="my_sity" style="width: 100%"></select>
+                                    <select class="input cabinet-address-input-city" id="my_sity" style="width: 100%"></select>
+                                    <?
+                                    global $signedParameters;
+                                    global $signedTemplate;
+                                    ?>
                                     <script>
                                         $(document).ready(function () {
                                             $('#my_sity').select2({
@@ -114,6 +121,55 @@ while($arData = $rsData->Fetch()){
                                                 dropdownPosition: 'below',
                                                 ajax: {
                                                     url: "/local/ajax/address_city.php",
+                                                    type: "post",
+                                                    dataType: "json",
+                                                    quietMillis: 100,
+                                                    cache: true,
+                                                    data: function (obj) {
+                                                        var key = $('#my_sity').val();
+                                                        obj.query = obj.term;
+                                                        obj.method = 'search';
+                                                        obj.siteId = '<?=SITE_ID?>';
+                                                        obj.parameters = '<?=$signedParameters?>';
+                                                        obj.template = '<?=$signedTemplate?>';
+                                                        return obj;
+                                                    },
+                                                    processResults: function (data) {
+                                                        var newResults = [];
+                                                        for(var k=0;k<data['response']['count'];k++){
+                                                            var text = '';
+                                                            if(data['response']['items'][k]['city']){
+                                                                text = text + data['response']['items'][k]['city'];
+                                                            }
+                                                            if(data['response']['items'][k]['area']){
+                                                                text = text + ', ' + data['response']['items'][k]['area'];
+                                                            }
+                                                            if(data['response']['items'][k]['region']){
+                                                                text = text + ', ' + data['response']['items'][k]['region'];
+                                                            }
+                                                            newResults.push({'id':data['response']['items'][k]['location'],'text':text});
+                                                        }
+                                                        console.log(newResults);
+                                                        return {
+                                                            // results: data.results
+                                                            results: newResults
+                                                        };
+                                                    },
+                                                    results: function (data) {
+                                                        return {
+                                                            results: data
+                                                        };
+                                                    }
+                                                }
+                                            });
+                                            $('.jsStreet').select2({
+                                                searchInputPlaceholder: "Начните вводить",
+                                                formatInputTooShort : "Введите больше 3-х символов",
+                                                "language": {"searching": function(){ return "Поиск.."; },"noResults": function(){ return "Ничего не найдено"; },"inputTooShort": function(){ return "Введите больше 3-х символов"; },},
+                                                minimumInputLength: 3,
+                                                dropdownPosition: 'below',
+                                                ajax: {
+                                                    url: "/local/ajax/address_street.php",
                                                     type: "post",
                                                     dataType: "json",
                                                     quietMillis: 100,
@@ -135,6 +191,15 @@ while($arData = $rsData->Fetch()){
                                                     }
                                                 }
                                             });
+                                            $('#my_sity').on('change',function(){
+                                                $('.jsStreet').removeClass('input_disabled');
+                                                $('.jsStreet').prop('disabled',false);
+                                            });
+                                            $('#my_street').on('change',function(){
+                                                if($(this).val() == 'other'){
+                                                    $('.jsStreet2-block').show();
+                                                }
+                                            });
                                         });
                                     </script>
                                 </div>
@@ -143,7 +208,15 @@ while($arData = $rsData->Fetch()){
                         <div class="col-12 col-md-6">
                             <label class="form-block">
                                 <span class="form-block-title">Улица</span>
-                                <input type="text" class="input cabinet-address-input-data" required>
+                                <select class="input cabinet-address-input-city input_disabled jsStreet" id="my_street" style="width: 100%" disabled></select>
+                                <?/*input type="text" class="input cabinet-address-input-data input_disabled jsStreet" required disabled*/?>
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-12 jsStreet2-block" style="display: none;">
+                            <label class="form-block">
+                                <span class="form-block-title">Улица</span>
+                                <input class="input cabinet-address2-input-data jsStreet2" style="width: 100%">
+                                <?/*input type="text" class="input cabinet-address-input-data input_disabled jsStreet" required disabled*/?>
                             </label>
                         </div>
                         <div class="col-6 col-lg-3">

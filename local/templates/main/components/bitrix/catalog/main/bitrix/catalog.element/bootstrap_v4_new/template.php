@@ -836,7 +836,7 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                     </div>
                     <div class="product-info product-price">
                         <div class="product-info-title">Цена:</div>
-                        <?if($price['PRINT_BASE'] != $price['PRINT']):?>
+                        <?if($price['UNROUND_BASE_PRICE'] != $price['UNROUND_PRICE']):?>
                             <div class="product-price-old" id="<?=$itemIds['OLD_PRICE_ID']?>">
                                 <?=$price['PRINT_BASE_PRICE'];?>
                             </div>
@@ -1348,7 +1348,9 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                 <ul class="product-tabs-nav tabs-nav" data-tabs="#product-tabs">
                     <li class="active"><a href="#product-tab-1">Описание товара</a></li>
                     <li><a href="#product-tab-2">Отзывы (<?=$all_count;?>)</a></li>
-                    <li><a href="#product-tab-3">Видеообзор</a></li>
+                    <?if($arResult["PROPERTIES"]["VIDEO"]["~VALUE"]):?>
+                        <li><a href="#product-tab-3">Видеообзор</a></li>
+                    <?endif;?>
                     <?if($arResult['ARTICLES']):?>
                         <li><a href="#product-tab-4">Статьи</a></li>
                     <?endif;?>
@@ -1387,7 +1389,6 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                                 <div class="product-tab-section">
                                     <div class="product-tab-title">Документация:</div>
                                     <ul class="product-docs">
-                                        <? //foreach ($element->getDocumentation() as $doc): ?>
                                         <?foreach($arResult['FILES'] as $doc):?>
                                             <li>
                                                 <a href="<?= $doc['SRC'] ?>" class="doc-link" download target="_blank">
@@ -1446,7 +1447,7 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                                 <div class="reviews-main">
                                     <div class="reviews-main__head">
                                         <div class="review-main__val"><?=$arResult['AVG_RATING']?></div>
-                                        <div class="review-main__description">На основании <?=$all_count;?> <?=endingsForm($all_count,'отзыва','отзывов','отзывов');?></div>
+                                        <div class="review-main__description">На основании<br> <?=$all_count;?> <?=endingsForm($all_count,'отзыва','отзывов','отзывов');?></div>
                                         <div class="review-main__stars">
                                             <div class="rating"><div class="rating-state" style="width:<?=(($arResult['AVG_RATING']/5)*100);?>%;"></div></div>
                                         </div>
@@ -1575,39 +1576,40 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-'.$arParams['TEMPLATE_TH
                                 </div>
                             <?endforeach;?>
                         </div>
-                        <div class="read-more-btn-wrapp">
+                        <?/*div class="read-more-btn-wrapp">
                             <a href="#" class="btn read-more-btn">Показать ещё</a>
-                        </div>
+                        </div*/?>
                     </div>
+
                 </div>
 
-                <div id="product-tab-3" class="tab-block">
-                    <div class="product-tab-section">
-                        <div class="product-tab-title product-tab-video-title"><div>Видеообзор</div>
-                            <b><?=$arResult["NAME"]?></b></div>
-                        <div class="product-video">
-                            <a href="<?=$element->getVideo()?>" class="product-video-link" data-fancybox
-                               data-fancybox-type="iframe">
-								<span class="product-video-link-logo">
-									<img src="img/youtube-logo.svg" alt="">
-								</span>
-                                <span class="product-video-link-play">
-									<i></i>
-									<span>Смотреть</span>
-								</span>
-                                <span class="product-video-link-img cover-img">
-									<img src="<?=$element->getVideoCover()?>" alt="">
-								</span>
-                            </a>
-                            <div class="product-video-body">
-                                <div class="product-video-desc content-text">
-                                    <p>Ознакомиться с видеопрезентацией различных товаров медицинского назначения, можно на нашем Youtube канале. Перейдя по ссылке, Вы найдете более 100 видеороликов, сможете увидеть комплектацию, внешний вид, характеристики товаров и многое другое. Подписывайтесь на наш канал, будьте всегда в курсе новинок от компании Гипермед - Центра торговли медицинскими товарами!
+                <?if($arResult["PROPERTIES"]["VIDEO"]["~VALUE"]):?>
+                    <div id="product-tab-3" class="tab-block">
+                        <div class="product-tab-section">
+                            <div class="product-tab-title product-tab-video-title"><div>Видеообзор</div> <b><?=$arResult["NAME"]?></b></div>
+                            <div class="product-video">
+                                <a href="<?=$arResult["PROPERTIES"]["VIDEO"]["~VALUE"]?>" class="product-video-link" data-fancybox data-fancybox-type="iframe">
+                                    <span class="product-video-link-logo">
+                                        <img src="img/youtube-logo.svg" alt="">
+                                    </span>
+                                    <span class="product-video-link-play">
+                                        <i></i>
+                                        <span>Смотреть</span>
+                                    </span>
+                                    <span class="product-video-link-img cover-img">
+                                        <img src="<?=getVideoCover($arResult["PROPERTIES"]["VIDEO"]["~VALUE"])?>" alt="">
+                                    </span>
+                                </a>
+                                <div class="product-video-body">
+                                    <div class="product-video-desc content-text">
+                                        <p>Ознакомиться с видеопрезентацией различных товаров медицинского назначения, можно на нашем Youtube канале. Перейдя по ссылке, Вы найдете более 100 видеороликов, сможете увидеть комплектацию, внешний вид, характеристики товаров и многое другое. Подписывайтесь на наш канал, будьте всегда в курсе новинок от компании Гипермед - Центра торговли медицинскими товарами!
+                                    </div>
+                                    <a href="https://www.youtube.com/channel/UCMb0--_oRvzGGYv-Bu_w8zQ" target="_blank" class="product-video-more-link">Посмотреть все видеопрезентации&nbsp;&#62;</a>
                                 </div>
-                                <a href="#" class="product-video-more-link">Посмотреть все видеопрезентации&nbsp;&#62;</a>
                             </div>
                         </div>
                     </div>
-                </div>
+                <?endif;?>
                 <?if($arResult['ARTICLES']):?>
                     <div id="product-tab-4" class="tab-block">
                         <div class="product-tab-section">

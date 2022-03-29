@@ -44,9 +44,9 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
 <script id="basket-item-template" type="text/html">
     {{^SHOW_RESTORE}}
     <div class="cart-item" id="basket-item-{{ID}}" data-entity="basket-item" data-id="{{ID}}">
-        <label class="cart-item-checkbox checkbox-label">
+        <?/*label class="cart-item-checkbox checkbox-label">
             <input type="checkbox" class="checkbox-input">
-        </label>
+        </label*/?>
         <div class="cart-item-product">
             <a  href="{{DETAIL_PAGE_URL}}" class="item-link" aria-label="На
             страницу продукта"></a>
@@ -55,31 +55,39 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
                      src="{{{IMAGE_URL}}}{{^IMAGE_URL}}<?=$templateFolder?>/images/no_photo.png{{/IMAGE_URL}}">
             </div>
             <div class="cart-item-product-body">
+                {{#PRODUCT_ARTICLE}}
+                <div class="cart-item-product-code">Артикул: <b>{{{PRODUCT_ARTICLE}}}</b></div>
+                {{/PRODUCT_ARTICLE}}
                 <div class="cart-item-product-title">{{NAME}}</div>
-                <div class="cart-item-product-code">Артикул: <b>0123912-Qm-S</b></div>
-                <ul class="cart-item-product-info">
-                    {{#SKU_BLOCK_LIST}}
-                        <li>{{NAME}}:
+                <?/*{{#SKU_BLOCK_LIST}}
                     {{#SKU_VALUES_LIST}}
-                    {{#SELECTED}}{{NAME}}{{/SELECTED}}
+                        <ul class="cart-item-product-info">
+                            <li>
+                                {{NAME}}:
+                                {{#SELECTED}}{{NAME}}{{/SELECTED}}
+                            </li>
+                        </ul>
                     {{/SKU_VALUES_LIST}}
-                        </li>
-                    {{/SKU_BLOCK_LIST}}
-                </ul>
+                {{/SKU_BLOCK_LIST}}*/?>
             </div>
         </div>
         <div class="cart-item-info">
             <div class="cart-item-prices">
 
-                <div class="cart-item-price-old">{{{SUM_FULL_PRICE}}}</div>
+                {{#DISCOUNT_PRICE_PERCENT}}
+                    <div class="cart-item-prices__top">
+                        <div class="cart-item-price-old">{{{SUM_FULL_PRICE_FORMATED}}}</div>
+                        <div class="cart-item-prices__discount">-{{{DISCOUNT_PRICE_PERCENT}}}%</div>
+                    </div>
+                {{/DISCOUNT_PRICE_PERCENT}}
 
-                <div class="cart-item-price">{{{SUM_PRICE_FORMATED}}}</div>
+                <div class="cart-item-price" id="basket-item-sum-price-{{ID}}">{{{SUM_PRICE_FORMATED}}}</div>
             </div>
             <div class="cart-item-number">
 
                 <div class="select-number" data-entity="basket-item-quantity-block">
                     <button type="button" data-entity="basket-item-quantity-minus" class="select-number-btn
-                    select-number-btn-minus disabled" aria-label="Убавить"></button>
+                    select-number-btn-minus" aria-label="Убавить"></button>
                     <input type="text"  class="select-number-input"
                            data-min="1" data-max="99" value="{{QUANTITY}}" data-value="{{QUANTITY}}"
                            data-entity="basket-item-quantity-field"
@@ -87,13 +95,12 @@ if (!empty($arParams['LABEL_PROP_POSITION']))
                     <button type="button" data-entity="basket-item-quantity-plus" class="select-number-btn
                     select-number-btn-plus" aria-label="Прибавить"></button>
                 </div>
-                <div class="cart-item-number-unit active">{{{PRICE_FORMATED}}}/ед.</div>
+                <?/*div class="cart-item-number-unit active">{{{PRICE_FORMATED}}}/ед.</div*/?>
 
 
             </div>
-            <a href="#" class="cart-item-del" data-entity="basket-item-delete">
-                <svg width="24" height="24"><use xlink:href="#icon-trash"/></svg>
-                <span>Удалить</span>
+            <a href="javascript:void(0)" class="cart-item-del" data-entity="basket-item-delete">
+                <span>Убрать из заказа</span>
             </a>
         </div>
     {{/SHOW_RESTORE}}

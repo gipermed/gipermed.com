@@ -579,7 +579,10 @@ if(!function_exists("get_sale_product")) {
         return $poductsArray;
     }
 }
-
+function getVideoCover($url)
+{
+    return preg_replace('/.*(:http|https|)(\?\/\/|)(?:www\.|)(?:youtube\.com|youtu\.be)(\?\/embed\/|\/v\/|\/watch\?v=|\/)(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*|[\w-]{10,12}).*/', 'http://img.youtube.com/vi/$4/maxresdefault.jpg', $url);
+}
 
 
 

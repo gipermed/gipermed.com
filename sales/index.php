@@ -20,7 +20,7 @@ $APPLICATION->SetTitle("Акции");
 		"USE_REVIEW" => "N",
 		"USE_FILTER" => "Y",
 		"FILTER_FIELD_CODE" => array(
-			0 => "",
+			0 => "DATE_ACTIVE_FROM",
 			1 => "",
 		),
 		"FILTER_PROPERTY_CODE" => array(

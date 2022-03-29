@@ -50,7 +50,7 @@ if($listSubscribeId){
 ?>
     <div class="cabinet cabinet-products">
         <div class="cabinet-section-title">
-            Лист ожидания
+            Лист ожидания<a href="/personal/main/" class="btn-lk-return">< Вернуться в профиль</a>
         </div>
         <div class="catalog-row catalog-row-full products-row flex-row active">
             <?

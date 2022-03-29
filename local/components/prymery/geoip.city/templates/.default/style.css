@@ -57,10 +57,10 @@
   z-index: 10001;
   top: 10%;
   left: 45%;
-  margin-left: -200px;
-  width: 520px;
+  margin-left: -350px;
+  width: 790px;
   background: #FFF;
-  padding: 20px;
+  padding: 28px 48px;
   border-radius: 4px;
   opacity: 0;
 }
@@ -80,20 +80,30 @@
   color: #2A4E69;
 }
 .prymery__geoip__popup-header {
-  font-weight: bold;
-  font-size: 15px;
-  color: #585858;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    /*font-feature-settings: 'dnom' on, 'numr' on;*/
+    color: #545454;
 }
 .prymery__geoip__popup-search {
   margin-top: 15px;
   position: relative;
 }
 .prymery__geoip__popup-search input {
-  padding: 7px 10px;
+  padding: 7px 18px;
   width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 3px;
   height: 36px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+    letter-spacing: 0.03em;
+    background: #FFFFFF;
+    border: 1px solid #E2E2E2;
+    box-sizing: border-box;
+    border-radius: 3px;
 }
 .prymery__geoip__popup-search input::selection {
   background-color: #8CDCFC !important;
@@ -103,7 +113,7 @@
   position: absolute;
   width: 36px;
   height: 36px;
-  display: block;
+  /*display: block;*/
   right: 0;
   top: 0;
   font-size: 23px;
@@ -113,6 +123,8 @@
   padding-top: 2px;
   cursor: pointer;
   line-height: 32px;
+
+    display: none;
 }
 .prymery__geoip__popup-search-clean:hover {
   color: #bb4040;
@@ -177,7 +189,7 @@
 }
 .prymery__geoip__popup-options {
   font-size: 0.9em;
-  padding-top: 10px;
+  /*padding-top: 10px;*/
   padding-bottom: 0;
 }
 .prymery__geoip__popup-options:after {
@@ -200,7 +212,7 @@
 .prymery__geoip__popup-options-col {
   float: left;
   padding: 0 10px 0 0;
-  width: 33.33%;
+  width: 25%;
 }
 .prymery__geoip__popup-option {
   margin: 0;
@@ -210,53 +222,160 @@
 }
 .prymery__geoip__popup-option.prymery__geoip__popup-option--bold,
 .prymery__geoip__popup-option.prymery__geoip__popup-option--bold span {
-  font-weight: bold;
+  font-weight: 600;
+    color: #4365AF;
 }
 .prymery__geoip__popup-option span {
-  border-bottom: 1px dashed black;
+  /*border-bottom: 1px dashed black;*/
 }
 .prymery__geoip__popup-option:hover {
-  background: #8CDCFC;
-  border-radius: 3px;
+  color: #4365AF;
 }
 .prymery__geoip__popup-option:hover span {
-  border-bottom-color: transparent;
-  font-weight: bold;
+  /*border-bottom-color: transparent;*/
+  /*font-weight: bold;*/
 }
 .prymery__geoip__popup--nosearch .prymery__geoip__popup-options {
   padding-top: 30px;
 }
-@media screen and (min-width: 461px) and (max-width: 767px) {
-  body .prymery__geoip__popup-content {
-    top: 3%;
-    left: 3%;
-    width: 94%;
-    padding: 15px;
-    margin-left: 0;
-    height: auto;
-  }
-}
+/*@media screen and (min-width: 461px) and (max-width: 767px) {*/
+/*  body .prymery__geoip__popup-content {*/
+/*    top: 3%;*/
+/*    left: 3%;*/
+/*    width: 94%;*/
+/*    padding: 15px;*/
+/*    margin-left: 0;*/
+/*    height: auto;*/
+/*  }*/
+/*}*/
 @media screen and (max-width: 460px) {
-  body .prymery__geoip__popup-content {
-    top: 5%;
-    left: 5%;
-    width: 90%;
-    padding: 15px;
-    margin-left: 0;
-    height: auto;
-  }
-  body .prymery__geoip__popup-header {
-    display: none;
-  }
-  body .prymery__geoip__popup-city_search_box {
-    margin-top: 25px;
-  }
-  body .prymery__geoip__popup-option {
-    width: 100%;
-    padding: 0;
-  }
+  /*body .prymery__geoip__popup-content {*/
+  /*  top: 5%;*/
+  /*  left: 5%;*/
+  /*  width: 90%;*/
+  /*  padding: 15px;*/
+  /*  margin-left: 0;*/
+  /*  height: auto;*/
+  /*}*/
+  /*body .prymery__geoip__popup-header {*/
+  /*  display: none;*/
+  /*}*/
+  /*body .prymery__geoip__popup-city_search_box {*/
+  /*  margin-top: 25px;*/
+  /*}*/
+  /*body .prymery__geoip__popup-option {*/
+  /*  width: 100%;*/
+  /*  padding: 0;*/
+  /*}*/
   body .prymery__geoip__popup-option:nth-child(1) {
     display: block;
   }
 }
-/*# sourceMappingURL=style.css.map */
+.prymery__geoip__popup-options-title{
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 18px;
+    letter-spacing: 0.03em;
+    color: #545454;
+    margin: 28px 0 18px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid #DBDBDB;
+}
+.prymery__geoip__popup-icon{
+    position: absolute;
+    width: 36px;
+    height: 36px;
+     display: block;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    line-height: 32px;
+    background: url(/local/templates/main/assets/img/surface1.svg) no-repeat center;
+}
+@media(max-width: 767px){
+    body .prymery__geoip__popup-content {
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 0;
+        border-radius: 0;
+        margin-left: 0;
+        height: auto;
+    }
+    .prymery__geoip__popup-header{
+        background: #F2F2F2;
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 16px;
+        color: #000;
+        padding: 13px 19px;
+        margin-top: 19px;
+    }
+    .prymery__geoip__popup-search{
+        margin-top: 20px;
+    }
+    .prymery__geoip__popup-close{
+        top: 22px;
+        color: #000;
+        right: 16px;
+    }
+    .prymery__geoip__popup-search input{
+        margin: 0 19px;
+        width: calc(100% - 39px);
+    }
+    .prymery__geoip__popup-icon{
+        right: 21px;
+    }
+    .prymery__geoip__popup-options-title{
+        padding-left: 19px;
+    }
+    .prymery__geoip__popup-options-col{
+        width: 50%;
+    }
+    .prymery__geoip__popup-options{
+        padding: 0 25px;
+    }
+    body .prymery__geoip__popup-option{
+        margin-bottom: 12px;
+    }
+}
+.header-nav-mobile-menu .prymery__geoip__city__line i {
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    width: 24px;
+    height: 24px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-right: 15px;
+}
+.header-nav-mobile-menu .prymery__geoip__city__line-label, .header-nav-mobile-menu .prymery__geoip__city__line-name {
+    /*min-height: 40px;*/
+    /*padding: 4px 1000px;*/
+    /*margin: 0 -1000px;*/
+    color: inherit;
+    font-size: 13px;
+    font-weight: 500;
+}
+.header-nav-mobile-menu .prymery__geoip__city__line-label{
+    margin-right: 4px;
+}
+.header-nav-mobile-menu .prymery__geoip__city__line{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}

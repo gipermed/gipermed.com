@@ -17,7 +17,7 @@ $wishList = new Wishlist();
 
     <div class="cabinet cabinet-products">
         <div class="cabinet-section-title">
-            Избранное
+            Избранное<a href="/personal/main/" class="btn-lk-return">< Вернуться в профиль</a>
         </div>
         <div class="catalog-row catalog-row-full products-row flex-row active">
 <?

@@ -51,7 +51,7 @@ use Palladiumlab\Catalog\Element;
 							<? $element->echoStickers(); ?>
                             </div>
 
-                            <a href="#"
+                            <a href="<?=$arElement["DETAIL_PAGE_URL"]?>"
                                class=" <?= is_array($arElement["DETAIL_PICTURE"]) ? "" : "product-item-img product-item-img-no-photo" ?>">
 
 								<? if (is_array($arElement["DETAIL_PICTURE"])): ?>

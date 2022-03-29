@@ -12,8 +12,8 @@
 ?>
 
 
-<div class="prymery__geoip__city__line  prymery__geoip__city__line--default js-prymery__geoip__city__line"
-     id="prymery__geoip__city__line-id<?= $randString; ?>" data-rand="<?=$arParams['RAND_STRING'];?>" >
+<div class="prymery__geoip__city__line  prymery__geoip__city__line--default js-prymery__geoip__city__line js_location_confirm"
+     id="prymery__geoip__city__line-id<?= $randString; ?>" data-rand="<?=$arParams['RAND_STRING'];?>" data-confirm="<?=$_COOKIE['prymery_geoip_2_8_1_location_confirm']?>">
 
     <span class="prymery__geoip__city__line-label"><?= $arParams['~CITY_LABEL']; ?></span>
 

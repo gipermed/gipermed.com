@@ -37,7 +37,7 @@ while($arUser = $rsUsers->Fetch()){
     <div class="cabinet-section cabinet-section-profile-data">
         <p style="color: red"> <?= $arResult['ERROR'] ?></p>
         <div class="cabinet-profile-title-wrapp">
-            <div class="cabinet-section-title">Личная информация и подписки</div>
+            <div class="cabinet-section-title">Личная информация и подписки<a href="/personal/main/" class="btn-lk-return">< Вернуться в профиль</a></div>
         </div>
         <form action="<?= POST_FORM_ACTION_URI ?>" method="post" class="form">
 			<?= bitrix_sessid_post() ?>

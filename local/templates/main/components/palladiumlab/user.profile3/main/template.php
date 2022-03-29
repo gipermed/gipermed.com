@@ -24,7 +24,10 @@ $promotion = $user->promotion ? "active" : "";
 ?>
 <div class="cabinet-section cabinet-section-profile-data">
         <div class="cabinet-profile-title-wrapp">
-            <div class="cabinet-section-title">Профиль</div>
+            <div class="cabinet-section-title">
+                Профиль
+
+            </div>
         </div>
         <div class="cabinet-profile-form-row flex-row">
             <div class="cabinet-profile-form-col-mainp1 flex-row-item">

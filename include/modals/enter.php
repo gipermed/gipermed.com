@@ -6,7 +6,7 @@ global $APPLICATION;
 
 <div id="modal-enter" class="modal modal-enter">
     <div class="modal-body">
-        <a href="#" class="modal-close-btn" aria-label="Закрыть">
+        <?/*a href="#" class="modal-close-btn" aria-label="Закрыть">
             <svg width="24" height="24">
                 <use xlink:href="#icon-close"/>
             </svg>
@@ -22,6 +22,11 @@ global $APPLICATION;
                 <div class="modal-login-nav-title">Нет аккаунта?</div>
                 <a href="#modal-registration" class="modal-login-nav-link modal-open-btn">Зарегистрироваться</a>
             </div>
+        </div*/?>
+
+        <div class="authFlex">
+            <? $APPLICATION->IncludeComponent('bxmaker:authuserphone.login', '.default', array(), false); ?>
         </div>
     </div>
 </div>
+
